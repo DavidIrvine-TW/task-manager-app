@@ -64,12 +64,12 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type }) => {
   };
 
   const onSubmit = (type) => {
-    setIsBoardModalOpen(false);
     if (type === "add") {
       dispatch(boardsSlice.actions.addBoard({ boardName, newColumns }));
     } else {
       dispatch(boardsSlice.actions.editBoard({ boardName, newColumns }));
     }
+    setCreateBoardMenu(false);
   };
 
   return (
