@@ -1,4 +1,4 @@
-import React from "react";
+
 import { useSelector } from "react-redux";
 import BoardIcon from "../icons/boardIcon";
 import AddIcon from "@mui/icons-material/Add";
@@ -9,9 +9,11 @@ import useToggle from "../../hooks/useToggle";
 import { useEffect } from "react";
 
 const BoardsMenuModal = ({ setBoardMenu, setCreateBoardMenu, setBoardMode }) => {
+
   const [isDarkTheme, toggleMode] = useToggle(
     localStorage.getItem("theme-color") === "dark"
   );
+
   const boards = useSelector((state) => state.boards);
 
   useEffect(() => {
@@ -30,6 +32,7 @@ const BoardsMenuModal = ({ setBoardMenu, setCreateBoardMenu, setBoardMode }) => 
       }}
     >
       <article className="absolute top-[6rem] w-[265px] rounded bg-white shadow-md py-4">
+
         <h2 className="tracking-[2.4px] text-sm mb-[1rem] px-4">
           ALL BOARDS: {boards?.length}
         </h2>
@@ -37,6 +40,7 @@ const BoardsMenuModal = ({ setBoardMenu, setCreateBoardMenu, setBoardMode }) => 
      
           {boards.map((board, index) => (
             <button
+              key={index}
               className={`w-full flex items-center space-x-4 px-5 py-4 ${
                 board.isActive && "bg-red-500 text-white"
               }`}
@@ -61,7 +65,9 @@ const BoardsMenuModal = ({ setBoardMenu, setCreateBoardMenu, setBoardMode }) => 
         </div>
 
         <div className="w-[235px] mx-auto border border-black rounded mt-[1rem] flex items-center justify-center">
+
           <div className="flex items-center justify-between w-[150px] mx-auto p-2">
+            
             <div>
               <LightModeOutlinedIcon />
             </div>
@@ -71,8 +77,11 @@ const BoardsMenuModal = ({ setBoardMenu, setCreateBoardMenu, setBoardMode }) => 
             <div>
               <DarkModeOutlinedIcon />
             </div>
+
           </div>
+
         </div>
+
       </article>
     </section>
   );

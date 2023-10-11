@@ -6,6 +6,7 @@ import AddIcon from "@mui/icons-material/Add";
 import boardsSlice from '../../redux/boardsSlice'
 
 const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode  }) => {
+  
   const dispatch = useDispatch();
   const [boardName, setBoardName] = useState("");
   console.log('boardname =', boardName)
@@ -152,8 +153,10 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode  }) => {
               {type === "add" ? "Create Board" : "Save Changes"}
             </button>
           </div>
+
         </div>
       </form>
+      
     </section>
   );
 };

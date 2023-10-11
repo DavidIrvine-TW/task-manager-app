@@ -1,4 +1,4 @@
-import React from "react";
+
 import ViewKanbanTwoToneIcon from "@mui/icons-material/ViewKanbanTwoTone";
 import MoreVertTwoToneIcon from "@mui/icons-material/MoreVertTwoTone";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
@@ -6,8 +6,9 @@ import ArrowDropUpOutlinedIcon from "@mui/icons-material/ArrowDropUpOutlined";
 import AddIcon from "@mui/icons-material/Add";
 
 
-const Nav = ({boardMenu, setBoardMenu, setNewTaskMenu}) => {
- 
+const Nav = ({boardMenu, setBoardMenu, setNewTaskMenu, setElippsesMenu, ellipsesMenu }) => {
+
+  
 
   return (
     <header className=" min-w-[375px] border-b border-black">
@@ -46,7 +47,7 @@ const Nav = ({boardMenu, setBoardMenu, setNewTaskMenu}) => {
 
         </div>
 
-        <div className="ml-auto flex flex-row gap-[.5rem] z-[1] p-4">
+        <div className="relative ml-auto flex flex-row gap-[.5rem] z-[1] p-4">
            {/* Add a task */}
           <button 
           onClick={
@@ -60,9 +61,12 @@ const Nav = ({boardMenu, setBoardMenu, setNewTaskMenu}) => {
           </button>
 
             {/* delete/edit */}
-          <button>
+          <button
+            onClick={() => setElippsesMenu(!ellipsesMenu)}
+          >
             <MoreVertTwoToneIcon sx={{ fontSize : '2rem'}}/>
           </button>
+         
         </div>
 
       </nav>
