@@ -3,10 +3,13 @@ import { v4 as uuidv4 } from "uuid";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import { useDispatch, useSelector } from "react-redux";
 import AddIcon from "@mui/icons-material/Add";
+import boardsSlice from '../../redux/boardsSlice'
 
-const AddEditBoardModal = ({ setCreateBoardMenu, type }) => {
+const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode  }) => {
   const dispatch = useDispatch();
   const [boardName, setBoardName] = useState("");
+  console.log('boardname =', boardName)
+  const [isFirstLoad, setIsFirstLoad] = useState(true)
   const [isValid, setIsValid] = useState(true);
   const [createdColumns, setCreatedColumns] = useState([
     {
@@ -20,7 +23,6 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type }) => {
       id: uuidv4(),
     },
   ]);
-  console.log(createdColumns);
 
   const board = useSelector((state) => state.boards).find(
     (board) => board.isActive
@@ -41,8 +43,8 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type }) => {
     if (!boardName.trim()) {
       return false;
     }
-    for (let i = 0; i < newColumns.length; i++) {
-      if (!newColumns[i].name.trim()) {
+    for (let i = 0; i < createdColumns.length; i++) {
+      if (!createdColumns[i].name.trim()) {
         return false;
       }
     }
@@ -60,16 +62,17 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type }) => {
   };
 
   const onDelete = (id) => {
-    setCreatedColumns((prevState) => prevState.filter((element) => element.id !== id));
+    setCreatedColumns((prevState) => prevState.filter((el) => el.id !== id));
   };
 
   const onSubmit = (type) => {
-    if (type === "add") {
-      dispatch(boardsSlice.actions.addBoard({ boardName, newColumns }));
-    } else {
-      dispatch(boardsSlice.actions.editBoard({ boardName, newColumns }));
-    }
     setCreateBoardMenu(false);
+    if (type === "add") {
+      dispatch(boardsSlice.actions.addBoard({ boardName, createdColumns }));
+    } else {
+      dispatch(boardsSlice.actions.editBoard({ boardName, createdColumns }));
+    }
+   
   };
 
   return (
@@ -80,9 +83,10 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type }) => {
           return;
         }
         setCreateBoardMenu(false);
+        setBoardMode('')
       }}
     >
-      <article className="absolute top-[6rem] w-[345px] rounded bg-white shadow-md p-6">
+      <form className="absolute top-[6rem] w-[345px] rounded bg-white shadow-md p-6" onSubmit={onSubmit}>
         <h3 className=" text-l mb-[1.5rem]">
           {type === "edit" ? "Edit" : "Add New"} Board
         </h3>
@@ -91,9 +95,10 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type }) => {
           <label className="text-sm mb-[.5rem]">Board Name</label>
           <input
             onChange={(e) => setBoardName(e.target.value)}
+            value={boardName}
             className="border text-body-l p-2"
             placeholder="eg. web design"
-            id="board-name"
+            id="board-name-input"
           />
         </div>
 
@@ -144,11 +149,11 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type }) => {
               type="submit"
             >
               {" "}
-              {type === "add" ? " Create New Board" : "Save Changes"}
+              {type === "add" ? "Create Board" : "Save Changes"}
             </button>
           </div>
         </div>
-      </article>
+      </form>
     </section>
   );
 };

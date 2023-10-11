@@ -8,7 +8,7 @@ import DrkMdSwitch from "../switch/DrkMdSwitch";
 import useToggle from "../../hooks/useToggle";
 import { useEffect } from "react";
 
-const BoardsMenuModal = ({ setBoardMenu, setCreateBoardMenu }) => {
+const BoardsMenuModal = ({ setBoardMenu, setCreateBoardMenu, setBoardMode }) => {
   const [isDarkTheme, toggleMode] = useToggle(
     localStorage.getItem("theme-color") === "dark"
   );
@@ -34,24 +34,26 @@ const BoardsMenuModal = ({ setBoardMenu, setCreateBoardMenu }) => {
           ALL BOARDS: {boards?.length}
         </h2>
 
-        <div>
+     
           {boards.map((board, index) => (
-            <div
-              className={`flex items-center space-x-4 px-5 py-4 ${
+            <button
+              className={`w-full flex items-center space-x-4 px-5 py-4 ${
                 board.isActive && "bg-red-500 text-white"
               }`}
             >
               <BoardIcon />
               <p className="text-md">{board.name}</p>
-            </div>
+            </button>
           ))}
-        </div>
+       
 
         <div className={`flex items-center space-x-4 px-5 py-4 `}>
           <BoardIcon />
-          <button onClick={() => {
-            setBoardMenu(false)
-            setCreateBoardMenu(true)}} 
+          <button 
+            onClick={() => {
+              setBoardMenu(false)
+              setBoardMode('add')
+              setCreateBoardMenu(true)}} 
             className="text-md">
                 <AddIcon sx={{ fontSize: ".75rem" }} />
                 Create New Board

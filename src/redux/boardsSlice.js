@@ -9,18 +9,18 @@ const boardsSlice = createSlice({
           const isActive = state.length > 0 ? false : true;
           const payload = action.payload;
           const board = {
-            name: payload.name,
+            name: payload.boardName,
             isActive,
             columns: [],
           };
-          board.columns = payload.newColumns;
+          board.columns = payload.createdColumns;
           state.push(board);
         },
         editBoard: (state, action) => {
           const payload = action.payload;
           const board = state.find((board) => board.isActive);
-          board.name = payload.name;
-          board.columns = payload.newColumns;
+          board.name = payload.boardName;
+          board.columns = payload.createdColumns;
         },
         deleteBoard: (state) => {
           const board = state.find((board) => board.isActive);

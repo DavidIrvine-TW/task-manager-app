@@ -8,6 +8,7 @@ import AddEditTaskModal from './components/modals/AddEditTaskModal';
 function App() {
   const [boardMenu, setBoardMenu] = useState(false);
   const [createBoardMenu, setCreateBoardMenu] = useState(false)
+  const [type, setBoardMode] = useState('')
   const [newTaskMenu, setNewTaskMenu] = useState(false)
 
   return (
@@ -15,12 +16,12 @@ function App() {
 
       {/* Header */}
 
-      <Nav boardMenu={boardMenu} setBoardMenu={setBoardMenu} setNewTaskMenu={setNewTaskMenu}/>
+      <Nav boardMenu={boardMenu} setBoardMenu={setBoardMenu} setNewTaskMenu={setNewTaskMenu} />
 
       {/* modals */}
 
-      {boardMenu ? (<BoardsMenuModal setBoardMenu={setBoardMenu} setCreateBoardMenu={setCreateBoardMenu}/>) : ('')}
-      {createBoardMenu ? (<AddEditBoardModal setCreateBoardMenu={setCreateBoardMenu}/>) : ('')}
+      {boardMenu ? (<BoardsMenuModal setBoardMenu={setBoardMenu} setCreateBoardMenu={setCreateBoardMenu} setBoardMode={setBoardMode}/>) : ('')}
+      {createBoardMenu ? (<AddEditBoardModal setCreateBoardMenu={setCreateBoardMenu}  type={type} setBoardMode={setBoardMode}/>) : ('')}
       {newTaskMenu ? (<AddEditTaskModal setNewTaskMenu={setNewTaskMenu}/>) : ('')}
 
 
