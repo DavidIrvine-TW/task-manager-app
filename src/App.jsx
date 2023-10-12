@@ -11,6 +11,7 @@ function App() {
   const [boardMenu, setBoardMenu] = useState(false);
   const [createBoardMenu, setCreateBoardMenu] = useState(false);
   const [type, setBoardMode] = useState(""); //add or edit
+  const [taskType, setTaskMode] = useState("")//add or edit
   const [newTaskMenu, setNewTaskMenu] = useState(false);
   const [ellipsesMenu, setElippsesMenu] = useState(false);
   const [deleteBoardModal, setDeleteBoardModal] = useState(false);
@@ -30,7 +31,8 @@ function App() {
         setElippsesMenu={setElippsesMenu}
       />
 
-      {/* modals */}
+
+      {/* MODALS */}
       {/* nav menu modal */}
       {boardMenu ? (
         <BoardsMenuModal
@@ -41,6 +43,7 @@ function App() {
       ) : (
         ""
       )}
+      
       {/* add or edit board modal */}
       {createBoardMenu ? (
         <AddEditBoardModal
@@ -51,8 +54,10 @@ function App() {
       ) : (
         ""
       )}
+
       {/* add or edit task modal */}
       {newTaskMenu ? <AddEditTaskModal setNewTaskMenu={setNewTaskMenu} /> : ""}
+      
       {/* edit or delete board modal */}
       {ellipsesMenu ? (
         <DeleteEditMenuModal

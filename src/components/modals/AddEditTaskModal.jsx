@@ -1,11 +1,30 @@
-
+import {useState} from 'react'
+import { v4 as uuidv4 } from "uuid";
+import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
+import AddIcon from "@mui/icons-material/Add";
+import { useDispatch, useSelector } from "react-redux";
 
 const AddEditTaskModal = ({setNewTaskMenu, type}) => {
+  const dispatch = useDispatch();
+  const [taskTitle, setTaskTitle] = useState("");
+  const [taskDescription, setTaskDescription] = useState("");
+  const [subTasks, setSubTasks] = useState([
+    {
+      title: "",
+      isCompleted: false,
+      id: uuidv4(),
+    },
+    {
+      title: "",
+      isCompleted: false,
+      id: uuidv4(),
+    },
+  ]);
 
-  const [boardTitle, setBoardTitle] = useState('')
-  const [boardDescription, setBoardDescription] = useState('')
-
-
+  const board = useSelector((state) => state.boards).find(
+    (board) => board.isActive
+  );
+  const columns = board.columns
 
 
 
@@ -21,7 +40,7 @@ const AddEditTaskModal = ({setNewTaskMenu, type}) => {
     >
 
 
-      <article className="absolute top-[6rem] w-[345px] rounded bg-white shadow-md p-6">
+      <form className="absolute top-[6rem] w-[345px] rounded bg-white shadow-md p-6">
 
           <h2 className=" text-l mb-[1.5rem]">
               {type === "edit" ? "Edit" : "Add New"} Task
@@ -32,8 +51,8 @@ const AddEditTaskModal = ({setNewTaskMenu, type}) => {
               Title
             </label>
             <input
-              // value={title}
-              // onChange={(e) => setTitle(e.target.value)}
+              value={taskTitle}
+              onChange={(e) => setTaskTitle(e.target.value)}
               id="task-title"
               type="text"
               className="border text-body-l p-2"
@@ -47,8 +66,8 @@ const AddEditTaskModal = ({setNewTaskMenu, type}) => {
               Description
             </label>
             <textarea
-              // value={description}
-              // onChange={(e) => setDescription(e.target.value)}
+              value={taskDescription}
+              onChange={(e) => setTaskDescription(e.target.value)}
               id="task-description"
               className=" border p-2 min-h-[112px] text-body-l"
               placeholder="e.g. It's always good to take a break. This 
@@ -60,15 +79,72 @@ const AddEditTaskModal = ({setNewTaskMenu, type}) => {
 
           <div className="flex flex-col mt-[1.5rem]">
             <label className="text-body-l mb-[.5rem] font-bold">
-              SubTasks
+              Subtasks
             </label>
-            
+
+            {subTasks.map((task, index) => (
+              <div className="flex gap-[1rem] items-center w-full mb-[.75rem]" key={index}>
+                <input
+                  className="border w-full text-body-l p-2"
+                  onChange={(e) => {
+                    onChange(subTasks.id, e.target.value);
+                  }}
+                  type="text"
+                  value={subTasks.title}
+                  placeholder="eg. Remember to take a break"
+                />
+                <button
+                  onClick={() => onDelete(subTasks.id)}
+                  className="cursor-pointer"
+                >
+                  <DeleteForeverOutlinedIcon fontSize="medium" />
+                </button>
+              </div>
+            ))}
+
+            <button
+              type="button"
+              className="border flex items-center justify-center py-2 rounded text-body-xl font-bold"
+              onClick={() => {
+                setSubTasks((state) => [
+                  ...state,
+                  { title: "", isCompleted: [], id: uuidv4() },
+                ]);
+              }}
+            >
+              <AddIcon sx={{fontSize: '.75rem'}}/>
+              New SubTask
+            </button>   
+
           </div>
 
+          <div className="flex flex-col mt-[1.5rem]">  
+            <label className="text-body-l mb-[.5rem] font-bold">
+                Task Status
+            </label>
 
+            <select className='text-body-md border py-2 px-4'>
+              {columns.map((column, index) => (
+                <option key={index}>{column.name}</option>
+              ))}
+            </select>
+          </div>
 
-        
-      </article>
+          <button
+            onClick={() => {
+              const isValid = validate();
+              if (isValid) {
+                // onSubmit(type);
+                setNewTaskMenu(false);
+                // type === "edit" && setIsTaskModalOpen(false);
+              }
+            }}
+            className=" w-full items-center mt-[1.5rem] border py-2 rounded text-body-xl font-bold"
+          >
+           {type === "edit" ? "Save Edited Task" : "Create Task"}
+          </button>
+     
+      </form>
 
 
 
