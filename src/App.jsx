@@ -19,7 +19,7 @@ function App() {
   return (
     <div
       id="wrapper"
-      className="relative max-w-[1440px] mx-auto font-roboto h-screen"
+      className="relative max-w-[1440px] mx-auto font-roboto min-h-screen"
     >
       {/* Header */}
 

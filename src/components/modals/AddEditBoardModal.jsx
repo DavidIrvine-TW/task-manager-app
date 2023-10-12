@@ -3,15 +3,16 @@ import { v4 as uuidv4 } from "uuid";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import { useDispatch, useSelector } from "react-redux";
 import AddIcon from "@mui/icons-material/Add";
-import boardsSlice from '../../redux/boardsSlice'
+import boardsSlice from "../../redux/boardsSlice";
 
-const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode  }) => {
-  
+const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
   const dispatch = useDispatch();
   const [boardName, setBoardName] = useState("");
-  console.log('boardname =', boardName)
-  const [isFirstLoad, setIsFirstLoad] = useState(true)
+  const [boardNameError, setBoardNameError] = useState("");
+  const [createdColumnsError, setCreatedColumnError] = useState("");
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
   const [isValid, setIsValid] = useState(true);
+
   const [createdColumns, setCreatedColumns] = useState([
     {
       name: "Todo",
@@ -24,6 +25,9 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode  }) => {
       id: uuidv4(),
     },
   ]);
+  console.log(type);
+  console.log(createdColumnsError);
+  console.log(boardNameError);
 
   const board = useSelector((state) => state.boards).find(
     (board) => board.isActive
@@ -39,20 +43,6 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode  }) => {
     setIsFirstLoad(false);
   }
 
-  const validate = () => {
-    setIsValid(false);
-    if (!boardName.trim()) {
-      return false;
-    }
-    for (let i = 0; i < createdColumns.length; i++) {
-      if (!createdColumns[i].name.trim()) {
-        return false;
-      }
-    }
-    setIsValid(true);
-    return true;
-  };
-
   const onChange = (id, newValue) => {
     setCreatedColumns((prevState) => {
       const newState = [...prevState];
@@ -66,14 +56,49 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode  }) => {
     setCreatedColumns((prevState) => prevState.filter((el) => el.id !== id));
   };
 
-  const onSubmit = (type) => {
-    setCreateBoardMenu(false);
-    if (type === "add") {
-      dispatch(boardsSlice.actions.addBoard({ boardName, createdColumns }));
-    } else {
-      dispatch(boardsSlice.actions.editBoard({ boardName, createdColumns }));
+  const formValidate = async () => {
+    setCreatedColumnError("");
+    setBoardNameError("");
+    setIsValid(true);
+
+    if (!boardName.trim()) {
+      setBoardNameError("Enter a board name");
+      setIsValid(false);
+      return false;
     }
-   
+
+    // Asynchronously validate columns
+    const columnValidationPromises = createdColumns.map(async (column) => {
+      if (!column.name.trim()) {
+        setCreatedColumnError("Enter a column name");
+        setIsValid(false);
+        return false;
+      }
+      return true;
+    });
+
+    // Wait for all column validations to complete
+    const columnValidationResults = await Promise.all(columnValidationPromises);
+
+    // Check if any validation failed
+    if (columnValidationResults.includes(false)) {
+      return false;
+    }
+
+    return true;
+  };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    const isFormValid = await formValidate();
+    if (isFormValid) {
+      if (type === "add") {
+        dispatch(boardsSlice.actions.addBoard({ boardName, createdColumns }));
+      } else if (type === "edit") {
+        dispatch(boardsSlice.actions.editBoard({ boardName, createdColumns }));
+      }
+      setCreateBoardMenu(false);
+    }
   };
 
   return (
@@ -84,10 +109,13 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode  }) => {
           return;
         }
         setCreateBoardMenu(false);
-        setBoardMode('')
+        setBoardMode("");
       }}
     >
-      <form className="absolute top-[6rem] w-[345px] rounded bg-white shadow-md p-6" onSubmit={onSubmit}>
+      <form
+        className="absolute top-[6rem] w-[345px] rounded bg-white shadow-md p-6"
+        onSubmit={onSubmit}
+      >
         <h3 className=" text-l mb-[1.5rem]">
           {type === "edit" ? "Edit" : "Add New"} Board
         </h3>
@@ -101,30 +129,41 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode  }) => {
             placeholder="eg. web design"
             id="board-name-input"
           />
+          <span className="text-red-500 text-body-md mt-[4px]">
+            {boardNameError}
+          </span>
         </div>
 
         <div>
-          <label className="text-sm ">Board Columns</label>
-          {createdColumns.map((column, index) => {
-            return (
-              <div className="flex gap-[1rem] items-center w-full mt-[.5rem] mb-[.75rem]" key={index}>
-                <input
-                  className="border w-full text-body-l p-2"
-                  onChange={(e) => {
-                    onChange(column.id, e.target.value);
-                  }}
-                  type="text"
-                  value={column.name}
-                />
-                <button
-                  onClick={() => onDelete(column.id)}
-                  className="cursor-pointer"
+          <div>
+            <label className="text-sm ">Board Columns</label>
+            {createdColumns.map((column, index) => {
+              return (
+                <div
+                  className="flex gap-[1rem] items-center w-full mt-[.5rem] "
+                  key={index}
                 >
-                  <DeleteForeverOutlinedIcon fontSize="medium" />
-                </button>
-              </div>
-            );
-          })}
+                  <input
+                    className="border w-full text-body-l p-2"
+                    onChange={(e) => {
+                      onChange(column.id, e.target.value);
+                    }}
+                    type="text"
+                    value={column.name}
+                  />
+                  <button
+                    onClick={() => onDelete(column.id)}
+                    className="cursor-pointer"
+                  >
+                    <DeleteForeverOutlinedIcon fontSize="medium" />
+                  </button>
+                </div>
+              );
+            })}
+            <span className="text-red-500 text-body-md ">
+              {createdColumnsError}
+            </span>
+          </div>
 
           <div className="flex flex-col gap-[1.5rem] mt-[1.5rem]">
             <button
@@ -137,15 +176,14 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode  }) => {
                 ]);
               }}
             >
-              <AddIcon sx={{fontSize: '.75rem'}}/>
+              <AddIcon sx={{ fontSize: ".75rem" }} />
               New Column
             </button>
 
             <button
               className="border py-2 rounded"
               onClick={() => {
-                const isValid = validate();
-                if (isValid === true) onSubmit(type);
+                onSubmit(e);
               }}
               type="submit"
             >
@@ -153,10 +191,8 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode  }) => {
               {type === "add" ? "Create Board" : "Save Changes"}
             </button>
           </div>
-
         </div>
       </form>
-      
     </section>
   );
 };
