@@ -4,9 +4,11 @@ import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined
 import AddIcon from "@mui/icons-material/Add";
 import { useDispatch, useSelector } from "react-redux";
 import boardsSlice from "../../redux/boardsSlice";
+import CloseIcon from '@mui/icons-material/Close';
 
 const AddEditTaskModal = ({
   setNewTaskMenu,
+  newTaskMenu,
   type,
   taskIndex,
   defaultStatusIndex = 0,
@@ -125,9 +127,15 @@ const AddEditTaskModal = ({
         onSubmit={onSubmit}
         className="w-[345px] tb:w-[480px] rounded bg-lghtbackground shadow-md p-6"
       >
-        <h2 className=" text-l mb-[1.5rem]">
-          {type === "edit" ? "Edit" : "Add New"} Task
-        </h2>
+       <div className='flex justify-between items-center mb-[1.5rem]'>
+            <h2 className=" text-l ">
+                {type === "edit" ? "Edit" : "Add New"} Task
+            </h2>
+              <button
+                className='border rounded-full p-1'
+                onClick={() => setNewTaskMenu(!newTaskMenu) }
+              ><CloseIcon/></button>
+          </div>
 
         {/* task title */}
         <div className="flex flex-col">

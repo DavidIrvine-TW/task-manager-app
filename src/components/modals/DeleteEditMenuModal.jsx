@@ -14,14 +14,14 @@ const DeleteEditMenuModal = ({ setElippsesMenu, setCreateBoardMenu, setBoardMode
       //   setElippsesMenu(false);
       // }}
     >
-      <div>
+      {/* <div>
         <button className=" font-bold w-[150px] py-1 px-2 text-left">
           Sign in
         </button>
 
         
 
-      </div>
+      </div> */}
 
 
       <div className="flex flex-col gap-[1rem]">

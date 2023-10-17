@@ -88,7 +88,7 @@ function App() {
           {columns.length > 0 ? (
             <>
               {columns.map((column, index) => (
-                <Column key={index} colIndex={index} column={column} />
+                <Column key={index} columnIndex={index} column={column} />
               ))}
               <div className=" h-screen flex justify-center items-center font-bold  transition duration-300 cursor-pointer min-w-[280px] rounded border-dashed border-2 ">
                 <button onClick={() => {}}>
@@ -134,7 +134,7 @@ function App() {
 
       {/* add or edit task modal */}
       {newTaskMenu ? (
-        <AddEditTaskModal setNewTaskMenu={setNewTaskMenu} type={taskType} />
+        <AddEditTaskModal setNewTaskMenu={setNewTaskMenu} type={taskType} newTaskMenu={newTaskMenu}/>
       ) : (
         ""
       )}
