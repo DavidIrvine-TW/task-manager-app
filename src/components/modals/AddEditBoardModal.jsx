@@ -74,7 +74,6 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
         setIsValid(false);
         return false;
       }
-      return true;
     });
 
     // Wait for all column validations to complete
@@ -103,7 +102,7 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
 
   return (
     <section
-      className="fade-in absolute top-0 right-0 left-0 bottom-0 bg-zinc-500 bg-opacity-30 z-10 flex items-center justify-center"
+      className="fade-in absolute top-0 right-0 left-0 bottom-0 bg-zinc-500 bg-opacity-50 z-10 flex items-center justify-center"
       onClick={(e) => {
         if (e.target !== e.currentTarget) {
           return;
@@ -113,7 +112,7 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
       }}
     >
       <form
-        className="absolute top-[6rem] w-[345px] rounded bg-white shadow-md p-6"
+        className=" w-[345px] tb:w-[480px] rounded bg-lghtbackground shadow-md p-6"
         onSubmit={onSubmit}
       >
         <h3 className=" text-l mb-[1.5rem]">
@@ -168,7 +167,7 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
           <div className="flex flex-col gap-[1.5rem] mt-[1.5rem]">
             <button
               type="button"
-              className="border flex items-center justify-center py-2 rounded"
+              className="border flex items-center justify-center py-2 rounded bg-lghtsecondary hover:bg-secondary-50"
               onClick={() => {
                 setCreatedColumns((state) => [
                   ...state,
@@ -181,7 +180,7 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
             </button>
 
             <button
-              className="border py-2 rounded"
+              className="border py-2 rounded bg-lghtaccent hover:bg-accent-300  text-lghttext font-bold shadow-md"
               onClick={() => {
                 onSubmit(e);
               }}

@@ -7,5 +7,10 @@ const store = configureStore({
     }
 })
 
+store.subscribe(() => {
+    const state = store.getState();
+    localStorage.setItem("Kanban", JSON.stringify(state.boards));
+  });
+
 
 export default store

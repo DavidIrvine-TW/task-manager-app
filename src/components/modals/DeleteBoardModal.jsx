@@ -1,12 +1,24 @@
 import React from "react";
+import boardsSlice from "../../redux/boardsSlice";
+import { useDispatch } from "react-redux";
 
-const DeleteBoardModal = ({ setDeleteBoardModal }) => {
+const DeleteBoardModal = ({ setDeleteBoardModal, boardName }) => {
 
-  const boardName = "blahblah";
+  const dispatch = useDispatch()
+
+  const deleteBoardHandler = (e) => {
+    if (e.target.textContent === "Delete Board") {
+      dispatch(boardsSlice.actions.deleteBoard());
+      dispatch(boardsSlice.actions.setBoardActive({ index: 0 })); 
+      setDeleteBoardModal(false) 
+    } else {
+        return;
+    }
+  };
 
   return (
     <section
-      className="fade-in absolute top-0 right-0 left-0 bottom-0 bg-zinc-500 bg-opacity-30 z-10 flex items-center justify-center"
+      className="fade-in absolute top-0 right-0 left-0 bottom-0 bg-zinc-500 bg-opacity-30 z-10 flex items-center justify-center shadow-md"
       onClick={(e) => {
         if (e.target !== e.currentTarget) {
           return;
@@ -14,10 +26,10 @@ const DeleteBoardModal = ({ setDeleteBoardModal }) => {
         setDeleteBoardModal(false);
       }}
     >
-      <article className="absolute top-[6rem] w-[345px] rounded bg-white shadow-md p-6">
+      <article className=" w-[345px] tb:w-[480px] rounded bg-white shadow-md p-6">
         
-        <p className="mb-[1.5rem] text-red-500 font-bold text-l ">
-          Delete this board?
+        <p className="mb-[1.5rem] text-lghtprimary font-bold text-l ">
+        {`Delete ${boardName}?`}
         </p>
 
         <p className="mb-[1.5rem] text-body-l">
@@ -25,21 +37,20 @@ const DeleteBoardModal = ({ setDeleteBoardModal }) => {
             action will remove all columns and tasks and cannot be reversed.`}
         </p>
 
-        <div className="flex flex-col w-full gap-[1rem]">
+        <div className="flex flex-col  w-full gap-[1rem]">
           <button 
-            onClick={() => {}}
-            className="border bg-red-500 text-white py-2 rounded">
-            Delete
+            onClick={deleteBoardHandler}
+            className="border py-2 rounded bg-lghtprimary hover:bg-primary-400 text-darktext font-bold shadow-md">
+            Delete Board
           </button>
 
           <button
             onClick={() => setDeleteBoardModal(false)}
-            className="py-2 rounded"
+            className="py-2 rounded hover:underline"
           >
             Cancel
           </button>
         </div>
-
 
       </article>
     </section>

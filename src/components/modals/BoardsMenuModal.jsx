@@ -1,5 +1,5 @@
-
-import { useSelector } from "react-redux";
+import boardsSlice from "../../redux/boardsSlice";
+import { useSelector, useDispatch } from "react-redux";
 import BoardIcon from "../icons/boardIcon";
 import AddIcon from "@mui/icons-material/Add";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
@@ -13,7 +13,7 @@ const BoardsMenuModal = ({ setBoardMenu, setCreateBoardMenu, setBoardMode }) => 
   const [isDarkTheme, toggleMode] = useToggle(
     localStorage.getItem("theme-color") === "dark"
   );
-
+  const dispatch = useDispatch()
   const boards = useSelector((state) => state.boards);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ const BoardsMenuModal = ({ setBoardMenu, setCreateBoardMenu, setBoardMode }) => 
 
   return (
     <section
-      className="fade-in absolute top-0 right-0 left-0 bottom-0 bg-zinc-500 bg-opacity-30 z-10 flex items-center justify-center"
+      className="fade-in absolute top-0 right-0 left-0 bottom-0 bg-zinc-500 bg-opacity-50 z-10 flex items-center justify-center"
       onClick={(e) => {
         if (e.target !== e.currentTarget) {
           return;
@@ -31,9 +31,9 @@ const BoardsMenuModal = ({ setBoardMenu, setCreateBoardMenu, setBoardMode }) => 
         setBoardMenu(false);
       }}
     >
-      <article className="absolute top-[6rem] w-[265px] rounded bg-white shadow-md py-4">
+      <article className="w-[265px] rounded bg-lghtbackground text-lghttext shadow-md py-4">
 
-        <h2 className="tracking-[2.4px] text-sm mb-[1rem] px-4">
+        <h2 className="tracking-[2.4px] text-sm mb-[1rem] px-4 ">
           ALL BOARDS: {boards?.length}
         </h2>
 
@@ -42,8 +42,12 @@ const BoardsMenuModal = ({ setBoardMenu, setCreateBoardMenu, setBoardMode }) => 
             <button
               key={index}
               className={`w-full flex items-center space-x-4 px-5 py-4 ${
-                board.isActive && "bg-red-500 text-white"
+                board.isActive ? "bg-lghtaccent text-darktext" : ' hover:bg-lghtsecondary '
               }`}
+              onClick={() => {
+                dispatch(boardsSlice.actions.setBoardActive({index}))
+                setBoardMenu(false)
+              }}
             >
               <BoardIcon />
               <p className="text-md">{board.name}</p>
@@ -58,15 +62,15 @@ const BoardsMenuModal = ({ setBoardMenu, setCreateBoardMenu, setBoardMode }) => 
               setBoardMenu(false)
               setBoardMode('add')
               setCreateBoardMenu(true)}} 
-            className="text-md">
+              className="text-md text-lghtprimary">
                 <AddIcon sx={{ fontSize: ".75rem" }} />
                 Create New Board
           </button>
         </div>
 
-        <div className="w-[235px] mx-auto border border-black rounded mt-[1rem] flex items-center justify-center">
+        <div className="w-[235px] mx-auto border rounded mt-[1rem] flex items-center justify-center">
 
-          <div className="flex items-center justify-between w-[150px] mx-auto p-2">
+          <div className="flex items-center justify-between w-[150px] mx-auto p-2 bg-lghtbackground">
             
             <div>
               <LightModeOutlinedIcon />

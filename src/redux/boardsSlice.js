@@ -1,9 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 import data from "../../src/data/data.json";
 
+
+
+const getLocalStorageData = () => {
+  const data = localStorage.getItem("Kanban");
+  return data ? JSON.parse(data) : data;
+};
+
+// const saveLocalStorageData = (data) => {
+//   localStorage.setItem("Kanban", JSON.stringify(data));
+// };
+
 const boardsSlice = createSlice({
   name: "boards",
-  initialState: data.boards,
+  initialState: getLocalStorageData() || data.boards ,
   reducers: {
     addBoard: (state, action) => {
       const isActive = state.length > 0 ? false : true;
@@ -34,14 +45,15 @@ const boardsSlice = createSlice({
         return board;
       });
     },
+
     addTask: (state, action) => {
-      const { title, status, description, subtasks, newColIndex } =
-        action.payload;
-      const task = { title, description, subtasks, status };
-      const board = state.find((board) => board.isActive);
-      const column = board.columns.find((col, index) => index === newColIndex);
-      column.tasks.push(task);
+      const { taskTitle, status, taskDescription, subtasks, statusIndex } = action.payload;
+      const newTask = { title: taskTitle, description: taskDescription, subtasks: subtasks, status: status }; // newtask to be added
+      const board = state.find((board) => board.isActive);// find active board
+      const column = board.columns.find((column, index) => index === statusIndex);// find column by status eg todo = index 0'
+      column.tasks.push(newTask);// adds to columns[0] by default.
     },
+
     editTask: (state, action) => {
       const {
         title,
@@ -52,6 +64,7 @@ const boardsSlice = createSlice({
         newColIndex,
         taskIndex,
       } = action.payload;
+      
       const board = state.find((board) => board.isActive);
       const column = board.columns.find((col, index) => index === prevColIndex);
       const task = column.tasks.find((task, index) => index === taskIndex);
@@ -59,6 +72,7 @@ const boardsSlice = createSlice({
       task.status = status;
       task.description = description;
       task.subtasks = subtasks;
+
       if (prevColIndex === newColIndex) return;
       column.tasks = column.tasks.filter((task, index) => index !== taskIndex);
       const newCol = board.columns.find((col, index) => index === newColIndex);
