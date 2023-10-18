@@ -20,6 +20,7 @@ const AddEditTaskModal = ({
   const [taskTitleError, setTaskTitleError] = useState("");
   const [subtaskError, setSubtaskError] = useState("");
   const [descriptionError, setDescriptionError] = useState("");
+  const [isDisabled, setIsDisabled] = useState(false)
   const [isValid, setIsValid] = useState(true);
 
   const board = useSelector((state) => state.boards).find(
@@ -44,6 +45,7 @@ const AddEditTaskModal = ({
 
   const taskDeleteHandler = (id) => {
     setSubtasks((prevState) => prevState.filter((el) => el.id !== id));
+    setIsDisabled(false)
   };
 
   const statusHandler = (e) => {
@@ -114,7 +116,8 @@ const AddEditTaskModal = ({
 
   return (
     <section
-      className="fade-in absolute top-0 right-0 left-0 bottom-0 bg-zinc-500 bg-opacity-50 z-10 flex items-center justify-center"
+      id="add-edit-task-modal"
+      className="fade-in absolute top-0 right-0 left-0 bottom-0 bg-zinc-500 bg-opacity-50 z-20 flex items-center justify-center overflow-y-auto"
       // click outside to close modal
       onClick={(e) => {
         if (e.target !== e.currentTarget) {
@@ -125,14 +128,14 @@ const AddEditTaskModal = ({
     >
       <form
         onSubmit={onSubmit}
-        className="w-[345px] tb:w-[480px] rounded bg-lghtbackground shadow-md p-6"
+        className="w-[345px] tb:w-[480px] rounded bg-lghtbackground shadow-md p-6 overflow-y-visible"
       >
        <div className='flex justify-between items-center mb-[1.5rem]'>
             <h2 className=" text-l ">
                 {type === "edit" ? "Edit" : "Add New"} Task
             </h2>
               <button
-                className='border rounded-full p-1'
+                className='border rounded-full p-1  hover:scale-105'
                 onClick={() => setNewTaskMenu(!newTaskMenu) }
               ><CloseIcon/></button>
           </div>
@@ -194,21 +197,27 @@ const AddEditTaskModal = ({
                   onClick={() => taskDeleteHandler(subtask.id)}
                   className="cursor-pointer"
                 >
-                  <DeleteForeverOutlinedIcon fontSize="medium" />
+                  <DeleteForeverOutlinedIcon fontSize="medium" className="hover:text-red-500 hover:scale-110"/>
                 </button>
               </div>
             ))}
             <span className="text-red-500 text-body-md ">{subtaskError}</span>
+            {isDisabled ? (<span className="text-red-500 text-body-md ">Max subtasks (6)</span>):('')}
           </div>
 
           <button
             type="button"
+            disabled={isDisabled}
             className="border flex items-center justify-center py-2 rounded text-body-xl font-bold  bg-lghtsecondary hover:bg-secondary-50"
-            onClick={() => {
+            onClick={() => { if(subtasks.length > 5){
+              setIsDisabled(true)
+              return
+            }
               setSubtasks((state) => [
                 ...state,
                 { title: "", isCompleted: false, id: uuidv4() },
               ]);
+              setIsDisabled(false)
             }}
           >
             <AddIcon sx={{ fontSize: ".75rem" }} />

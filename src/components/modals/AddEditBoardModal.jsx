@@ -4,6 +4,7 @@ import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined
 import { useDispatch, useSelector } from "react-redux";
 import AddIcon from "@mui/icons-material/Add";
 import boardsSlice from "../../redux/boardsSlice";
+import CloseIcon from "@mui/icons-material/Close";
 
 const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
   const dispatch = useDispatch();
@@ -11,20 +12,17 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
   const [boardNameError, setBoardNameError] = useState("");
   const [createdColumnsError, setCreatedColumnError] = useState("");
   const [isFirstLoad, setIsFirstLoad] = useState(true);
+  const [isDisabled, setIsDisabled] = useState(false);
   const [isValid, setIsValid] = useState(true);
 
   const [createdColumns, setCreatedColumns] = useState([
     {
-      name: "Todo",
-      task: [],
-      id: uuidv4(),
-    },
-    {
-      name: "Doing",
-      task: [],
+      name: "",
+      tasks: [],
       id: uuidv4(),
     },
   ]);
+
   console.log(type);
   console.log(createdColumnsError);
   console.log(boardNameError);
@@ -54,6 +52,7 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
 
   const onDelete = (id) => {
     setCreatedColumns((prevState) => prevState.filter((el) => el.id !== id));
+    setIsDisabled(false);
   };
 
   const formValidate = async () => {
@@ -102,7 +101,8 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
 
   return (
     <section
-      className="fade-in absolute top-0 right-0 left-0 bottom-0 bg-zinc-500 bg-opacity-50 z-10 flex items-center justify-center"
+      id="add-edit-board-modal"
+      className="fade-in absolute top-0 right-0 left-0 bottom-0 bg-zinc-500 bg-opacity-50 z-20 flex items-center justify-center"
       onClick={(e) => {
         if (e.target !== e.currentTarget) {
           return;
@@ -115,9 +115,17 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
         className=" w-[345px] tb:w-[480px] rounded bg-lghtbackground shadow-md p-6"
         onSubmit={onSubmit}
       >
-        <h3 className=" text-l mb-[1.5rem]">
-          {type === "edit" ? "Edit" : "Add New"} Board
-        </h3>
+        <div className="flex justify-between items-center mb-[1.5rem]">
+          <h3 className="text-l">
+            {type === "edit" ? "Edit" : "Add New"} Board
+          </h3>
+          <button
+            className="border rounded-full p-1 hover:scale-105"
+            onClick={() => setCreateBoardMenu(false)}
+          >
+            <CloseIcon />
+          </button>
+        </div>
 
         <div className="flex flex-col mb-[1.5rem]">
           <label className="text-sm mb-[.5rem]">Board Name</label>
@@ -136,6 +144,7 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
         <div>
           <div>
             <label className="text-sm ">Board Columns</label>
+
             {createdColumns.map((column, index) => {
               return (
                 <div
@@ -149,12 +158,13 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
                     }}
                     type="text"
                     value={column.name}
+                    placeholder="e.g. Todo"
                   />
                   <button
                     onClick={() => onDelete(column.id)}
                     className="cursor-pointer"
                   >
-                    <DeleteForeverOutlinedIcon fontSize="medium" />
+                    <DeleteForeverOutlinedIcon fontSize="medium" className="hover:text-red-500 hover:scale-110"/>
                   </button>
                 </div>
               );
@@ -163,16 +173,26 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
               {createdColumnsError}
             </span>
           </div>
-
+          {isDisabled ? (
+            <span className="text-red-500 text-body-md ">Max columns (5)</span>
+          ) : (
+            ""
+          )}
           <div className="flex flex-col gap-[1.5rem] mt-[1.5rem]">
             <button
               type="button"
               className="border flex items-center justify-center py-2 rounded bg-lghtsecondary hover:bg-secondary-50"
+              disabled={isDisabled}
               onClick={() => {
+                if (createdColumns.length > 4) {
+                  setIsDisabled(true);
+                  return;
+                }
                 setCreatedColumns((state) => [
                   ...state,
                   { name: "", tasks: [], id: uuidv4() },
                 ]);
+                setIsDisabled(false);
               }}
             >
               <AddIcon sx={{ fontSize: ".75rem" }} />

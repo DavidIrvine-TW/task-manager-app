@@ -5,28 +5,37 @@ import AddEditBoardModal from "./components/modals/AddEditBoardModal";
 import AddEditTaskModal from "./components/modals/AddEditTaskModal";
 import DeleteEditMenuModal from "./components/modals/DeleteEditMenuModal";
 import DeleteBoardAndTaskModal from "./components/modals/DeleteBoardModal";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Sidebar from "./components/navbar/SideNav";
 import EmptyBoard from "./components/emptyBoard/EmptyBoard";
 import ScrollContainer from "react-indiana-drag-scroll";
 import Column from "./components/boards/Column";
 import AddIcon from "@mui/icons-material/Add";
+import TaskModal from "./components/modals/TaskModal";
 
 function App() {
-  const [boardMenu, setBoardMenu] = useState(false);
-  const [createBoardMenu, setCreateBoardMenu] = useState(false);
-  const [type, setBoardMode] = useState(""); //add or edit
-  const [taskType, setTaskMode] = useState(""); //add or edit
-  const [newTaskMenu, setNewTaskMenu] = useState(false);
-  const [ellipsesMenu, setElippsesMenu] = useState(false);
-  const [deleteBoardModal, setDeleteBoardModal] = useState(false);
-  const [sideNavOpen, setSideNavOpen] = useState(true);
+  const dispatch = useDispatch();
+
+  const [taskModalOpen, setTaskModalOpen] = useState(false); //regretful prop drilling
+  const [taskTaskIndex, setTaskTaskIndex] = useState(null); //regretful prop drilling
+  const [taskColumnIndex, setTaskColumnIndex] = useState(null); //regretful prop drilling
+
+  const [boardMenu, setBoardMenu] = useState(false); //mobile sidenav create board modal
+  const [createBoardMenu, setCreateBoardMenu] = useState(false); //create new board or edit the active board modal
+  const [type, setBoardMode] = useState(""); //add or edit - conditional rendering of cards
+  const [taskType, setTaskMode] = useState(""); //add or edit - conditional rendering of cards
+  const [newTaskMenu, setNewTaskMenu] = useState(false); //create a new task for active board or edit an exisiting task
+  const [ellipsesMenu, setElippsesMenu] = useState(false); //nav - edit or delete board menu
+  const [deleteBoardModal, setDeleteBoardModal] = useState(false); //are you sure modal... delete active board or delete a task on active board
+  const [sideNavOpen, setSideNavOpen] = useState(true); // is the sidenav open? tb and dk
 
   const boards = useSelector((state) => state.boards); //all boards
-  const board = useSelector((state) => state.boards).find(
-    (board) => board.isActive
-  ); //currently active board
-  const columns = board.columns;
+  console.log(boards);
+  const board = boards.find((board) => board.isActive === true); //ERROR
+  if (!board && boards.length > 0)
+    dispatch(boardsSlice.actions.setBoardActive({ index: 0 })); // ensure an active board
+
+  const columns = board?.columns;
 
   return (
     <div
@@ -44,9 +53,7 @@ function App() {
         setTaskMode={setTaskMode}
       />
 
-      
-
-      {/* Main content is inside scroll container*/}
+      {/* Main content rendered inside scroll container*/}
       <ScrollContainer
         nativeMobileScroll={true}
         vertical={false}
@@ -65,8 +72,6 @@ function App() {
           setCreateBoardMenu={setCreateBoardMenu}
         />
 
-        
-
         <main
           // style={{ height: "calc(100vh - 6rem)"}}
           className={`${
@@ -82,35 +87,41 @@ function App() {
               setBoardMode={setBoardMode}
             />
           ) : (
-            ""
-          )}
-
-          {columns.length > 0 ? (
             <>
               {columns.map((column, index) => (
-                <Column key={index} columnIndex={index} column={column} />
+                <Column
+                  key={index}
+                  columnIndex={index}
+                  column={column}
+                  setTaskModalOpen={setTaskModalOpen}
+                  setTaskTaskIndex={setTaskTaskIndex}
+                  setTaskColumnIndex={setTaskColumnIndex}
+                />
               ))}
-              <div className=" h-screen flex justify-center items-center font-bold  transition duration-300 cursor-pointer min-w-[280px] rounded border-dashed border-2 ">
-                <button onClick={() => {}}>
-                  <AddIcon fontSize="small" /> New Column
-                </button>
-              </div>
-            </>
-          ) : (
-            ""
-          )}
 
+              {columns.length > 4 ? (
+                ""
+              ) : (
+                <div className=" h-screen flex justify-center items-center font-bold  transition duration-300 cursor-pointer w-[280px] rounded border-dashed border-2 ">
+                  <button
+                    className="bg-lghtsecondary px-4 py-2 shadow-md"
+                    onClick={() => {
+                      setCreateBoardMenu(true)
+                      setBoardMode('edit')
+                    }}
+                  >
+                    <AddIcon fontSize="small" /> New Column
+                  </button>
+                </div>
+              )}
+            </>
+          )}
         </main>
       </ScrollContainer>
 
+      {/* ALL MODALS */}
 
-
-
-
-
-      {/* MODALS */}
-
-      {/* nav menu modal */}
+      {/* mobile nav menu */}
       {boardMenu ? (
         <BoardsMenuModal
           setBoardMenu={setBoardMenu}
@@ -121,7 +132,7 @@ function App() {
         ""
       )}
 
-      {/* add or edit board modal */}
+      {/* create new board or edit the active board  */}
       {createBoardMenu ? (
         <AddEditBoardModal
           setCreateBoardMenu={setCreateBoardMenu}
@@ -132,14 +143,18 @@ function App() {
         ""
       )}
 
-      {/* add or edit task modal */}
+      {/* create a new task for active board or edit an exisiting task */}
       {newTaskMenu ? (
-        <AddEditTaskModal setNewTaskMenu={setNewTaskMenu} type={taskType} newTaskMenu={newTaskMenu}/>
+        <AddEditTaskModal
+          setNewTaskMenu={setNewTaskMenu}
+          type={taskType}
+          newTaskMenu={newTaskMenu}
+        />
       ) : (
         ""
       )}
 
-      {/* edit or delete board modal */}
+      {/* nav - edit or delete board menu */}
       {ellipsesMenu ? (
         <DeleteEditMenuModal
           setElippsesMenu={setElippsesMenu}
@@ -150,7 +165,7 @@ function App() {
       ) : (
         ""
       )}
-      {/* edit or delete board modal */}
+      {/* are you sure modal... delete active board or delete a task on active board*/}
       {deleteBoardModal ? (
         <DeleteBoardAndTaskModal
           setDeleteBoardModal={setDeleteBoardModal}
@@ -158,6 +173,15 @@ function App() {
         />
       ) : (
         ""
+      )}
+      {/* opens when task card clicked */}
+      {taskModalOpen && (
+        <TaskModal
+          columnIndex={taskColumnIndex}
+          taskIndex={taskTaskIndex}
+          setTaskModalOpen={setTaskModalOpen}
+          taskModalOpen={taskModalOpen}
+        />
       )}
     </div>
   );

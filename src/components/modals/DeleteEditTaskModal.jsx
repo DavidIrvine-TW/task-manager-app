@@ -6,7 +6,8 @@ const DeleteEditMenuModal = ({ setElippsesMenu, setBoardMode, setDeleteBoardModa
 
     return (
       <article
-        className="absolute top-[2rem] right-[1rem] p-4 flex flex-col gap-[1rem] items-start border rounded bg-lghtbackground z-500 shadow-md"
+        id="dropdown-delete-edit-task"
+        className="absolute top-[2rem] right-[0rem] p-4 flex flex-col gap-[1rem] items-start border rounded z-50 bg-lghtbackground shadow-md"
         >
   
   

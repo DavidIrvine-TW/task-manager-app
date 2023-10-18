@@ -18,7 +18,8 @@ const DeleteBoardModal = ({ setDeleteBoardModal, boardName }) => {
 
   return (
     <section
-      className="fade-in absolute top-0 right-0 left-0 bottom-0 bg-zinc-500 bg-opacity-30 z-10 flex items-center justify-center shadow-md"
+      id="delete-board-modal"
+      className="fade-in absolute top-0 right-0 left-0 bottom-0 bg-zinc-500 bg-opacity-30 z-20  flex items-center justify-center shadow-md"
       onClick={(e) => {
         if (e.target !== e.currentTarget) {
           return;

@@ -40,16 +40,21 @@ const SideNav = ({
 
   return (
     <div
+      id="sidenav"
+      style={{ height: "calc(100vh - 6rem)" }}
       className={`${sideNavOpen ? "" : "transform -translate-x-full "} 
       transition-all duration-500 dk:w-[300px] tb:w-[260px] border-r p-[1rem]
-      hidden tb:inline-flex dk:inline-flex  z-10  fade-in flex-col pb-[2rem] fixed  border-darksecondary bg-lghtsecondary`}
-      style={{ height: "calc(100vh - 6rem)" }}
+      hidden tb:inline-flex dk:inline-flex fade-in flex-col pb-[2rem] fixed border-darksecondary bg-lghtsecondary dark:bg-darkbackground z-10 `}
+      
     >
-      <h2 className="tracking-[2.4px] text-sm mb-[1.5rem] px-4 font-bold text-lghttext">
+
+      {/* number of boards */}
+      <h2 className="tracking-[2.4px] text-sm mb-[1.5rem] px-4 font-bold text-lghttext dark:text-darktext">
         ALL BOARDS: {boards?.length}
       </h2>
 
-      <div className="max-h-[600px] min-h-[300px] overflow-y-auto ">
+      {/* list all boards*/}
+      <div className="max-h-[600px] min-h-[300px] overflow-y-auto flex-grow">
         {boards.map((board, index) => (
           <button
             key={index}
@@ -68,6 +73,8 @@ const SideNav = ({
         ))}
       </div>
 
+
+      {/* create a new board */}
       <div
         className={`flex items-center space-x-4 px-5 py-4 my-[1rem] mb-auto rounded  hover:bg-secondary-200`}
       >
@@ -85,6 +92,7 @@ const SideNav = ({
         </button>
       </div>
 
+      {/* dark mode switch*/}
       <div className="w-full h-full mx-auto flex items-end py-[2rem] ">
         <div className="flex items-center border border-lghtaccent rounded justify-between w-full h-[3rem] mx-auto p-2 dk:p-3 bg-lghtbackground">
           <div>
@@ -99,8 +107,8 @@ const SideNav = ({
         </div>
       </div>
 
-      {/* hide sidenav*/}
 
+      {/* hide sidenav*/}
       <div className="mx-auto">
         <button onClick={handleHideSideNav} className="flex gap-[.5rem]">
           <VisibilityOffIcon /> Hide Sidebar
@@ -120,6 +128,8 @@ const SideNav = ({
       ) : (
         ""
       )}
+
+      
     </div>
   );
 };

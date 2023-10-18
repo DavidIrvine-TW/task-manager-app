@@ -48,10 +48,10 @@ const boardsSlice = createSlice({
 
     addTask: (state, action) => {
       const { taskTitle, status, taskDescription, subtasks, statusIndex } = action.payload;
-      const newTask = { title: taskTitle, description: taskDescription, subtasks: subtasks, status: status }; // newtask to be added
+      const tasks = { title: taskTitle, description: taskDescription, subtasks: subtasks, status: status }; // newtask to be added
       const board = state.find((board) => board.isActive);// find active board
       const column = board.columns.find((column, index) => index === statusIndex);// find column by status eg todo = index 0'
-      column.tasks.push(newTask);// adds to columns[0] by default.
+      column.tasks.push(tasks);// adds to columns[0] by default.
     },
 
     editTask: (state, action) => {
@@ -88,23 +88,25 @@ const boardsSlice = createSlice({
     setSubtaskCompleted: (state, action) => {
       const payload = action.payload;
       const board = state.find((board) => board.isActive);
-      const col = board.columns.find((col, i) => i === payload.colIndex);
+      const col = board.columns.find((col, i) => i === payload.columnIndex);
       const task = col.tasks.find((task, i) => i === payload.taskIndex);
-      const subtask = task.subtasks.find((subtask, i) => i === payload.index);
+      const subtask = task.subtasks.find((subtask, i) => i === payload.subtaskIndex);
       subtask.isCompleted = !subtask.isCompleted;
     },
     setTaskStatus: (state, action) => {
       const payload = action.payload;
       const board = state.find((board) => board.isActive);
       const columns = board.columns;
-      const col = columns.find((col, i) => i === payload.colIndex);
-      if (payload.colIndex === payload.newColIndex) return;
+      const col = columns.find((col, i) => i === payload.columnIndex);
+      if (payload.columnIndex === payload.newStatusIndex) return;
+
       const task = col.tasks.find((task, i) => i === payload.taskIndex);
       task.status = payload.status;
       col.tasks = col.tasks.filter((task, i) => i !== payload.taskIndex);
-      const newCol = columns.find((col, i) => i === payload.newColIndex);
+      const newCol = columns.find((col, i) => i === payload.newStatusIndex);
       newCol.tasks.push(task);
     },
+    
     deleteTask: (state, action) => {
       const payload = action.payload;
       const board = state.find((board) => board.isActive);
