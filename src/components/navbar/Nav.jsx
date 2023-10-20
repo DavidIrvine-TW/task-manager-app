@@ -12,7 +12,7 @@ const Nav = ({
   ellipsesMenu,
   setTaskMode,
 }) => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const board = useSelector((state) => state.boards).find(
     (board) => board.isActive
   );
@@ -20,12 +20,12 @@ const Nav = ({
 
   return (
     <header>
-      <nav className="fade-in flex items-center min-w-[375px] w-full border-b border-darksecondary bg-lghtsecondary dark:bg-darkbackground">
+      <nav className="fade-in flex items-center min-w-[375px] w-full border-b border-darksecondary bg-lghtsecondary dark:bg-drkbackground-950">
         <div className="flex flex-row items-center  ">
           {/* Logo section */}
           <div className="tb:w-[260px] dk:w-[300px] items-center flex tb:border-r border-darksecondary p-4 h-[64px] tb:h-[80px] dk:h-[96px] ">
             <ViewKanbanSharpIcon fontSize="large" className='text-lghtprimary'/>
-            <h1 className="ml-4 hidden tb:inline-block font-bold text-[1.85rem] tracking-[.3px] text-lghttext dark:text-darktext">
+            <h1 className="ml-4 hidden tb:inline-block font-bold text-[1.85rem] tracking-[.3px] text-lghttext dark:text-darktext ">
               KANBAN<span className="text-body-sm-mod font-bold">Marv.Dev</span>
             </h1>
           </div>
@@ -67,15 +67,15 @@ const Nav = ({
                 setNewTaskMenu(true);
                 setTaskMode("add");
               }}
-              className="bg-lghtaccent hover:bg-accent-300 p-2 tb:px-4 tb:py-3  rounded-full tb:rounded flex items-center justify-center shadow-md"
+              className="bg-lghtaccent dark:bg-drksecondary-800  hover:dark:bg-drksecondary-900 hover:bg-accent-300 p-2 tb:px-4 tb:py-3  rounded-full tb:rounded flex items-center justify-center shadow-md"
             >
-              <AddIcon sx={{ fontSize: "1rem" }} />
-              <span className="hidden tb:inline-block text-md text-lghttext">New Task</span>
+              <AddIcon sx={{ fontSize: "1rem" }} className='dark:text-darktext' />
+              <span className="hidden tb:inline-block text-md text-lghttext dark:text-darktext">New Task</span>
             </button>
 
-            {/* delete/edit */}
-            <button onClick={() => setElippsesMenu(!ellipsesMenu)} className='rounded-lg hover:bg-lghtaccent'>
-              <MoreVertTwoToneIcon sx={{ fontSize: "2rem" }} className='text-lghttext hover:text-darktext'/>
+            {/* delete/edit board */}
+            <button onClick={() => setElippsesMenu(!ellipsesMenu)} className='rounded-lg hover:bg-lghtaccent hover:dark:bg-drksecondary-900'>
+              <MoreVertTwoToneIcon sx={{ fontSize: "2rem" }} className='text-lghttext dark:text-darktext hover:text-darktext'/>
             </button>
           </div>
         )}

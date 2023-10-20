@@ -22,26 +22,35 @@ function App() {
 
   const [boardMenu, setBoardMenu] = useState(false); //mobile sidenav create board modal
   const [createBoardMenu, setCreateBoardMenu] = useState(false); //create new board or edit the active board modal
+
   const [type, setBoardMode] = useState(""); //add or edit - conditional rendering of cards
+  console.log(type)
+
   const [taskType, setTaskMode] = useState(""); //add or edit - conditional rendering of cards
+  console.log(taskType)
+
+  const [deleteMode, setDeleteMode] = useState("")//task or board
+  console.log('delete', deleteMode)
+
   const [newTaskMenu, setNewTaskMenu] = useState(false); //create a new task for active board or edit an exisiting task
   const [ellipsesMenu, setElippsesMenu] = useState(false); //nav - edit or delete board menu
   const [deleteBoardModal, setDeleteBoardModal] = useState(false); //are you sure modal... delete active board or delete a task on active board
   const [sideNavOpen, setSideNavOpen] = useState(true); // is the sidenav open? tb and dk
 
   const boards = useSelector((state) => state.boards); //all boards
-  console.log(boards);
   const board = boards.find((board) => board.isActive === true); //ERROR
   if (!board && boards.length > 0)
     dispatch(boardsSlice.actions.setBoardActive({ index: 0 })); // ensure an active board
 
   const columns = board?.columns;
 
+  
+
   return (
     <div
       style={{ height: "100vh", width: "100vw" }}
       id="wrapper"
-      className="relative max-w-[1920px] mx-auto font-roboto overflow-y-hidden "
+      className="relative max-w-[1920px] mx-auto font-roboto overflow-y-hidden dark:bg-darkbackground"
     >
       {/* header menu */}
       <Nav
@@ -61,7 +70,7 @@ function App() {
         hideScrollbars={false}
         ignoreElements={".card"}
         className="Main flex w-screen overflow-auto relative"
-        style={{ height: "calc(100vh - 6rem)" }}
+        // style={{ height: "calc(100vh - 6rem)",  }}
       >
         {/* side menu */}
         <Sidebar
@@ -78,7 +87,7 @@ function App() {
             sideNavOpen
               ? "dk:left-[18.75rem] tb:left-[16.25rem] transition-all duration-500 "
               : "left-[0]"
-          } tb:absolute static transition-all duration-500 p-[1rem] dk:p-[1.5rem] cursor-move flex  w-full h-screen bg-lghtbackground`}
+          } tb:absolute static transition-all duration-500 p-[1rem] dk:p-[1.5rem] cursor-move flex  w-full h-screen bg-lghtbackground dark:bg-darkbackground`}
         >
           {boards.length < 1 ? (
             <EmptyBoard
@@ -102,9 +111,9 @@ function App() {
               {columns.length > 4 ? (
                 ""
               ) : (
-                <div className=" h-screen flex justify-center items-center font-bold  transition duration-300 cursor-pointer w-[280px] rounded border-dashed border-2 ">
+                <div className=" h-screen flex justify-center items-center font-bold  transition duration-300 cursor-pointer w-[280px] rounded border-dashed border-2 dark:border-darksecondary ">
                   <button
-                    className="bg-lghtsecondary px-4 py-2 shadow-md"
+                    className="bg-lghtsecondary px-4 py-2 shadow-md dark:bg-drksecondary-800  hover:dark:bg-drksecondary-900"
                     onClick={() => {
                       setCreateBoardMenu(true)
                       setBoardMode('edit')
@@ -149,6 +158,8 @@ function App() {
           setNewTaskMenu={setNewTaskMenu}
           type={taskType}
           newTaskMenu={newTaskMenu}
+          columnIndex={taskColumnIndex}
+          taskIndex={taskTaskIndex}
         />
       ) : (
         ""
@@ -161,6 +172,7 @@ function App() {
           setBoardMode={setBoardMode}
           setCreateBoardMenu={setCreateBoardMenu}
           setDeleteBoardModal={setDeleteBoardModal}
+          setDeleteMode={setDeleteMode}
         />
       ) : (
         ""
@@ -169,7 +181,10 @@ function App() {
       {deleteBoardModal ? (
         <DeleteBoardAndTaskModal
           setDeleteBoardModal={setDeleteBoardModal}
+          deleteMode={deleteMode}
           boardName={board.name}
+          columnIndex={taskColumnIndex}
+          taskIndex={taskTaskIndex}
         />
       ) : (
         ""
@@ -181,6 +196,10 @@ function App() {
           taskIndex={taskTaskIndex}
           setTaskModalOpen={setTaskModalOpen}
           taskModalOpen={taskModalOpen}
+          setNewTaskMenu={setNewTaskMenu}
+          setTaskMode={setTaskMode}
+          setDeleteMode={setDeleteMode}
+          setDeleteBoardModal={setDeleteBoardModal}
         />
       )}
     </div>

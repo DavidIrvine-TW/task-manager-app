@@ -21,10 +21,10 @@ const TaskCard = ({ columnIndex, taskIndex , setTaskModalOpen, setTaskColumnInde
   return (
     <article
       onClick={handleTaskCardClick}
-      className="flex flex-col cursor-pointer border  px-[1rem] py-[1.5rem] rounded shadow-md w-[280px]"
+      className="card fade-in flex flex-col cursor-pointer border  px-[1rem] py-[1.5rem] rounded shadow-md w-[280px] hover:opacity-60 dark:bg-drkbackground-950 dark:border-darksecondary dark:text-drksecondary-700"
     >
       <p className="font-bold">{task.title}</p>
-      <p className="font-bold text-xs mt-2">
+      <p className="font-bold text-xs mt-2 text-gray-500">
         {completedSubtasks.length} of {subtasks.length} subtasks
       </p>   
     </article>

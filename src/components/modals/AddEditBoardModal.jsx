@@ -102,7 +102,7 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
   return (
     <section
       id="add-edit-board-modal"
-      className="fade-in absolute top-0 right-0 left-0 bottom-0 bg-zinc-500 bg-opacity-50 z-20 flex items-center justify-center"
+      className="fade-in absolute top-0 right-0 left-0 bottom-0 bg-zinc-500 dark:bg-darkbackground dark:bg-opacity-80 bg-opacity-50 z-20 flex items-center justify-center"
       onClick={(e) => {
         if (e.target !== e.currentTarget) {
           return;
@@ -112,10 +112,10 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
       }}
     >
       <form
-        className=" w-[345px] tb:w-[480px] rounded bg-lghtbackground shadow-md p-6"
+        className=" w-[345px] tb:w-[480px] rounded bg-lghtbackground dark:bg-drkbackground-950 shadow-md p-6"
         onSubmit={onSubmit}
       >
-        <div className="flex justify-between items-center mb-[1.5rem]">
+        <div className="flex justify-between items-center mb-[1.5rem] dark:text-drksecondary-700">
           <h3 className="text-l">
             {type === "edit" ? "Edit" : "Add New"} Board
           </h3>
@@ -128,11 +128,11 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
         </div>
 
         <div className="flex flex-col mb-[1.5rem]">
-          <label className="text-sm mb-[.5rem]">Board Name</label>
+          <label className="text-sm mb-[.5rem] dark:text-gray-500">Board Name*</label>
           <input
             onChange={(e) => setBoardName(e.target.value)}
             value={boardName}
-            className="border text-body-l p-2"
+            className="border text-body-l p-2 rounded"
             placeholder="eg. web design"
             id="board-name-input"
           />
@@ -143,7 +143,7 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
 
         <div>
           <div>
-            <label className="text-sm ">Board Columns</label>
+            <label className="text-sm dark:text-gray-500">Board Columns*</label>
 
             {createdColumns.map((column, index) => {
               return (
@@ -152,7 +152,7 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
                   key={index}
                 >
                   <input
-                    className="border w-full text-body-l p-2"
+                    className="border w-full text-body-l p-2 rounded"
                     onChange={(e) => {
                       onChange(column.id, e.target.value);
                     }}
@@ -164,7 +164,7 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
                     onClick={() => onDelete(column.id)}
                     className="cursor-pointer"
                   >
-                    <DeleteForeverOutlinedIcon fontSize="medium" className="hover:text-red-500 hover:scale-110"/>
+                    <DeleteForeverOutlinedIcon fontSize="medium" className="hover:text-red-500 hover:scale-110 dark:text-gray-500 hover:dark:text-red-500"/>
                   </button>
                 </div>
               );
@@ -181,7 +181,7 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
           <div className="flex flex-col gap-[1.5rem] mt-[1.5rem]">
             <button
               type="button"
-              className="border flex items-center justify-center py-2 rounded bg-lghtsecondary hover:bg-secondary-50"
+              className="border flex items-center justify-center py-2 rounded bg-lghtsecondary hover:bg-secondary-50 dark:bg-drksecondary-300 hover:dark:bg-secondary-200 dark:border-darksecondary"
               disabled={isDisabled}
               onClick={() => {
                 if (createdColumns.length > 4) {
@@ -200,14 +200,14 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
             </button>
 
             <button
-              className="border py-2 rounded bg-lghtaccent hover:bg-accent-300  text-lghttext font-bold shadow-md"
+              className="border py-2 rounded bg-lghtaccent hover:bg-accent-300 dark:bg-drksecondary-800  hover:dark:bg-drksecondary-900 dark:border-darksecondary hover:dark:text-darktext  text-lghttext font-bold shadow-md"
               onClick={() => {
                 onSubmit(e);
               }}
               type="submit"
             >
               {" "}
-              {type === "add" ? "Create Board" : "Save Changes"}
+              {type === "add" ? "Create Board" : "Update"}
             </button>
           </div>
         </div>

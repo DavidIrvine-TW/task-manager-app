@@ -1,50 +1,33 @@
 import { createSlice } from "@reduxjs/toolkit";
 import data from "../../src/data/data.json";
 
-
-
 const getLocalStorageData = () => {
   const data = localStorage.getItem("Kanban");
   return data ? JSON.parse(data) : data;
 };
 
-// const saveLocalStorageData = (data) => {
-//   localStorage.setItem("Kanban", JSON.stringify(data));
-// };
-
 const boardsSlice = createSlice({
   name: "boards",
   initialState: getLocalStorageData() || data.boards ,
   reducers: {
-    addBoard: (state, action) => {
-      const isActive = state.length > 0 ? false : true;
-      const payload = action.payload;
-      const board = {
-        name: payload.boardName,
-        isActive,
-        columns: [],
-      };
-      board.columns = payload.createdColumns;
-      state.push(board);
-    },
-    editBoard: (state, action) => {
+
+    setSubtaskCompleted: (state, action) => {
       const payload = action.payload;
       const board = state.find((board) => board.isActive);
-      board.name = payload.boardName;
-      board.columns = payload.createdColumns;
+      const col = board.columns.find((col, i) => i === payload.columnIndex);
+      const task = col.tasks.find((task, i) => i === payload.taskIndex);
+      const subtask = task.subtasks.find((subtask, i) => i === payload.subtaskIndex);
+      subtask.isCompleted = !subtask.isCompleted;
     },
-    deleteBoard: (state) => {
+
+
+    deleteTask: (state, action) => {
+      const payload = action.payload;
       const board = state.find((board) => board.isActive);
-      state.splice(state.indexOf(board), 1);
+      const col = board.columns.find((col, i) => i === payload.columnIndex);
+      col.tasks = col.tasks.filter((task, i) => i !== payload.taskIndex);
     },
-    setBoardActive: (state, action) => {
-      state.map((board, index) => {
-        index === action.payload.index
-          ? (board.isActive = true)
-          : (board.isActive = false);
-        return board;
-      });
-    },
+    
 
     addTask: (state, action) => {
       const { taskTitle, status, taskDescription, subtasks, statusIndex } = action.payload;
@@ -54,30 +37,35 @@ const boardsSlice = createSlice({
       column.tasks.push(tasks);// adds to columns[0] by default.
     },
 
+
     editTask: (state, action) => {
       const {
-        title,
+        taskTitle,
         status,
-        description,
+        taskDescription,
         subtasks,
-        prevColIndex,
-        newColIndex,
+        columnIndex,
+        statusIndex,
         taskIndex,
       } = action.payload;
+
       
       const board = state.find((board) => board.isActive);
-      const column = board.columns.find((col, index) => index === prevColIndex);
+      const column = board.columns.find((col, index) => index === columnIndex);
       const task = column.tasks.find((task, index) => index === taskIndex);
-      task.title = title;
+
+      task.title = taskTitle;
       task.status = status;
-      task.description = description;
+      task.description = taskDescription;
       task.subtasks = subtasks;
 
-      if (prevColIndex === newColIndex) return;
+      if (columnIndex === statusIndex) return; // same column
       column.tasks = column.tasks.filter((task, index) => index !== taskIndex);
-      const newCol = board.columns.find((col, index) => index === newColIndex);
-      newCol.tasks.push(task);
+      const newColumn = board.columns.find((col, index) => index === statusIndex);
+      newColumn.tasks.push(task);
     },
+
+
     dragTask: (state, action) => {
       const { colIndex, prevColIndex, taskIndex } = action.payload;
       const board = state.find((board) => board.isActive);
@@ -85,14 +73,32 @@ const boardsSlice = createSlice({
       const task = prevCol.tasks.splice(taskIndex, 1)[0];
       board.columns.find((col, i) => i === colIndex).tasks.push(task);
     },
-    setSubtaskCompleted: (state, action) => {
+
+
+    editBoard: (state, action) => {
       const payload = action.payload;
       const board = state.find((board) => board.isActive);
-      const col = board.columns.find((col, i) => i === payload.columnIndex);
-      const task = col.tasks.find((task, i) => i === payload.taskIndex);
-      const subtask = task.subtasks.find((subtask, i) => i === payload.subtaskIndex);
-      subtask.isCompleted = !subtask.isCompleted;
+      board.name = payload.boardName;
+      board.columns = payload.createdColumns;
     },
+
+
+    deleteBoard: (state) => {
+      const board = state.find((board) => board.isActive);
+      state.splice(state.indexOf(board), 1);
+    },
+
+
+    setBoardActive: (state, action) => {
+      state.map((board, index) => {
+        index === action.payload.index
+          ? (board.isActive = true)
+          : (board.isActive = false);
+        return board;
+      });
+    },
+
+   
     setTaskStatus: (state, action) => {
       const payload = action.payload;
       const board = state.find((board) => board.isActive);
@@ -106,13 +112,19 @@ const boardsSlice = createSlice({
       const newCol = columns.find((col, i) => i === payload.newStatusIndex);
       newCol.tasks.push(task);
     },
-    
-    deleteTask: (state, action) => {
+
+   
+    addBoard: (state, action) => {
+      const isActive = state.length > 0 ? false : true;
       const payload = action.payload;
-      const board = state.find((board) => board.isActive);
-      const col = board.columns.find((col, i) => i === payload.colIndex);
-      col.tasks = col.tasks.filter((task, i) => i !== payload.taskIndex);
-    },
+      const board = {
+        name: payload.boardName,
+        isActive,
+        columns: [],
+      };
+      board.columns = payload.createdColumns;
+      state.push(board);
+    },    
   },
 });
 

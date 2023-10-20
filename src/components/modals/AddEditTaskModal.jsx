@@ -11,7 +11,8 @@ const AddEditTaskModal = ({
   newTaskMenu,
   type,
   taskIndex,
-  defaultStatusIndex = 0,
+  columnIndex = 0
+
 }) => {
   const dispatch = useDispatch();
   const [taskTitle, setTaskTitle] = useState("");
@@ -21,15 +22,30 @@ const AddEditTaskModal = ({
   const [subtaskError, setSubtaskError] = useState("");
   const [descriptionError, setDescriptionError] = useState("");
   const [isDisabled, setIsDisabled] = useState(false)
+  const [isFirstLoad, setIsFirstLoad] = useState(true)
   const [isValid, setIsValid] = useState(true);
 
   const board = useSelector((state) => state.boards).find(
     (board) => board.isActive
   ); 
+
   const columns = board.columns;
-  const col = columns.find((col, index) => index === defaultStatusIndex);
-  const [status, setStatus] = useState(columns[defaultStatusIndex].name);
-  const [statusIndex, setStatusIndex] = useState(defaultStatusIndex);
+  const column = columns.find((col, index) => index === columnIndex);
+  const task = column ? column.tasks.find((task, index) => index === taskIndex) : []
+
+  const [status, setStatus] = useState(columns[columnIndex].name);
+  const [statusIndex, setStatusIndex] = useState(columnIndex);
+
+  if (type === "edit" && isFirstLoad) {
+    setSubtasks(
+      task.subtasks.map((subtask) => {
+        return { ...subtask, id: uuidv4() };
+      })
+    );
+    setTaskTitle(task.title);
+    setTaskDescription(task.description);
+    setIsFirstLoad(false);
+  }
   
   const subTaskHandler = (id, newValue) => {
     setSubtasks((prevState) => {
@@ -42,6 +58,7 @@ const AddEditTaskModal = ({
       return newState;
     });
   };
+
 
   const taskDeleteHandler = (id) => {
     setSubtasks((prevState) => prevState.filter((el) => el.id !== id));
@@ -65,11 +82,11 @@ const AddEditTaskModal = ({
       return false;
     }
 
-    if (!taskDescription.trim()) {
-      setDescriptionError("Enter a short description");
-      setIsValid(false);
-      return false;
-    }
+    // if (!taskDescription.trim()) {
+    //   setDescriptionError("Enter a short description");
+    //   setIsValid(false);
+    //   return false;
+    // }
 
     const subTaskValidationPromises = subtasks.map(async (subtask) => {
       if (!subtask.title.trim()) {
@@ -106,7 +123,16 @@ const AddEditTaskModal = ({
           })
         );
       } else if (type === "edit") {
-        dispatch(boardsSlice.actions.editTask({ boardName, createdColumns }));
+        dispatch(
+          boardsSlice.actions.editTask({ 
+            taskTitle,
+            status,
+            taskDescription,
+            subtasks,
+            statusIndex,
+            taskIndex, 
+            columnIndex
+          }));
       }
       setNewTaskMenu(false);
     }
@@ -117,7 +143,7 @@ const AddEditTaskModal = ({
   return (
     <section
       id="add-edit-task-modal"
-      className="fade-in absolute top-0 right-0 left-0 bottom-0 bg-zinc-500 bg-opacity-50 z-20 flex items-center justify-center overflow-y-auto"
+      className="fade-in absolute top-0 right-0 left-0 bottom-0 bg-zinc-500 bg-opacity-50 dark:bg-darkbackground dark:bg-opacity-80 z-20 flex items-center justify-center overflow-y-auto"
       // click outside to close modal
       onClick={(e) => {
         if (e.target !== e.currentTarget) {
@@ -128,9 +154,9 @@ const AddEditTaskModal = ({
     >
       <form
         onSubmit={onSubmit}
-        className="w-[345px] tb:w-[480px] rounded bg-lghtbackground shadow-md p-6 overflow-y-visible"
+        className="w-[345px] tb:w-[480px] rounded bg-lghtbackground  dark:bg-drkbackground-950 shadow-md p-6 overflow-y-visible"
       >
-       <div className='flex justify-between items-center mb-[1.5rem]'>
+       <div className='flex justify-between items-center mb-[1.5rem] dark:text-drksecondary-700'>
             <h2 className=" text-l ">
                 {type === "edit" ? "Edit" : "Add New"} Task
             </h2>
@@ -142,13 +168,13 @@ const AddEditTaskModal = ({
 
         {/* task title */}
         <div className="flex flex-col">
-          <label className="mb-[.5rem] text-body-l font-bold">Title*</label>
+          <label className="mb-[.5rem] text-body-l font-bold dark:text-gray-500">Title*</label>
           <input
             value={taskTitle}
             onChange={(e) => setTaskTitle(e.target.value)}
             id="task-title"
             type="text"
-            className="border text-body-l p-2"
+            className="border text-body-l p-2 rounded"
             placeholder="the task needs a name"
             
           />
@@ -159,14 +185,14 @@ const AddEditTaskModal = ({
 
         {/* task description */}
         <div className="flex flex-col mt-[1.5rem]">
-          <label className="text-body-l mb-[.5rem] font-bold">
-            Description
+          <label className="text-body-l mb-[.5rem] font-bold dark:text-gray-500">
+            Description (optional)
           </label>
           <textarea
             value={taskDescription}
             onChange={(e) => setTaskDescription(e.target.value)}
             id="task-description"
-            className=" border p-2 max-h-[100px] text-body-l"
+            className=" border p-2 max-h-[100px] text-body-l rounded"
             placeholder="enter a brief description of the task"
           />
           <span className="text-red-500 text-body-md mt-[4px]">
@@ -177,7 +203,7 @@ const AddEditTaskModal = ({
           {/* subtasks */}
         <div className="flex flex-col mt-[1.5rem]">
           <div>
-            <label className={`${subtaskStyle} text-body-l mb-[.5rem] font-bold`}>Subtasks*</label>
+            <label className={`${subtaskStyle} text-body-l mb-[.5rem] font-bold dark:text-gray-500`}>Subtasks*</label>
 
             {subtasks.map((subtask, index) => (
               <div
@@ -185,7 +211,7 @@ const AddEditTaskModal = ({
                 key={subtask.id}
               >
                 <input
-                  className="border w-full text-body-l p-2"
+                  className="border w-full text-body-l p-2 rounded"
                   onChange={(e) => {
                     subTaskHandler(subtask.id, e.target.value);
                   }}
@@ -208,7 +234,7 @@ const AddEditTaskModal = ({
           <button
             type="button"
             disabled={isDisabled}
-            className="border flex items-center justify-center py-2 rounded text-body-xl font-bold  bg-lghtsecondary hover:bg-secondary-50"
+            className="border flex items-center justify-center py-2 rounded text-body-xl font-bold  bg-lghtsecondary hover:bg-secondary-50  dark:bg-drksecondary-300 hover:dark:bg-secondary-200 dark:border-darksecondary"
             onClick={() => { if(subtasks.length > 5){
               setIsDisabled(true)
               return
@@ -227,14 +253,14 @@ const AddEditTaskModal = ({
 
         {/* task status  */}
         <div className="flex flex-col mt-[1.5rem]">
-          <label className="text-body-l mb-[.5rem] font-bold">
+          <label className="text-body-l mb-[.5rem] font-bold dark:text-gray-500">
             Task Status
           </label>
 
           <select
             onChange={statusHandler}
             value={status}
-            className="text-body-md border py-2 px-4"
+            className="text-body-md border py-2 px-4 rounded "
           >
             {columns.map((column, index) => (
               <option key={index}>{column.name}</option>
@@ -249,9 +275,9 @@ const AddEditTaskModal = ({
             // setNewTaskMenu(false);
             // type === "edit" && setIsTaskModalOpen(false);
           }}
-          className=" w-full items-center mt-[1.5rem] border py-2 rounded text-body-xl bg-lghtaccent hover:bg-accent-300 text-lghttext font-bold shadow-md"
+          className=" w-full items-center mt-[1.5rem] border py-2 rounded text-body-xl bg-lghtaccent hover:bg-accent-300 text-lghttext dark:bg-drksecondary-800  hover:dark:bg-drksecondary-900 dark:border-darksecondary hover:dark:text-darktext font-bold shadow-md"
         >
-          {type === "edit" ? "Save Edited Task" : "Create Task"}
+          {type === "edit" ? "Update" : "Create Task"}
         </button>
       </form>
     </section>

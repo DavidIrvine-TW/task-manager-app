@@ -21,13 +21,12 @@ const colors = [
   "bg-sky-400",
   "bg-red-400",
 ];
+
 const [randomColor, setRandomColor] = useState("");
-console.log(randomColor)
 const getRandomColor = () => {
   const randomIndex = Math.floor(Math.random() * colors.length);
   return colors[randomIndex];
 };
-
 useEffect(() => {
   const color = getRandomColor();
   setRandomColor(color);
@@ -38,13 +37,13 @@ useEffect(() => {
   return (
     <article
       className={`${
-        column.tasks.length === 0 ? "border-dashed border-2 " : ""
-      } w-[280px] mr-[1.5rem] rounded flex flex-col gap-[1rem] p-[.5rem]`}
+        column.tasks.length === 0 ? "border-dashed border-2 dark:border-darksecondary " : ""
+      } w-[296px] mr-[1.5rem] rounded flex flex-col gap-[1rem] p-[.5rem] `}
     >
-      <div className="flex gap-[1rem]"> 
+      <div className="flex gap-[1rem] items-center"> 
         <div 
           className={`rounded-full w-[1rem] h-[1rem] ${randomColor}`} />
-        <p className="flex items-center gap-[.5rem] ">
+        <p className="flex items-center gap-[.5rem] dark:text-darktext uppercase tracking-[2px]">
           {column.name} ({column.tasks.length})
         </p>
       </div>

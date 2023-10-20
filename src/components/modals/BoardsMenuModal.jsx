@@ -24,7 +24,7 @@ const BoardsMenuModal = ({ setBoardMenu, setCreateBoardMenu, setBoardMode }) => 
   return (
     <section
       id="mobile-board-menu-modal"
-      className="fade-in absolute top-0 right-0 left-0 bottom-0 bg-zinc-500 bg-opacity-50 z-20  flex items-center justify-center"
+      className="fade-in absolute top-0 right-0 left-0 bottom-0 bg-zinc-500 bg-opacity-50 dark:bg-darkbackground dark:bg-opacity-80 z-20  flex items-center justify-center"
       onClick={(e) => {
         if (e.target !== e.currentTarget) {
           return;
@@ -32,9 +32,9 @@ const BoardsMenuModal = ({ setBoardMenu, setCreateBoardMenu, setBoardMode }) => 
         setBoardMenu(false);
       }}
     >
-      <article className="w-[265px] rounded bg-lghtbackground text-lghttext shadow-md py-4">
+      <article className="w-[265px] rounded bg-lghtbackground text-lghttext  dark:bg-drkbackground-950 shadow-md py-4">
 
-        <h2 className="tracking-[2.4px] text-sm mb-[1rem] px-4 ">
+        <h2 className="tracking-[2.4px] text-sm mb-[1rem] px-4 dark:text-darktext">
           ALL BOARDS: {boards?.length}
         </h2>
 
@@ -42,8 +42,10 @@ const BoardsMenuModal = ({ setBoardMenu, setCreateBoardMenu, setBoardMode }) => 
           {boards.map((board, index) => (
             <button
               key={index}
-              className={`w-full flex items-center space-x-4 px-5 py-4 ${
-                board.isActive ? "bg-lghtaccent text-darktext" : ' hover:bg-lghtsecondary '
+              className={`w-full flex items-center space-x-4 px-5 py-4 rounded ${
+                board.isActive
+                  ? "bg-lghtaccent text-darktext dark:bg-drksecondary-800 shadow-md "
+                  : "hover:bg-secondary-200 hover:dark:bg-drksecondary-900 dark:text-drksecondary-700"
               }`}
               onClick={() => {
                 dispatch(boardsSlice.actions.setBoardActive({index}))
@@ -56,7 +58,7 @@ const BoardsMenuModal = ({ setBoardMenu, setCreateBoardMenu, setBoardMode }) => 
           ))}
        
 
-        <div className={`flex items-center space-x-4 px-5 py-4 `}>
+        <div className={`flex items-center space-x-4 px-5 py-4 my-[1rem]  hover:bg-secondary-200 hover:dark:bg-drkprimary-800`}>
           <BoardIcon />
           <button 
             onClick={() => {
@@ -69,18 +71,18 @@ const BoardsMenuModal = ({ setBoardMenu, setCreateBoardMenu, setBoardMode }) => 
           </button>
         </div>
 
-        <div className="w-[235px] mx-auto border rounded mt-[1rem] flex items-center justify-center">
+        <div className="w-[235px] mx-auto  rounded mt-[1rem] flex items-center justify-center">
 
-          <div className="flex items-center justify-between w-[150px] mx-auto p-2 bg-lghtbackground">
+          <div className="flex rounded items-center justify-between w-full mx-auto p-2 border bg-lghtbackground border-lghtaccent dark:border-darksecondary dark:bg-darkbackground">
             
             <div>
-              <LightModeOutlinedIcon />
+              <LightModeOutlinedIcon className="dark:text-darksecondary"/>
             </div>
             <div>
               <DrkMdSwitch checked={isDarkTheme} toggle={toggleMode} />
             </div>
             <div>
-              <DarkModeOutlinedIcon />
+              <DarkModeOutlinedIcon className="dark:text-darksecondary"/>
             </div>
 
           </div>

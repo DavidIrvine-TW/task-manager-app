@@ -44,7 +44,7 @@ const SideNav = ({
       style={{ height: "calc(100vh - 6rem)" }}
       className={`${sideNavOpen ? "" : "transform -translate-x-full "} 
       transition-all duration-500 dk:w-[300px] tb:w-[260px] border-r p-[1rem]
-      hidden tb:inline-flex dk:inline-flex fade-in flex-col pb-[2rem] fixed border-darksecondary bg-lghtsecondary dark:bg-darkbackground z-10 `}
+      hidden tb:inline-flex dk:inline-flex fade-in flex-col pb-[2rem] fixed border-darksecondary bg-lghtsecondary dark:bg-drkbackground-950 z-10 `}
       
     >
 
@@ -60,15 +60,15 @@ const SideNav = ({
             key={index}
             className={`w-full flex items-center space-x-4 px-5 py-4 rounded ${
               board.isActive
-                ? "bg-lghtaccent text-darktext shadow-md"
-                : " hover:bg-secondary-200 "
+                ? "bg-lghtaccent text-darktext dark:bg-drksecondary-800 shadow-md "
+                : "hover:bg-secondary-200 hover:dark:bg-drksecondary-900 dark:text-drksecondary-700"
             }`}
             onClick={() => {
               dispatch(boardsSlice.actions.setBoardActive({ index }));
             }}
           >
             <BoardIcon />
-            <p className="text-md truncate">{board.name}</p>
+            <p className="text-md truncate " >{board.name}</p>
           </button>
         ))}
       </div>
@@ -76,7 +76,7 @@ const SideNav = ({
 
       {/* create a new board */}
       <div
-        className={`flex items-center space-x-4 px-5 py-4 my-[1rem] mb-auto rounded  hover:bg-secondary-200`}
+        className={`flex items-center space-x-4 px-5 py-4 my-[1rem] mb-auto rounded  hover:bg-secondary-200 hover:dark:bg-drkprimary-800`}
       >
         <BoardIcon />
         <button
@@ -85,7 +85,7 @@ const SideNav = ({
             setBoardMode("add");
             setCreateBoardMenu(true);
           }}
-          className="text-md text-lghtprimary"
+          className="text-md text-lghtprimary dark:text-darkprimary"
         >
           <AddIcon sx={{ fontSize: ".75rem" }} />
           Create New Board
@@ -94,15 +94,15 @@ const SideNav = ({
 
       {/* dark mode switch*/}
       <div className="w-full h-full mx-auto flex items-end py-[2rem] ">
-        <div className="flex items-center border border-lghtaccent rounded justify-between w-full h-[3rem] mx-auto p-2 dk:p-3 bg-lghtbackground">
+        <div className="flex items-center border border-lghtaccent dark:border-darksecondary rounded justify-between w-full h-[3rem] mx-auto p-2 dk:p-3 bg-lghtbackground dark:bg-darkbackground">
           <div>
-            <LightModeOutlinedIcon />
+            <LightModeOutlinedIcon className="dark:text-darksecondary"/>
           </div>
           <div>
             <DrkMdSwitch checked={isDarkTheme} toggle={toggleMode} />
           </div>
           <div>
-            <DarkModeOutlinedIcon />
+            <DarkModeOutlinedIcon className="dark:text-darksecondary"/>
           </div>
         </div>
       </div>
@@ -110,7 +110,7 @@ const SideNav = ({
 
       {/* hide sidenav*/}
       <div className="mx-auto">
-        <button onClick={handleHideSideNav} className="flex gap-[.5rem]">
+        <button onClick={handleHideSideNav} className="flex gap-[.5rem] dark:text-darktext">
           <VisibilityOffIcon /> Hide Sidebar
         </button>
       </div>
@@ -119,7 +119,7 @@ const SideNav = ({
       {!sideNavOpen ? (
         <div className="relative z-200 shadow-md">
           <button
-            className="absolute bottom-[2rem] right-[-4rem] cursor-pointer bg-darkbackground text-white rounded p-1 "
+            className="absolute bottom-[2rem] right-[-4rem] cursor-pointer bg-darkbackground text-white dark:text-lghttext dark:bg-darkprimary rounded p-1 hover:scale-110 transition duration-200"
             onClick={handleRevealSideNav}
           >
             <VisibilityIcon fontSize="large" />

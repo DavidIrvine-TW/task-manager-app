@@ -20,14 +20,14 @@ const Subtask = ({subtaskIndex, columnIndex, taskIndex}) => {
 
 
   return (
-    <div className=" w-full flex rounded relative items-center justify-start p-2 gap-[1rem] bg-lghtsecondary">
+    <div className=" w-full flex rounded relative items-center justify-start p-2 gap-[1rem] bg-lghtsecondary dark:bg-drkbackground-100">
       <input
         className=" w-4 h-4 cursor-pointer "
         type="checkbox"
         checked={checked}
         onChange={onChange}
       />
-      <p className={checked ? " line-through opacity-30 text-body-md" : "text-body-md"}>
+      <p className={checked ? " line-through opacity-30 text-body-md " : "text-body-md"}>
       {subtask.title}
       </p>
     </div>

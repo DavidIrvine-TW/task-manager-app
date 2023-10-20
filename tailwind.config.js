@@ -198,7 +198,7 @@ export default {
         },
        },
       screens : {
-        mob : '378px',
+        // mob : '378px',
         tb : '768px',
         dk : '1440px'
        },

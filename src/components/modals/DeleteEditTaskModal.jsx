@@ -1,13 +1,13 @@
 
 
-const DeleteEditMenuModal = ({ setElippsesMenu, setBoardMode, setDeleteBoardModal }) => {
+const DeleteEditMenuModal = ({ setElippsesMenu, setTaskModalOpen, setTaskMode, setNewTaskMenu , setDeleteMode, setDeleteBoardModal, title}) => {
 
 
 
     return (
       <article
         id="dropdown-delete-edit-task"
-        className="absolute top-[2rem] right-[0rem] p-4 flex flex-col gap-[1rem] items-start border rounded z-50 bg-lghtbackground shadow-md"
+        className="absolute top-[2rem] right-[0rem] p-4 flex flex-col gap-[1rem] items-start border rounded z-50 bg-lghtbackground dark:bg-drkbackground-950 dark:border-darksecondary shadow-md"
         >
   
   
@@ -15,10 +15,12 @@ const DeleteEditMenuModal = ({ setElippsesMenu, setBoardMode, setDeleteBoardModa
             <button
               onClick={() => {
                 setElippsesMenu(false)
-                // setCreateBoardMenu(true)
-                // setBoardMode('edit')
+                setNewTaskMenu(true)
+                setTaskMode('edit')
+                setTaskModalOpen(false)
+                
               }}
-              className=" font-bold w-[150px] py-1 px-2 text-left hover:underline"
+              className=" font-bold w-[150px] py-1 px-2 text-left hover:underline dark:text-darktext"
               >
                 Edit Task
             </button>
@@ -26,7 +28,9 @@ const DeleteEditMenuModal = ({ setElippsesMenu, setBoardMode, setDeleteBoardModa
             <button 
               onClick={() => {
                 setElippsesMenu(false)
-                // setDeleteBoardModal(true)
+                setDeleteBoardModal(true)
+                setDeleteMode({type: "task", taskTitle: title})
+                setTaskModalOpen(false)
               }}
               className="text-lghtprimary font-bold w-[150px] py-1 px-2 text-left hover:underline"
               >
