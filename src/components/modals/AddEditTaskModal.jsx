@@ -33,7 +33,7 @@ const AddEditTaskModal = ({
   const column = columns.find((col, index) => index === columnIndex);
   const task = column ? column.tasks.find((task, index) => index === taskIndex) : []
 
-  const [status, setStatus] = useState(columns[columnIndex].name);
+  const [status, setStatus] = useState(columns[columnIndex]?.name);
   const [statusIndex, setStatusIndex] = useState(columnIndex);
 
   if (type === "edit" && isFirstLoad) {
@@ -120,6 +120,7 @@ const AddEditTaskModal = ({
             taskDescription,
             subtasks,
             statusIndex,
+            taskId: uuidv4()
           })
         );
       } else if (type === "edit") {

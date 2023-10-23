@@ -7,7 +7,9 @@ import boardsSlice from "../../redux/boardsSlice";
 import CloseIcon from "@mui/icons-material/Close";
 
 const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
+  
   const dispatch = useDispatch();
+
   const [boardName, setBoardName] = useState("");
   const [boardNameError, setBoardNameError] = useState("");
   const [createdColumnsError, setCreatedColumnError] = useState("");

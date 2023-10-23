@@ -1,14 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 import data from "../../src/data/data.json";
+import modifiedData from "../data/modifyData";
 
 const getLocalStorageData = () => {
-  const data = localStorage.getItem("Kanban");
-  return data ? JSON.parse(data) : data;
+  const modifiedData = localStorage.getItem("Kanban");
+  return modifiedData ? JSON.parse(modifiedData) : modifiedData;
 };
 
 const boardsSlice = createSlice({
+
   name: "boards",
-  initialState: getLocalStorageData() || data.boards ,
+
+  initialState: getLocalStorageData() || modifiedData.boards ,
+
   reducers: {
 
     setSubtaskCompleted: (state, action) => {
@@ -30,8 +34,8 @@ const boardsSlice = createSlice({
     
 
     addTask: (state, action) => {
-      const { taskTitle, status, taskDescription, subtasks, statusIndex } = action.payload;
-      const tasks = { title: taskTitle, description: taskDescription, subtasks: subtasks, status: status }; // newtask to be added
+      const { taskTitle, status, taskDescription, subtasks, statusIndex, taskId } = action.payload;
+      const tasks = { id: taskId, title: taskTitle, description: taskDescription, subtasks: subtasks, status: status }; // newtask to be added
       const board = state.find((board) => board.isActive);// find active board
       const column = board.columns.find((column, index) => index === statusIndex);// find column by status eg todo = index 0'
       column.tasks.push(tasks);// adds to columns[0] by default.
@@ -67,12 +71,38 @@ const boardsSlice = createSlice({
 
 
     dragTask: (state, action) => {
-      const { colIndex, prevColIndex, taskIndex } = action.payload;
-      const board = state.find((board) => board.isActive);
-      const prevCol = board.columns.find((col, i) => i === prevColIndex);
-      const task = prevCol.tasks.splice(taskIndex, 1)[0];
-      board.columns.find((col, i) => i === colIndex).tasks.push(task);
+      const { newBoard } = action.payload;
+      const activeBoardIndex = state.findIndex((board) => board.isActive);
+    
+      if (activeBoardIndex !== -1) {
+        state[activeBoardIndex] = newBoard;
+      } else {
+        throw new Error("Active board not found.");
+      }
     },
+
+//     onDragDropTasks = (state, action) => {
+//   const { currentBoardId, newBoard, newTask, newColId } = action.payload;
+
+//   const data = current(state.data);
+//   const exist = data.find((item) => item.id === currentBoardId);
+
+//   if (exist) {
+//     const newState = produce(data, (draftState) => {
+//       const boardCopy = { ...newBoard };
+//       const boardIndex = data.findIndex((item) => item.id === currentBoardId);
+//       const colIndex = boardCopy.columns.findIndex((item) => item.id == newColId);
+//       const taskIndex = boardCopy.columns[colIndex].tasks.findIndex((item) => item.id == newTask.id);
+
+//       boardCopy.columns[colIndex].tasks[taskIndex] = {
+//         ...boardCopy.columns[colIndex].tasks[taskIndex],
+//         status: boardCopy.columns[colIndex].name,
+//       };
+//       draftState[boardIndex] = boardCopy;
+//     });
+//     return { ...state, data: newState };
+//   } else throw console.error('on drag drop err');
+// };
 
 
     editBoard: (state, action) => {

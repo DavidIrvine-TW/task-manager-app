@@ -32,7 +32,7 @@ const BoardsMenuModal = ({ setBoardMenu, setCreateBoardMenu, setBoardMode }) => 
         setBoardMenu(false);
       }}
     >
-      <article className="w-[265px] rounded bg-lghtbackground text-lghttext  dark:bg-drkbackground-950 shadow-md py-4">
+      <article className="w-[265px] rounded bg-lghtbackground text-lghttext  dark:bg-drkbackground-950 shadow-md p-4">
 
         <h2 className="tracking-[2.4px] text-sm mb-[1rem] px-4 dark:text-darktext">
           ALL BOARDS: {boards?.length}

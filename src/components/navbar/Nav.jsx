@@ -20,26 +20,35 @@ const Nav = ({
 
   return (
     <header>
-      <nav className="fade-in flex items-center min-w-[375px] w-full border-b border-darksecondary bg-lghtsecondary dark:bg-drkbackground-950">
-        <div className="flex flex-row items-center  ">
+      <nav className="Nav Nav__theme">
+        <div className="Nav__cont-left">
+
+
+
           {/* Logo section */}
-          <div className="tb:w-[260px] dk:w-[300px] items-center flex tb:border-r border-darksecondary p-4 h-[64px] tb:h-[80px] dk:h-[96px] ">
+
+          <div className="Nav__title-logo">
             <ViewKanbanSharpIcon fontSize="large" className='text-lghtprimary'/>
-            <h1 className="ml-4 hidden tb:inline-block font-bold text-[1.85rem] tracking-[.3px] text-lghttext dark:text-darktext ">
-              KANBAN<span className="text-body-sm-mod font-bold">Marv.Dev</span>
+            <h1 className="Nav__h1">
+              KANBAN<span className="Nav__h1-span">Marv.Dev</span>
             </h1>
           </div>
 
+
+
           {/* active board name */}
-          <div className="flex flex-row p-4 dk:px-8">
-            <h2 className=" fade-in truncate max-w-[250px] font-bold tb:text-l hidden tb:inline-block dk:text-xl text-lghttext dark:text-darktext">
+
+          <div className="Nav__cont-center ">
+
+            <h2 className="Nav__h2 ">
               {boards.length < 1 ? "No Boards" : board.name}
             </h2>
+
             <button
               className="tb:hidden flex items-center"
               onClick={() => setBoardMenu(!boardMenu)}
             >
-              <h2 className=" fade-in truncate max-w-[200px] font-bold tb:text-l dk:text-xl text-lghttext dark:text-darktext">
+              <h2 className="Nav__h2-mobile">
                 {boards.length < 1 ? "No Boards" : board.name}
               </h2>
 
@@ -60,25 +69,27 @@ const Nav = ({
         {boards.length < 1 ? (
           ""
         ) : (
-          <div className="ml-auto flex flex-row gap-[.5rem] p-4 dk:px-8 dk:gap-[1.5rem] items-center">
+          <div className="Nav__cont-right">
             {/* Add a task */}
             <button
               onClick={() => {
                 setNewTaskMenu(true);
                 setTaskMode("add");
               }}
-              className="bg-lghtaccent dark:bg-drksecondary-800  hover:dark:bg-drksecondary-900 hover:bg-accent-300 p-2 tb:px-4 tb:py-3  rounded-full tb:rounded flex items-center justify-center shadow-md"
+              className="Nav__btn-theme-main Nav__btn-addtask"
             >
               <AddIcon sx={{ fontSize: "1rem" }} className='dark:text-darktext' />
-              <span className="hidden tb:inline-block text-md text-lghttext dark:text-darktext">New Task</span>
+              <span className="Nav__btn-innertxt">New Task</span>
             </button>
 
             {/* delete/edit board */}
-            <button onClick={() => setElippsesMenu(!ellipsesMenu)} className='rounded-lg hover:bg-lghtaccent hover:dark:bg-drksecondary-900'>
-              <MoreVertTwoToneIcon sx={{ fontSize: "2rem" }} className='text-lghttext dark:text-darktext hover:text-darktext'/>
+            <button onClick={() => setElippsesMenu(!ellipsesMenu)} className='Nav__btn-ellip'>
+              <MoreVertTwoToneIcon sx={{ fontSize: "2rem" }} className='Nav__theme-txt hover:text-darktext'/>
             </button>
           </div>
         )}
+
+        
       </nav>
     </header>
   );
