@@ -1,45 +1,61 @@
-.Nav__theme {
-  @apply border-darksecondary bg-lghtsecondary dark:bg-drkbackground-950;
-}
-.Nav__theme-txt {
-  @apply text-lghttext dark:text-darktext;
-}
-.Nav {
-  @apply fade-in flex items-center min-w-[375px] w-full border-b;
-}
-.Nav__cont-left {
-  @apply flex flex-row items-center;
-}
-.Nav__title-logo {
-  @apply tb:w-[260px] dk:w-[300px] items-center flex tb:border-r border-darksecondary p-4 h-[64px] tb:h-[80px] dk:h-[96px];
-}
-.Nav__h1 {
-  @apply ml-4 hidden tb:inline-block font-bold text-[1.85rem] tracking-[.3px];
-}
-.Nav__h1-span {
-  @apply text-body-sm-mod font-bold;
-}
-.Nav__cont-center {
-  @apply flex flex-row p-4 dk:px-8;
-}
-.Nav__h2 {
-  @apply fade-in truncate max-w-[250px] font-bold tb:text-l hidden tb:inline-block dk:text-xl;
-}
-.Nav__h2-mobile {
-    @apply  fade-in truncate max-w-[200px] font-bold tb:text-l dk:text-xl text-lghttext dark:text-darktext
-}
-.Nav__cont-right {
-  @apply ml-auto flex flex-row gap-[.5rem] p-4 dk:px-8 dk:gap-[1.5rem] items-center;
-}
-.Nav__btn-theme-main {
-  @apply bg-lghtaccent dark:bg-drksecondary-800  hover:dark:bg-drksecondary-900 hover:bg-accent-300;
-}
-.Nav__btn-addtask {
-  @apply p-2 tb:px-4 tb:py-3  rounded-full tb:rounded flex items-center justify-center shadow-md;
-}
-.Nav__btn-innertxt {
-    @apply hidden tb:inline-block text-md
-}
-.Nav__btn-ellip {
-    @apply rounded-lg hover:bg-lghtaccent hover:dark:bg-drksecondary-900
+@layer components {
+    .Nav__theme {
+    @apply border-darksecondary bg-lghtsecondary dark:bg-drkbackground-950;
+    }
+
+    .Nav__theme-txt {
+    @apply text-lghttext dark:text-darktext;
+    }
+
+    .Nav {
+    @apply fade-in flex items-center min-w-[375px] w-full border-b;
+    }
+
+    .Nav__cont-left {
+    @apply flex flex-row items-center;
+    }
+
+    .Nav__title-logo {
+    @apply tb:w-[260px] dk:w-[300px] items-center flex tb:border-r border-darksecondary p-4 h-[64px] tb:h-[80px] dk:h-[96px];
+    }
+
+    .Nav__h1 {
+    @apply ml-4 hidden tb:inline-block font-bold text-[1.85rem] tracking-[.3px];
+    }
+
+    .Nav__h1-span {
+    @apply text-body-sm-mod font-bold;
+    }
+
+    .Nav__cont-center {
+    @apply flex flex-row p-4 dk:px-8;
+    }
+
+    .Nav__h2 {
+    @apply fade-in truncate max-w-[250px] font-bold tb:text-l hidden tb:inline-block dk:text-xl;
+    }
+
+    .Nav__h2-mobile {
+        @apply  fade-in truncate max-w-[200px] font-bold tb:text-l dk:text-xl 
+    }
+
+    .Nav__cont-right {
+    @apply ml-auto flex flex-row gap-[.5rem] p-4 dk:px-8 dk:gap-[1.5rem] items-center;
+    }
+
+    .Nav__btn-theme-main {
+    @apply bg-lghtaccent dark:bg-drksecondary-800  hover:dark:bg-drksecondary-900 hover:bg-accent-300;
+    }
+
+    .Nav__btn-addtask {
+    @apply p-2 tb:px-4 tb:py-3  rounded-full tb:rounded flex items-center justify-center shadow-md;
+    }
+
+    .Nav__btn-innertxt {
+        @apply hidden tb:inline-block text-md
+    }
+
+    .Nav__btn-ellip {
+        @apply rounded-lg hover:bg-lghtaccent hover:dark:bg-drksecondary-900
+    }
 }

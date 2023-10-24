@@ -1,8 +1,8 @@
-import ViewKanbanSharpIcon from '@mui/icons-material/ViewKanbanSharp';
+import ViewKanbanSharpIcon from "@mui/icons-material/ViewKanbanSharp";
 import MoreVertTwoToneIcon from "@mui/icons-material/MoreVertTwoTone";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import AddIcon from "@mui/icons-material/Add";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 const Nav = ({
   boardMenu,
@@ -12,7 +12,7 @@ const Nav = ({
   ellipsesMenu,
   setTaskMode,
 }) => {
-  // const dispatch = useDispatch();
+  
   const board = useSelector((state) => state.boards).find(
     (board) => board.isActive
   );
@@ -20,27 +20,23 @@ const Nav = ({
 
   return (
     <header>
-      <nav className="Nav Nav__theme">
+      <nav id="head-nav" className="Nav Nav__theme">
         <div className="Nav__cont-left">
-
-
-
           {/* Logo section */}
-
           <div className="Nav__title-logo">
-            <ViewKanbanSharpIcon fontSize="large" className='text-lghtprimary'/>
-            <h1 className="Nav__h1">
-              KANBAN<span className="Nav__h1-span">Marv.Dev</span>
+            <ViewKanbanSharpIcon
+              fontSize="large"
+              className="text-lghtprimary"
+            />
+            <h1 className="Nav__h1 Nav__theme-txt">
+              KANBAN
+              <span className="Nav__h1-span">Marv.Dev</span>
             </h1>
           </div>
 
-
-
           {/* active board name */}
-
           <div className="Nav__cont-center ">
-
-            <h2 className="Nav__h2 ">
+            <h2 className="Nav__h2 Nav__theme-txt">
               {boards.length < 1 ? "No Boards" : board.name}
             </h2>
 
@@ -48,7 +44,7 @@ const Nav = ({
               className="tb:hidden flex items-center"
               onClick={() => setBoardMenu(!boardMenu)}
             >
-              <h2 className="Nav__h2-mobile">
+              <h2 className="Nav__h2-mobile Nav__theme-txt">
                 {boards.length < 1 ? "No Boards" : board.name}
               </h2>
 
@@ -59,12 +55,9 @@ const Nav = ({
                   transform: boardMenu ? "rotate(180deg)" : "",
                 }}
               />
-
             </button>
           </div>
         </div>
-
-        
 
         {boards.length < 1 ? (
           ""
@@ -78,18 +71,25 @@ const Nav = ({
               }}
               className="Nav__btn-theme-main Nav__btn-addtask"
             >
-              <AddIcon sx={{ fontSize: "1rem" }} className='dark:text-darktext' />
+              <AddIcon
+                sx={{ fontSize: "1rem" }}
+                className="dark:text-darktext"
+              />
               <span className="Nav__btn-innertxt">New Task</span>
             </button>
 
             {/* delete/edit board */}
-            <button onClick={() => setElippsesMenu(!ellipsesMenu)} className='Nav__btn-ellip'>
-              <MoreVertTwoToneIcon sx={{ fontSize: "2rem" }} className='Nav__theme-txt hover:text-darktext'/>
+            <button
+              onClick={() => setElippsesMenu(!ellipsesMenu)}
+              className="Nav__btn-ellip"
+            >
+              <MoreVertTwoToneIcon
+                sx={{ fontSize: "2rem" }}
+                className="Nav__theme-txt hover:text-darktext"
+              />
             </button>
           </div>
         )}
-
-        
       </nav>
     </header>
   );

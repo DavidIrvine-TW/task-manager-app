@@ -42,9 +42,9 @@ const SideNav = ({
     <div
       id="sidenav"
       style={{ height: "calc(100vh - 6rem)" }}
-      className={`${sideNavOpen ? "" : "transform -translate-x-full "} 
+      className={`Nav__theme ${sideNavOpen ? "" : "transform -translate-x-full "} 
       transition-all duration-500 dk:w-[300px] tb:w-[260px] border-r p-[1rem]
-      hidden tb:inline-flex dk:inline-flex fade-in flex-col pb-[2rem] fixed border-darksecondary bg-lghtsecondary dark:bg-drkbackground-950 z-10 `}
+      hidden tb:inline-flex dk:inline-flex fade-in flex-col pb-[2rem] fixed  z-10 `}
       
     >
 
