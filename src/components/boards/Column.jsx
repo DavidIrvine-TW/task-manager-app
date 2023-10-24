@@ -33,35 +33,36 @@ const Column = ({
 
   return (
     <article
-      className={`${
-        column.tasks.length === 0
-          ? "border-dashed border-2 dark:border-darksecondary "
-          : ""
-      } w-[296px] mr-[1.5rem] rounded flex flex-col gap-[1rem] p-[.5rem] `}
+      className={`Column ${column.tasks.length === 0 ? "Column__empty": ""}`}
     >
-      <div className="flex gap-[1rem] items-center">
-        <div className={`rounded-full w-[1rem] h-[1rem] ${randomColor}`} />
-        <p className="flex items-center gap-[.5rem] dark:text-darktext uppercase tracking-[2px]">
+      <div className="Column__cont-title">
+        <div className={`Column__ball ${randomColor}`} />
+        <p className="Column__title">
           {column.name} ({column.tasks.length})
         </p>
       </div>
+
       <Droppable droppableId={columnIndex.toString()}>
         {(droppableProvided) => (
+
           <div
-            className="w-full h-full flex flex-col gap-[1rem]"
+            className="Column__cont-droppable"
             ref={droppableProvided.innerRef}
             {...droppableProvided.droppableProps}
           >
+
             <span style={{ display: "none" }}>
               {droppableProvided.placeholder}
             </span>
 
             {column.tasks.map((task, index) => (
+
               <Draggable
                 key={index}
                 draggableId={task.id.toString()}
                 index={index}
               >
+
                 {(draggableProvided) => (
                   <TaskCard
                     key={index}
@@ -73,11 +74,17 @@ const Column = ({
                     provided={draggableProvided}
                   />
                 )}
+
               </Draggable>
+              
             ))}
+
           </div>
+
         )}
+
       </Droppable>
+
     </article>
   );
 };

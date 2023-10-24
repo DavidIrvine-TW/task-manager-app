@@ -6,8 +6,12 @@
 
 /* navigation */
 @import "./styles/components/nav/_nav.css";
+@import "./styles//components/nav/_sidenav.css";
+@import "./styles/components/switch/_switch.css";
 
-
+/* board */
+@import "./styles/components/boards/_column.css";
+@import "./styles/components/boards/_taskcard.css";
 
 
 @tailwind base;

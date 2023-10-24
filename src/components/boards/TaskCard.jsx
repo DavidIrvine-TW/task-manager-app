@@ -24,10 +24,10 @@ const TaskCard = ({ columnIndex, taskIndex , setTaskModalOpen, setTaskColumnInde
       {...provided.draggableProps}
       {...provided.dragHandleProps}
       onClick={handleTaskCardClick}
-      className="card fade-in flex flex-col cursor-pointer hover:cursor-grab border  px-[1rem] py-[1.5rem] rounded shadow-md w-[280px] hover:opacity-60 bg-lghtbackground dark:bg-drkbackground-950 dark:border-darksecondary dark:text-drksecondary-700"
+      className="Taskcard card"
     >
       <p className="font-bold">{task?.title}</p>
-      <p className="font-bold text-xs mt-2 text-gray-500">
+      <p className="Taskcard__subtasks-txt">
         {completedSubtasks?.length} of {subtasks?.length} subtasks
       </p>   
     </article>

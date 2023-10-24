@@ -104,7 +104,7 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
   return (
     <section
       id="add-edit-board-modal"
-      className="fade-in absolute top-0 right-0 left-0 bottom-0 bg-zinc-500 dark:bg-darkbackground dark:bg-opacity-80 bg-opacity-50 z-20 flex items-center justify-center"
+      className="addEditModal"
       onClick={(e) => {
         if (e.target !== e.currentTarget) {
           return;
@@ -114,23 +114,23 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
       }}
     >
       <form
-        className=" w-[345px] tb:w-[480px] rounded bg-lghtbackground dark:bg-drkbackground-950 shadow-md p-6"
+        className="addEditModal__form"
         onSubmit={onSubmit}
       >
-        <div className="flex justify-between items-center mb-[1.5rem] dark:text-drksecondary-700">
+        <div className="addEditModal__form-head">
           <h3 className="text-l">
             {type === "edit" ? "Edit" : "Add New"} Board
           </h3>
           <button
-            className="border rounded-full p-1 hover:scale-105"
+            className="addEditModal__form-closebtn"
             onClick={() => setCreateBoardMenu(false)}
           >
             <CloseIcon />
           </button>
         </div>
 
-        <div className="flex flex-col mb-[1.5rem]">
-          <label className="text-sm mb-[.5rem] dark:text-gray-500">Board Name*</label>
+        <div className="addEditModal__form-cont-title">
+          <label className="addEditModal__board-name">Board Name*</label>
           <input
             onChange={(e) => setBoardName(e.target.value)}
             value={boardName}
@@ -138,23 +138,23 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
             placeholder="eg. web design"
             id="board-name-input"
           />
-          <span className="text-red-500 text-body-md mt-[4px]">
+          <span className="addEditModal__form-error">
             {boardNameError}
           </span>
         </div>
 
         <div>
           <div>
-            <label className="text-sm dark:text-gray-500">Board Columns*</label>
+            <label className="addEditModal__form_column-label">Board Columns*</label>
 
             {createdColumns.map((column, index) => {
               return (
                 <div
-                  className="flex gap-[1rem] items-center w-full mt-[.5rem] "
+                  className="addEditModal__form_createColumn-cont"
                   key={index}
                 >
                   <input
-                    className="border w-full text-body-l p-2 rounded"
+                    className="addEditModal__form-input"
                     onChange={(e) => {
                       onChange(column.id, e.target.value);
                     }}
@@ -166,24 +166,25 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
                     onClick={() => onDelete(column.id)}
                     className="cursor-pointer"
                   >
-                    <DeleteForeverOutlinedIcon fontSize="medium" className="hover:text-red-500 hover:scale-110 dark:text-gray-500 hover:dark:text-red-500"/>
+                    <DeleteForeverOutlinedIcon fontSize="medium" className="addEditModal__column-delete"/>
                   </button>
                 </div>
               );
             })}
-            <span className="text-red-500 text-body-md ">
+            <span className="addEditModal__form-error ">
               {createdColumnsError}
             </span>
           </div>
+
           {isDisabled ? (
-            <span className="text-red-500 text-body-md ">Max columns (5)</span>
+            <span className="addEditModal__form-error">Max columns (5)</span>
           ) : (
             ""
           )}
-          <div className="flex flex-col gap-[1.5rem] mt-[1.5rem]">
+          <div className="addEditModal__btn-cont">
             <button
               type="button"
-              className="border flex items-center justify-center py-2 rounded bg-lghtsecondary hover:bg-secondary-50 dark:bg-drksecondary-300 hover:dark:bg-secondary-200 dark:border-darksecondary"
+              className="addEditMenu__newColumn-btn"
               disabled={isDisabled}
               onClick={() => {
                 if (createdColumns.length > 4) {
@@ -202,7 +203,7 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
             </button>
 
             <button
-              className="border py-2 rounded bg-lghtaccent hover:bg-accent-300 dark:bg-drksecondary-800  hover:dark:bg-drksecondary-900 dark:border-darksecondary hover:dark:text-darktext  text-lghttext font-bold shadow-md"
+              className="addEditModal__btn-submit"
               onClick={() => {
                 onSubmit(e);
               }}
