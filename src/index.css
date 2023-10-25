@@ -6,8 +6,10 @@
 
 /* navigation */
 @import "./styles/components/nav/_nav.css";
-@import "./styles//components/nav/_sidenav.css";
 @import "./styles/components/switch/_switch.css";
+
+/* modals */
+@import "./styles/components/modals/_modal.css";
 
 /* board */
 @import "./styles/components/boards/_column.css";
@@ -20,9 +22,6 @@
 
 
 
-
-  
-  
   .Main {
     height: calc(100vh - 6rem);
   }

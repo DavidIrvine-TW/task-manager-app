@@ -20,23 +20,42 @@ const Nav = ({
 
   return (
     <header>
-      <nav id="head-nav" className="Nav Nav__theme">
-        <div className="Nav__cont-left">
-          {/* Logo section */}
-          <div className="Nav__title-logo">
+      <nav 
+        id="head-nav" 
+        className="Nav__theme Nav__items-position min-w-[375px] w-full border-b">
+
+        <div 
+          className="Nav__items-position">
+
+
+          {/* Logo */}
+          <div 
+            id="logo-container"
+            className="Nav__items-position tb:w-[260px] dk:w-[300px] tb:border-r border-darksecondary p-4 h-[4rem] tb:h-[5rem] dk:h-[6rem]">
+
             <ViewKanbanSharpIcon
               fontSize="large"
               className="text-lghtprimary"
             />
-            <h1 className="Nav__h1 Nav__theme-txt">
-              KANBAN
-              <span className="Nav__h1-span">Marv.Dev</span>
+
+            <h1 
+              className="Nav__theme-txt ml-4 hidden tb:inline-block font-bold text-[1.85rem] tracking-[.3px]">
+                KANBAN
+              <span 
+                className="text-body-sm-mod font-bold">
+                  Marv.Dev
+              </span>
             </h1>
+
           </div>
 
+
           {/* active board name */}
-          <div className="Nav__cont-center ">
-            <h2 className="Nav__h2 Nav__theme-txt">
+          <div 
+            className="Nav__items-position p-4 dk:px-8">
+
+            <h2 
+              className="Nav__theme-txt fade-in truncate max-w-[250px] font-bold tb:text-l hidden tb:inline-block dk:text-xl">
               {boards.length < 1 ? "No Boards" : board.name}
             </h2>
 
@@ -44,8 +63,9 @@ const Nav = ({
               className="tb:hidden flex items-center"
               onClick={() => setBoardMenu(!boardMenu)}
             >
-              <h2 className="Nav__h2-mobile Nav__theme-txt">
-                {boards.length < 1 ? "No Boards" : board.name}
+              <h2 
+                className="Nav__theme-txt max-w-[200px] font-bold tb:text-l dk:text-xl fade-in truncate">
+                  {boards.length < 1 ? "No Boards" : board.name}
               </h2>
 
               <ArrowDropDownOutlinedIcon
@@ -59,37 +79,45 @@ const Nav = ({
           </div>
         </div>
 
+
+        {/* hide buttons if no boards*/}
         {boards.length < 1 ? (
           ""
         ) : (
-          <div className="Nav__cont-right">
+          <div 
+            className="Nav__items-position ml-auto gap-[.5rem] p-4 dk:px-8 dk:gap-[1.5rem]">
+
             {/* Add a task */}
             <button
               onClick={() => {
                 setNewTaskMenu(true);
                 setTaskMode("add");
               }}
-              className="Nav__btn-theme-main Nav__btn-addtask"
+              className="Nav__btn-theme p-2 tb:px-4 tb:py-3  rounded-full tb:rounded flex items-center justify-center shadow-md"
             >
               <AddIcon
                 sx={{ fontSize: "1rem" }}
                 className="dark:text-darktext"
               />
-              <span className="Nav__btn-innertxt">New Task</span>
+              <span 
+                className="hidden tb:inline-block text-md Nav__theme-txt">
+                  New Task
+              </span>
             </button>
 
             {/* delete/edit board */}
             <button
               onClick={() => setElippsesMenu(!ellipsesMenu)}
-              className="Nav__btn-ellip"
+              className="p-1"
             >
               <MoreVertTwoToneIcon
                 sx={{ fontSize: "2rem" }}
-                className="Nav__theme-txt hover:text-darktext"
+                className="Nav__theme-txt hover:text-darktext hover:scale-105"
               />
             </button>
           </div>
         )}
+
       </nav>
     </header>
   );

@@ -21,13 +21,11 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
     {
       name: "",
       tasks: [],
-      id: uuidv4(),
+      column_id: uuidv4(),
     },
   ]);
 
-  console.log(type);
-  console.log(createdColumnsError);
-  console.log(boardNameError);
+
 
   const board = useSelector((state) => state.boards).find(
     (board) => board.isActive
@@ -101,10 +99,12 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
     }
   };
 
+
+  
   return (
     <section
-      id="add-edit-board-modal"
-      className="addEditModal"
+      id="add-board-modal"
+      className="Modal"
       onClick={(e) => {
         if (e.target !== e.currentTarget) {
           return;
@@ -114,47 +114,61 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
       }}
     >
       <form
-        className="addEditModal__form"
+        className="Modal__form"
         onSubmit={onSubmit}
       >
-        <div className="addEditModal__form-head">
-          <h3 className="text-l">
+
+        <div 
+          className="Modal__form-head">
+          <h3 
+            className="text-l">
             {type === "edit" ? "Edit" : "Add New"} Board
           </h3>
+
           <button
-            className="addEditModal__form-closebtn"
+            className="Modal__form-close-btn Modal__focus"
             onClick={() => setCreateBoardMenu(false)}
           >
             <CloseIcon />
           </button>
         </div>
 
-        <div className="addEditModal__form-cont-title">
-          <label className="addEditModal__board-name">Board Name*</label>
+        <div 
+          className="flex flex-col mb-[1.5rem]">
+
+          <label 
+            className="Modal__formfield-label">
+              Board Name*
+          </label>
+
           <input
             onChange={(e) => setBoardName(e.target.value)}
             value={boardName}
-            className="border text-body-l p-2 rounded"
+            className="Modal__form-input Modal__focus"
             placeholder="eg. web design"
             id="board-name-input"
           />
-          <span className="addEditModal__form-error">
+          <span 
+            className="Modal__form-error">
             {boardNameError}
           </span>
+
         </div>
+
+
 
         <div>
           <div>
-            <label className="addEditModal__form_column-label">Board Columns*</label>
+            <label className="Modal__formfield-label">Board Columns*</label>
 
             {createdColumns.map((column, index) => {
               return (
                 <div
-                  className="addEditModal__form_createColumn-cont"
+                  className="flex gap-[1rem] items-center w-full mt-[.5rem] "
                   key={index}
                 >
                   <input
-                    className="addEditModal__form-input"
+                    className="Modal__form-input Modal__focus"
                     onChange={(e) => {
                       onChange(column.id, e.target.value);
                     }}
@@ -164,27 +178,31 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
                   />
                   <button
                     onClick={() => onDelete(column.id)}
-                    className="cursor-pointer"
+                    className="cursor-pointer Modal__focus"
                   >
-                    <DeleteForeverOutlinedIcon fontSize="medium" className="addEditModal__column-delete"/>
+                    <DeleteForeverOutlinedIcon fontSize="medium" className="Modal__delete "/>
                   </button>
                 </div>
               );
             })}
+
             <span className="addEditModal__form-error ">
               {createdColumnsError}
             </span>
+
           </div>
 
           {isDisabled ? (
-            <span className="addEditModal__form-error">Max columns (5)</span>
+            <span className="Modal__form-error">Max columns (5)</span>
           ) : (
             ""
           )}
-          <div className="addEditModal__btn-cont">
+
+
+          <div className="flex flex-col gap-[1.5rem] mt-[1.5rem]">
             <button
               type="button"
-              className="addEditMenu__newColumn-btn"
+              className="Modal__btn-secondary Modal__btn Modal__focus"
               disabled={isDisabled}
               onClick={() => {
                 if (createdColumns.length > 4) {
@@ -203,7 +221,7 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
             </button>
 
             <button
-              className="addEditModal__btn-submit"
+              className="Modal__btn-primary Modal__btn Modal__focus"
               onClick={() => {
                 onSubmit(e);
               }}
@@ -213,6 +231,8 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
               {type === "add" ? "Create Board" : "Update"}
             </button>
           </div>
+
+
         </div>
       </form>
     </section>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Nav from "./components/navbar/Nav";
 import BoardsMenuModal from "./components/modals/BoardsMenuModal";
-import AddEditBoardModal from "./components/modals/AddEditBoardModal";
+import AddBoardModal from "./components/modals/AddBoardModal";
 import AddEditTaskModal from "./components/modals/AddEditTaskModal";
 import DeleteEditMenuModal from "./components/modals/DeleteEditMenuModal";
 import DeleteBoardAndTaskModal from "./components/modals/DeleteBoardModal";
@@ -118,6 +118,7 @@ function App() {
 
   }
   
+console.log(createBoardMenu)
 
   return (
     <div
@@ -214,15 +215,15 @@ function App() {
       )} */}
 
       {/* create new board or edit the active board  */}
-      {/* {createBoardMenu ? (
-        <AddEditBoardModal
+      {createBoardMenu ? (
+        <AddBoardModal
           setCreateBoardMenu={setCreateBoardMenu}
           type={type}
           setBoardMode={setBoardMode}
         />
       ) : (
         ""
-      )} */}
+      )}
 
       {/* create a new task for active board or edit an exisiting task */}
       {/* {newTaskMenu ? (

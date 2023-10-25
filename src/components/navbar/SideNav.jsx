@@ -39,23 +39,26 @@ const SideNav = ({
   };
 
   return (
-    <div
+    <article
       id="sidenav"
       style={{ height: "calc(100vh - 6rem)" }}
       className={`Nav__theme ${sideNavOpen ? "" : "transform -translate-x-full "} 
       transition-all duration-500 dk:w-[300px] tb:w-[260px] border-r p-[1rem]
-      hidden tb:inline-flex dk:inline-flex fade-in flex-col pb-[2rem] fixed  z-10 `}
-      
+      hidden tb:inline-flex dk:inline-flex fade-in flex-col pb-[2rem] fixed z-10 `}     
     >
 
       {/* number of boards */}
-      <h2 className="tracking-[2.4px] text-sm mb-[1.5rem] px-4 font-bold text-lghttext dark:text-darktext">
-        ALL BOARDS: {boards?.length}
-      </h2>
+      <h3 
+        className="Nav__theme-txt tracking-[2.4px] text-sm mb-[1.5rem] px-4 font-bold ">
+          ALL BOARDS: {boards?.length}
+      </h3>
 
       {/* list all boards*/}
-      <div className="max-h-[600px] min-h-[300px] overflow-y-auto flex-grow">
+      <div 
+        className="max-h-[600px] min-h-[300px] overflow-y-auto flex-grow">
+
         {boards.map((board, index) => (
+          
           <button
             key={index}
             className={`w-full flex items-center space-x-4 px-5 py-4 rounded ${
@@ -67,8 +70,14 @@ const SideNav = ({
               dispatch(boardsSlice.actions.setBoardActive({ index }));
             }}
           >
+
             <BoardIcon />
-            <p className="text-md truncate " >{board.name}</p>
+
+            <p 
+              className="text-[1rem]  truncate" >
+                {board.name}
+                </p>
+
           </button>
         ))}
       </div>
@@ -76,7 +85,7 @@ const SideNav = ({
 
       {/* create a new board */}
       <div
-        className={`flex items-center space-x-4 px-5 py-4 my-[1rem] mb-auto rounded  hover:bg-secondary-200 hover:dark:bg-drkprimary-800`}
+        className={`Nav__items-position space-x-4 px-5 py-4 my-[1rem] mb-auto rounded hover:bg-secondary-200 hover:dark:bg-drkprimary-800`}
       >
         <BoardIcon />
         <button
@@ -92,9 +101,13 @@ const SideNav = ({
         </button>
       </div>
 
+
       {/* dark mode switch*/}
-      <div className="w-full h-full mx-auto flex items-end py-[2rem] ">
-        <div className="flex items-center border border-lghtaccent dark:border-darksecondary rounded justify-between w-full h-[3rem] mx-auto p-2 dk:p-3 bg-lghtbackground dark:bg-darkbackground">
+      <div 
+        className="w-full h-full mx-auto flex items-end py-[2rem] ">
+
+        <div 
+          className="Nav__theme Nav__items-position border border-lghtaccent dark:border-darksecondary rounded justify-between w-full h-[3rem] mx-auto p-2 dk:p-3 bg-lghtbackground dark:bg-darkbackground">
           <div>
             <LightModeOutlinedIcon className="dark:text-darksecondary"/>
           </div>
@@ -109,28 +122,38 @@ const SideNav = ({
 
 
       {/* hide sidenav*/}
-      <div className="mx-auto">
-        <button onClick={handleHideSideNav} className="flex gap-[.5rem] dark:text-darktext">
-          <VisibilityOffIcon /> Hide Sidebar
+      <div 
+        className="mx-auto">
+        <button 
+          onClick={handleHideSideNav} 
+          className="Nav__items-position gap-[.5rem] dark:text-darktext">
+
+          <VisibilityOffIcon /> 
+
+          Hide Sidebar
         </button>
       </div>
 
       {/* reveal sidenav*/}
       {!sideNavOpen ? (
-        <div className="relative z-200 shadow-md">
+        <div 
+          className="relative z-200 shadow-md">
+
           <button
             className="absolute bottom-[2rem] right-[-4rem] cursor-pointer bg-darkbackground text-white dark:text-lghttext dark:bg-darkprimary rounded p-1 hover:scale-110 transition duration-200"
             onClick={handleRevealSideNav}
           >
-            <VisibilityIcon fontSize="large" />
+            <VisibilityIcon 
+              fontSize="large" />
           </button>
+
         </div>
       ) : (
         ""
       )}
 
       
-    </div>
+    </article>
   );
 };
 
