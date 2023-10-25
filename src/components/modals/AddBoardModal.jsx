@@ -102,6 +102,7 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
 
   
   return (
+
     <section
       id="add-board-modal"
       className="Modal"
@@ -159,7 +160,8 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
 
         <div>
           <div>
-            <label className="Modal__formfield-label">Board Columns*</label>
+            <label 
+              className="Modal__formfield-label">Board Columns*</label>
 
             {createdColumns.map((column, index) => {
               return (
@@ -186,20 +188,24 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
               );
             })}
 
-            <span className="addEditModal__form-error ">
+            <span 
+              className="addEditModal__form-error ">
               {createdColumnsError}
             </span>
 
           </div>
 
           {isDisabled ? (
-            <span className="Modal__form-error">Max columns (5)</span>
+            <span 
+              className="Modal__form-error">Max columns (5)</span>
           ) : (
             ""
           )}
 
 
-          <div className="flex flex-col gap-[1.5rem] mt-[1.5rem]">
+          <div 
+            className="flex flex-col gap-[1.5rem] mt-[1.5rem]">
+
             <button
               type="button"
               className="Modal__btn-secondary Modal__btn Modal__focus"
@@ -222,7 +228,7 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
 
             <button
               className="Modal__btn-primary Modal__btn Modal__focus"
-              onClick={() => {
+              onClick={(e) => {
                 onSubmit(e);
               }}
               type="submit"
@@ -230,6 +236,7 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
               {" "}
               {type === "add" ? "Create Board" : "Update"}
             </button>
+
           </div>
 
 

@@ -42,9 +42,7 @@ const SideNav = ({
     <article
       id="sidenav"
       style={{ height: "calc(100vh - 6rem)" }}
-      className={`Nav__theme ${sideNavOpen ? "" : "transform -translate-x-full "} 
-      transition-all duration-500 dk:w-[300px] tb:w-[260px] border-r p-[1rem]
-      hidden tb:inline-flex dk:inline-flex fade-in flex-col pb-[2rem] fixed z-10 `}     
+      className={`Nav__theme SideNav ${sideNavOpen ? "" : "transform -translate-x-full "}`}     
     >
 
       {/* number of boards */}
@@ -61,10 +59,10 @@ const SideNav = ({
           
           <button
             key={index}
-            className={`w-full flex items-center space-x-4 px-5 py-4 rounded ${
+            className={`SideNav__btn ${
               board.isActive
-                ? "bg-lghtaccent text-darktext dark:bg-drksecondary-800 shadow-md "
-                : "hover:bg-secondary-200 hover:dark:bg-drksecondary-900 dark:text-drksecondary-700"
+                ? "SideNav__btn-active"
+                : "SideNav__btn-inactive"
             }`}
             onClick={() => {
               dispatch(boardsSlice.actions.setBoardActive({ index }));
@@ -85,9 +83,11 @@ const SideNav = ({
 
       {/* create a new board */}
       <div
-        className={`Nav__items-position space-x-4 px-5 py-4 my-[1rem] mb-auto rounded hover:bg-secondary-200 hover:dark:bg-drkprimary-800`}
+        className={`Nav__items-position space-x-4 px-5 py-4 my-[1rem] mb-auto rounded hover:bg-secondary-200 
+        hover:dark:bg-drkprimary-800`}
       >
         <BoardIcon />
+
         <button
           onClick={() => {
             setBoardMenu(false);
@@ -104,20 +104,25 @@ const SideNav = ({
 
       {/* dark mode switch*/}
       <div 
-        className="w-full h-full mx-auto flex items-end py-[2rem] ">
+        className="Nav__theme-switch-cont ">
 
         <div 
-          className="Nav__theme Nav__items-position border border-lghtaccent dark:border-darksecondary rounded justify-between w-full h-[3rem] mx-auto p-2 dk:p-3 bg-lghtbackground dark:bg-darkbackground">
+          className="Nav__theme Nav__items-position Nav__theme-switch-cont-inner">
+
           <div>
             <LightModeOutlinedIcon className="dark:text-darksecondary"/>
           </div>
+
           <div>
             <DrkMdSwitch checked={isDarkTheme} toggle={toggleMode} />
           </div>
+
           <div>
             <DarkModeOutlinedIcon className="dark:text-darksecondary"/>
           </div>
+
         </div>
+
       </div>
 
 
@@ -140,7 +145,7 @@ const SideNav = ({
           className="relative z-200 shadow-md">
 
           <button
-            className="absolute bottom-[2rem] right-[-4rem] cursor-pointer bg-darkbackground text-white dark:text-lghttext dark:bg-darkprimary rounded p-1 hover:scale-110 transition duration-200"
+            className="SideNav__btn-reveal"
             onClick={handleRevealSideNav}
           >
             <VisibilityIcon 

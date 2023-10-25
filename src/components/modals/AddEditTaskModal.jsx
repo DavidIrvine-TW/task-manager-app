@@ -39,7 +39,7 @@ const AddEditTaskModal = ({
   if (type === "edit" && isFirstLoad) {
     setSubtasks(
       task.subtasks.map((subtask) => {
-        return { ...subtask, id: uuidv4() };
+        return { ...subtask, id: uuidv4()};
       })
     );
     setTaskTitle(task.title);
@@ -144,8 +144,7 @@ const AddEditTaskModal = ({
   return (
     <section
       id="add-edit-task-modal"
-      className="fade-in absolute top-0 right-0 left-0 bottom-0 bg-zinc-500 bg-opacity-50 dark:bg-darkbackground dark:bg-opacity-80 z-20 flex items-center justify-center overflow-y-auto"
-      // click outside to close modal
+      className="Modal"
       onClick={(e) => {
         if (e.target !== e.currentTarget) {
           return;
@@ -155,38 +154,50 @@ const AddEditTaskModal = ({
     >
       <form
         onSubmit={onSubmit}
-        className="w-[345px] tb:w-[480px] rounded bg-lghtbackground  dark:bg-drkbackground-950 shadow-md p-6 overflow-y-visible"
+        className="Modal__form"
       >
-       <div className='flex justify-between items-center mb-[1.5rem] dark:text-drksecondary-700'>
-            <h2 className=" text-l ">
-                {type === "edit" ? "Edit" : "Add New"} Task
-            </h2>
-              <button
-                className='border rounded-full p-1  hover:scale-105'
-                onClick={() => setNewTaskMenu(!newTaskMenu) }
-              ><CloseIcon/></button>
-          </div>
+        <div 
+          className="Modal__form-head">
+          <h2 
+            className=" text-l ">
+            {type === "edit" ? "Edit" : "Add New"} Task
+          </h2>
+
+          <button
+            className="Modal__form-close-btn"
+            onClick={() => setNewTaskMenu(!newTaskMenu)}
+          >
+            <CloseIcon />
+          </button>
+
+        </div>
 
         {/* task title */}
-        <div className="flex flex-col">
-          <label className="mb-[.5rem] text-body-l font-bold dark:text-gray-500">Title*</label>
+        <div 
+          className="flex flex-col">
+          <label
+            className="Modal__formfield-label">
+            Title*
+          </label>
           <input
             value={taskTitle}
             onChange={(e) => setTaskTitle(e.target.value)}
             id="task-title"
             type="text"
-            className="border text-body-l p-2 rounded"
+            className="Modal__form-input Modal__focus"
             placeholder="the task needs a name"
-            
           />
-          <span className="text-red-500 text-body-md mt-[4px]">
+          <span 
+            className="Modal__form-error">
             {taskTitleError}
           </span>
         </div>
 
         {/* task description */}
-        <div className="flex flex-col mt-[1.5rem]">
-          <label className="text-body-l mb-[.5rem] font-bold dark:text-gray-500">
+        <div 
+          className="flex flex-col mt-[1.5rem]">
+          <label 
+            className="Modal__formfield-label">
             Description (optional)
           </label>
           <textarea
@@ -196,20 +207,27 @@ const AddEditTaskModal = ({
             className=" border p-2 max-h-[100px] text-body-l rounded"
             placeholder="enter a brief description of the task"
           />
-          <span className="text-red-500 text-body-md mt-[4px]">
+          <span 
+            className="Modal__form-error">
             {descriptionError}
           </span>
         </div>
 
-          {/* subtasks */}
-        <div className="flex flex-col mt-[1.5rem]">
+        {/* subtasks */}
+        <div 
+          className="flex flex-col mt-[1.5rem]">
           <div>
-            <label className={`${subtaskStyle} text-body-l mb-[.5rem] font-bold dark:text-gray-500`}>Subtasks*</label>
+            <label
+              className={`${subtaskStyle} text-body-l mb-[.5rem] font-bold dark:text-gray-500`}
+            >
+              Subtasks*
+            </label>
 
             {subtasks.map((subtask, index) => (
               <div
                 className="flex gap-[1rem] items-center w-full mb-[.75rem]"
                 key={subtask.id}
+                
               >
                 <input
                   className="border w-full text-body-l p-2 rounded"
@@ -222,29 +240,45 @@ const AddEditTaskModal = ({
                 />
                 <button
                   onClick={() => taskDeleteHandler(subtask.id)}
-                  className="cursor-pointer"
+                  className="cursor-pointer Modal__focus"
                 >
-                  <DeleteForeverOutlinedIcon fontSize="medium" className="hover:text-red-500 hover:scale-110"/>
+                  <DeleteForeverOutlinedIcon
+                    fontSize="medium"
+                    className="Modal__delete "
+                  />
                 </button>
               </div>
             ))}
-            <span className="text-red-500 text-body-md ">{subtaskError}</span>
-            {isDisabled ? (<span className="text-red-500 text-body-md ">Max subtasks (6)</span>):('')}
+            <span 
+              className="Modal__form-error ">
+                {subtaskError}
+            </span>
+
+            {isDisabled ? (
+              <span 
+                className="Modal__form-error">
+                Max subtasks (6)
+              </span>
+            ) : (
+              ""
+            )}
+            
           </div>
 
           <button
             type="button"
             disabled={isDisabled}
-            className="border flex items-center justify-center py-2 rounded text-body-xl font-bold  bg-lghtsecondary hover:bg-secondary-50  dark:bg-drksecondary-300 hover:dark:bg-secondary-200 dark:border-darksecondary"
-            onClick={() => { if(subtasks.length > 5){
-              setIsDisabled(true)
-              return
-            }
+            className="Modal__btn Modal__btn-secondary Modal__focus"
+            onClick={() => {
+              if (subtasks.length > 5) {
+                setIsDisabled(true);
+                return;
+              }
               setSubtasks((state) => [
                 ...state,
                 { title: "", isCompleted: false, id: uuidv4() },
               ]);
-              setIsDisabled(false)
+              setIsDisabled(false);
             }}
           >
             <AddIcon sx={{ fontSize: ".75rem" }} />
@@ -253,8 +287,10 @@ const AddEditTaskModal = ({
         </div>
 
         {/* task status  */}
-        <div className="flex flex-col mt-[1.5rem]">
-          <label className="text-body-l mb-[.5rem] font-bold dark:text-gray-500">
+        <div 
+          className="flex flex-col mt-[1.5rem]">
+          <label 
+            className="Modal__formfield-label ">
             Task Status
           </label>
 
@@ -276,7 +312,7 @@ const AddEditTaskModal = ({
             // setNewTaskMenu(false);
             // type === "edit" && setIsTaskModalOpen(false);
           }}
-          className=" w-full items-center mt-[1.5rem] border py-2 rounded text-body-xl bg-lghtaccent hover:bg-accent-300 text-lghttext dark:bg-drksecondary-800  hover:dark:bg-drksecondary-900 dark:border-darksecondary hover:dark:text-darktext font-bold shadow-md"
+          className="Modal__btn Modal__btn-primary Modal__focus"
         >
           {type === "edit" ? "Update" : "Create Task"}
         </button>

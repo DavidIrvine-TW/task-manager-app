@@ -36,5 +36,6 @@
     .Modal__focus {
         @apply focus:ring focus:ring-lghtaccent focus:outline-none transition-all duration-300
     }
+    
 }
 
