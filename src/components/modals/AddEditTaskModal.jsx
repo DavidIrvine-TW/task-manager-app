@@ -49,8 +49,8 @@ const AddEditTaskModal = ({
   const subTaskHandler = (id, newValue) => {
     setSubtasks((prevState) => {
       const newState = prevState.map((subtask) => {
-        if (subtask.id === id) {
-          return { ...subtask, title: newValue, subtask_id: uuidv4() };
+        if (subtask.subtask_id === id) {
+          return { ...subtask, title: newValue };
         }
         return subtask;
       });
@@ -60,7 +60,7 @@ const AddEditTaskModal = ({
 
 
   const taskDeleteHandler = (id) => {
-    setSubtasks((prevState) => prevState.filter((el) => el.id !== id));
+    setSubtasks((prevState) => prevState.filter((subtask) => subtask.subtask_id !== id));
     setIsDisabled(false)
   };
 
@@ -196,18 +196,20 @@ const AddEditTaskModal = ({
 
         {/* task description */}
         <div 
-          className="flex flex-col mt-[1.5rem]">
+          className="flex flex-col mt-[1.5rem] ">
           <label 
             className="Modal__formfield-label">
             Description (optional)
           </label>
+          <div className="border rounded overflow-hidden">
           <textarea
             value={taskDescription}
             onChange={(e) => setTaskDescription(e.target.value)}
             id="task-description"
-            className=" border p-2 max-h-[100px] text-body-l rounded"
+            className=" border p-2 max-h-[100px] text-body-l rounded w-full  "
             placeholder="enter a brief description of the task"
           />
+          </div>
           <span 
             className="Modal__form-error">
             {descriptionError}
@@ -227,20 +229,22 @@ const AddEditTaskModal = ({
             {subtasks.map((subtask, index) => (
               <div
                 className="flex gap-[1rem] items-center w-full mb-[.75rem]"
-                key={subtask.id}
+                key={subtask.subtask_id}
                 
               >
+                <div className="border rounded flex-grow">
                 <input
                   className="border w-full text-body-l p-2 rounded"
                   onChange={(e) => {
-                    subTaskHandler(subtask.id, e.target.value);
+                    subTaskHandler(subtask.subtask_id, e.target.value);
                   }}
                   type="text"
                   value={subtask.title}
                   placeholder="name your subtask"
                 />
+                </div>
                 <button
-                  onClick={() => taskDeleteHandler(subtask.id)}
+                  onClick={() => taskDeleteHandler(subtask.subtask_id)}
                   className="cursor-pointer Modal__focus"
                 >
                   <DeleteForeverOutlinedIcon
@@ -270,7 +274,7 @@ const AddEditTaskModal = ({
           <button
             type="button"
             disabled={isDisabled}
-            className="Modal__btn Modal__btn-secondary Modal__focus"
+            className="Modal__btn Modal__btn-secondary Modal__focus mt-[.5rem]"
             onClick={() => {
               if (subtasks.length > 5) {
                 setIsDisabled(true);
@@ -278,7 +282,7 @@ const AddEditTaskModal = ({
               }
               setSubtasks((state) => [
                 ...state,
-                { title: "", isCompleted: false, id: uuidv4() },
+                { title: "", isCompleted: false, subtask_id: uuidv4() },
               ]);
               setIsDisabled(false);
             }}
@@ -309,10 +313,10 @@ const AddEditTaskModal = ({
 
         {/* form submit */}
         <button
-          onClick={() => {
+          onClick={(e) => {
             onSubmit(e);
           }}
-          className="Modal__btn Modal__btn-primary Modal__focus"
+          className="Modal__btn Modal__btn-primary Modal__focus w-full mt-[1rem]"
         >
           {type === "edit" ? "Update" : "Create Task"}
         </button>

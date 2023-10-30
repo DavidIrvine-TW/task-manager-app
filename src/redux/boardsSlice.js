@@ -127,8 +127,14 @@ const boardsSlice = createSlice({
 
 
     deleteBoard: (state) => {
-      const board = state.find((board) => board.isActive);
-      state.splice(state.indexOf(board), 1);
+      const deletedBoardIndex = state.findIndex((board) => board.isActive);
+      if(deletedBoardIndex !== -1){
+        const newState = [...state]
+        newState.splice(deletedBoardIndex, 1);
+        return newState
+      } else {
+        return state
+      } 
     },
 
 

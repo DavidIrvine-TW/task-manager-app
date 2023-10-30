@@ -24,7 +24,7 @@ const grabModal = useSelector((state) => state.modal)
       {grabModal.type === 'deleteTask' && <DeleteBoardModal  type="task"/>}
       {grabModal.type === 'deleteEditMenu' && <DeleteEditMenuModal  />}
       {/* {grabModal.type === 'createBoard' && <DeleteEditTaskModal  />} */}
-      {/* {grabModal.type === 'createBoard' && <TaskModal  />} */}
+      {grabModal.type === 'task' && <TaskModal  />}
      
       
       

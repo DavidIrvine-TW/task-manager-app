@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import boardsSlice from "../../redux/boardsSlice";
+import { modalIsOpen } from "../../redux/modalSlice";
 
 const TaskCard = ({ columnIndex, taskIndex , setTaskModalOpen, setTaskColumnIndex, setTaskTaskIndex, provided }) => {
+  
+  const dispatch = useDispatch()
   
   const boards = useSelector((state) => state.boards);
   const board = boards?.find((board) => board.isActive === true);
@@ -13,9 +16,10 @@ const TaskCard = ({ columnIndex, taskIndex , setTaskModalOpen, setTaskColumnInde
   const completedSubtasks = subtasks?.filter((subtask) => subtask.isCompleted);
 
   const handleTaskCardClick = () => {
-    setTaskModalOpen(true);
-    setTaskColumnIndex(columnIndex)
-    setTaskTaskIndex(taskIndex)  
+    // setTaskModalOpen(true);
+    // setTaskColumnIndex(columnIndex)
+    // setTaskTaskIndex(taskIndex) 
+    dispatch(modalIsOpen({type: "task"})) 
   };
 
   return (

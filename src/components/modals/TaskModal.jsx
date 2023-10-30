@@ -4,6 +4,7 @@ import MoreVertTwoToneIcon from "@mui/icons-material/MoreVertTwoTone";
 import DeleteEditTaskModal from "./DeleteEditTaskModal";
 import Subtask from "../boards/Subtask";
 import boardsSlice from "../../redux/boardsSlice";
+import { modalIsClosed } from "../../redux/modalSlice";
 
 const TaskModal = ({
   setTaskModalOpen,
@@ -20,13 +21,13 @@ const TaskModal = ({
   const board = boards.find((board) => board.isActive === true);
   const columns = board.columns;
   const column = columns.find((column, index) => index === columnIndex);
-  const task = column.tasks.find((task, index) => index === taskIndex);
-  const subtasks = task.subtasks;
-  const completedSubtasks = subtasks.filter((subtask) => subtask.isCompleted);
+  // const task = column.tasks.find((task, index) => index === taskIndex);
+  // const subtasks = task.subtasks;
+  // const completedSubtasks = subtasks.filter((subtask) => subtask.isCompleted);
 
   const [ellipsesMenu, setElippsesMenu] = useState(false);
 
-  const [status, setStatus] = useState(task.status);
+  // const [status, setStatus] = useState(task.status);
   const [newStatusIndex, setNewStatusIndex] = useState(columns.indexOf(column));
 
   const onSubmitHandler = (e) => {
@@ -42,10 +43,10 @@ const TaskModal = ({
     setTaskModalOpen(!taskModalOpen);
   };
 
-  const statusHandler = (e) => {
-    setStatus(e.target.value);
-    setNewStatusIndex(e.target.selectedIndex);
-  };
+  // const statusHandler = (e) => {
+  //   setStatus(e.target.value);
+  //   setNewStatusIndex(e.target.selectedIndex);
+  // };
 
   return (
     <section
@@ -56,12 +57,12 @@ const TaskModal = ({
           return;
         }
         // e.stopPropagation();
-        setTaskModalOpen(!taskModalOpen);
+        dispatch(modalIsClosed({type: ""}));
       }}
     >
       <article className="bg-lghtbackground dark:bg-drkbackground-950 shadow-md p-[2rem] rounded tb:w-[480px]">
         <div className="relative flex justify-between items-center dark:text-drksecondary-700">
-          <h1>{task.title}</h1>
+          {/* <h1>{task.title}</h1> */}
           <button
             onClick={(e) => {
               // e.stopPropagation();
@@ -76,7 +77,7 @@ const TaskModal = ({
           {ellipsesMenu ? (
             <DeleteEditTaskModal
               type="edit"
-              title={task.title}
+              // title={task.title}
               setTaskModalOpen={setTaskModalOpen}
               setElippsesMenu={setElippsesMenu}
               setTaskMode={setTaskMode}
@@ -90,15 +91,15 @@ const TaskModal = ({
         </div>
 
         <p className="text-gray-500 font-[600] tracking-wide text-xs pt-6">
-          {task.description ? task.description : "No description"}
+          {/* {task.description ? task.description : "No description"} */}
         </p>
 
         <p className=" pt-6 text-gray-500 tracking-widest text-sm">
-          Subtasks ({completedSubtasks.length} of {subtasks.length})
+          {/* Subtasks ({completedSubtasks.length} of {subtasks.length}) */}
         </p>
 
         <div className=" mt-3 space-y-2">
-          {subtasks.map((subtask, index) => {
+          {/* {subtasks.map((subtask, index) => {
             return (
               <Subtask
                 subtaskIndex={index}
@@ -107,7 +108,7 @@ const TaskModal = ({
                 key={index}
               />
             );
-          })}
+          })} */}
         </div>
 
         <div className="flex flex-col mt-[1.5rem]">
@@ -116,7 +117,7 @@ const TaskModal = ({
           </label>
 
           <select
-            onChange={statusHandler}
+            // onChange={statusHandler}
             value={status}
             className="text-body-md border py-2 px-4 rounded dark:bg-drkbackground-100"
           >

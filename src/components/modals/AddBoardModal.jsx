@@ -50,7 +50,7 @@ const AddEditBoardModal = ({ type }) => {
   };
 
   const onDelete = (id) => {
-    setCreatedColumns((prevState) => prevState.filter((el) => el.id !== id));
+    setCreatedColumns((prevState) => prevState.filter((col) => col.column_id !== id));
     setIsDisabled(false);
   };
 
@@ -60,14 +60,14 @@ const AddEditBoardModal = ({ type }) => {
     setIsValid(true);
 
     if (!boardName.trim()) {
-      setBoardNameError("Enter a board name");
+      setBoardNameError("Required");
       setIsValid(false);
       return false;
     }
 
     const columnValidationPromises = createdColumns.map(async (column) => {
       if (!column.name.trim()) {
-        setCreatedColumnError("Enter a column name");
+        setCreatedColumnError("Required");
         setIsValid(false);
         return false;
       }
@@ -137,13 +137,18 @@ const AddEditBoardModal = ({ type }) => {
               Board Name*
           </label>
 
-          <input
-            onChange={(e) => setBoardName(e.target.value)}
-            value={boardName}
-            className="Modal__form-input Modal__focus"
-            placeholder="eg. web design"
-            id="board-name-input"
-          />
+          <div className="border rounded"> 
+
+            <input
+              onChange={(e) => setBoardName(e.target.value)}
+              value={boardName}
+              className="Modal__form-input Modal__focus"
+              placeholder="eg. web design"
+              id="board-name-input"
+            />
+            
+          </div>
+
           <span 
             className="Modal__form-error">
             {boardNameError}
@@ -164,6 +169,7 @@ const AddEditBoardModal = ({ type }) => {
                   className="flex gap-[1rem] items-center w-full mt-[.5rem] "
                   key={index}
                 >
+                  <div className="border flex-grow rounded">
                   <input
                     className="Modal__form-input Modal__focus"
                     onChange={(e) => {
@@ -173,8 +179,9 @@ const AddEditBoardModal = ({ type }) => {
                     value={column.name}
                     placeholder="e.g. Todo"
                   />
+                  </div>
                   <button
-                    onClick={() => onDelete(column.id)}
+                    onClick={() => onDelete(column.column_id)}
                     className="cursor-pointer Modal__focus"
                   >
                     <DeleteForeverOutlinedIcon fontSize="medium" className="Modal__delete "/>

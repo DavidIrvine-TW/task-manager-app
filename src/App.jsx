@@ -1,13 +1,14 @@
 import { useState } from "react";
-import Nav from "./components/navbar/Nav";
+import { DragDropContext } from '@hello-pangea/dnd';
 import { useSelector, useDispatch } from "react-redux";
+import Nav from "./components/navbar/Nav";
 import Sidebar from "./components/navbar/SideNav";
 import ScrollContainer from "react-indiana-drag-scroll";
-import { DragDropContext } from '@hello-pangea/dnd';
 import boardsSlice from "./redux/boardsSlice";
 import AllModals from './components/modals/AllModals'
 import Column from './components/boards/Column'
 import AddIcon from "@mui/icons-material/Add";
+import EmptyBoard from "./components/emptyBoard/EmptyBoard"
 
 
 function App() {

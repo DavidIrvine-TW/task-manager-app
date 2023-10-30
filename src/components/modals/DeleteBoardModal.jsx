@@ -1,6 +1,6 @@
 import React from "react";
 import boardsSlice from "../../redux/boardsSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { modalIsClosed, modalIsOpen } from "../../redux/modalSlice";
 
 const DeleteBoardModal = ({
@@ -10,16 +10,21 @@ const DeleteBoardModal = ({
   taskIndex,
   columnIndex,
 }) => {
+
   const dispatch = useDispatch();
+  const board = useSelector((state) => state.boards).find(
+    (board) => board.isActive
+  );
 
   const deleteBoardHandler = (e) => {
     if (type === "board") {
       dispatch(boardsSlice.actions.deleteBoard());
       dispatch(boardsSlice.actions.setBoardActive({ index: 0 }));
-      setDeleteBoardModal(false);
+      dispatch(modalIsClosed({type: ""}));
     } else {
       dispatch(boardsSlice.actions.deleteTask({ taskIndex, columnIndex }));
       setDeleteBoardModal(false);
+      dispatch(modalIsClosed({type: ""}));
     }
   };
 
@@ -35,20 +40,16 @@ const DeleteBoardModal = ({
       }}
     >
       <article className=" w-[345px] tb:w-[480px] rounded bg-white dark:bg-drkbackground-950 shadow-md p-6">
-        {/* <p className="mb-[.5rem] font-bold text-l ">
-          {deleteMode === "board"
-            ? `Board`
-            : `Task`}
-        </p> */}
+       
         <p className="mb-[1.5rem] text-lghtprimary font-bold text-l ">
-          {/* {deleteMode === "board"
-            ?  `${boardName}?`
-            : ` ${deleteMode.taskTitle}?`} */}
+          {type === "board"
+            ?  `Delete ${board.name}?`
+            : ` ${deleteMode.taskTitle}?`}
         </p>
 
         <p className="mb-[1.5rem] text-body-l dark:text-gray-500">
           {type === "board"
-            ? `Are you sure you want to delete the ‘${boardName}’ board? This action will remove all columns and tasks and cannot be reversed.`
+            ? `Are you sure you want to delete the ‘${board.name}’ board? This action will remove all columns and tasks and cannot be reversed.`
             : `Are you sure you want to delete the ‘${'deleteMode.taskTitle'}’ task and its subtasks? This action cannot be reversed.`}
         </p>
 
