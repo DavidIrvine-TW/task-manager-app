@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import data from "../../src/data/data.json";
+
 import modifiedData from "../data/modifyData";
+import { v4 as uuidv4 } from "uuid";
 
 const getLocalStorageData = () => {
   const modifiedData = localStorage.getItem("Kanban");
@@ -35,10 +36,19 @@ const boardsSlice = createSlice({
 
     addTask: (state, action) => {
       const { taskTitle, status, taskDescription, subtasks, statusIndex, taskId } = action.payload;
-      const tasks = { id: taskId, title: taskTitle, description: taskDescription, subtasks: subtasks, status: status }; // newtask to be added
-      const board = state.find((board) => board.isActive);// find active board
-      const column = board.columns.find((column, index) => index === statusIndex);// find column by status eg todo = index 0'
-      column.tasks.push(tasks);// adds to columns[0] by default.
+      return state.map(board => {
+        if(board.isActive){
+          const updatedColumns = board.columns.map((col, i) => {
+            if(i === statusIndex) {
+              const updatedTasks = [...col.tasks, { task_id: taskId, title: taskTitle, description: taskDescription, subtasks: subtasks, status: status }]
+              return {...col, tasks: updatedTasks}
+            }
+            return col
+          })
+          return {...board, columns: updatedColumns}
+        }
+        return board
+      })
     },
 
 
@@ -106,10 +116,13 @@ const boardsSlice = createSlice({
 
 
     editBoard: (state, action) => {
-      const payload = action.payload;
-      const board = state.find((board) => board.isActive);
-      board.name = payload.boardName;
-      board.columns = payload.createdColumns;
+      const {boardName, createdColumns} = action.payload;
+      return state.map(board => {
+        if(board.isActive){
+          return {...board, name: boardName, columns: createdColumns}
+        }
+        return board
+      })
     },
 
 
@@ -145,16 +158,18 @@ const boardsSlice = createSlice({
 
    
     addBoard: (state, action) => {
-      const isActive = state.length > 0 ? false : true;
-      const payload = action.payload;
+      
+      const isActive = state.length > 0 ? false : true; // if no boards, initial board is active
+      const {boardName, createdColumns} = action.payload; 
       const board = {
-        name: payload.boardName,
-        isActive,
-        columns: [],
+        name: boardName, 
+        isActive, 
+        columns: createdColumns, 
+        board_id: uuidv4()
       };
-      board.columns = payload.createdColumns;
-      state.push(board);
-    },    
+      return [...state, board]; 
+    },
+    
   },
 });
 

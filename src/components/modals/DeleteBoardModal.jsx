@@ -1,18 +1,19 @@
 import React from "react";
 import boardsSlice from "../../redux/boardsSlice";
 import { useDispatch } from "react-redux";
+import { modalIsClosed, modalIsOpen } from "../../redux/modalSlice";
 
 const DeleteBoardModal = ({
   setDeleteBoardModal,
   boardName,
-  deleteMode,
+  type,
   taskIndex,
   columnIndex,
 }) => {
   const dispatch = useDispatch();
 
   const deleteBoardHandler = (e) => {
-    if (deleteMode === "board") {
+    if (type === "board") {
       dispatch(boardsSlice.actions.deleteBoard());
       dispatch(boardsSlice.actions.setBoardActive({ index: 0 }));
       setDeleteBoardModal(false);
@@ -30,7 +31,7 @@ const DeleteBoardModal = ({
         if (e.target !== e.currentTarget) {
           return;
         }
-        setDeleteBoardModal(false);
+        dispatch(modalIsClosed({type: ""}));
       }}
     >
       <article className=" w-[345px] tb:w-[480px] rounded bg-white dark:bg-drkbackground-950 shadow-md p-6">
@@ -40,15 +41,15 @@ const DeleteBoardModal = ({
             : `Task`}
         </p> */}
         <p className="mb-[1.5rem] text-lghtprimary font-bold text-l ">
-          {deleteMode === "board"
+          {/* {deleteMode === "board"
             ?  `${boardName}?`
-            : ` ${deleteMode.taskTitle}?`}
+            : ` ${deleteMode.taskTitle}?`} */}
         </p>
 
         <p className="mb-[1.5rem] text-body-l dark:text-gray-500">
-          {deleteMode === "board"
+          {type === "board"
             ? `Are you sure you want to delete the ‘${boardName}’ board? This action will remove all columns and tasks and cannot be reversed.`
-            : `Are you sure you want to delete the ‘${deleteMode.taskTitle}’ task and its subtasks? This action cannot be reversed.`}
+            : `Are you sure you want to delete the ‘${'deleteMode.taskTitle'}’ task and its subtasks? This action cannot be reversed.`}
         </p>
 
         <div className="flex flex-col  w-full gap-[1rem]">
@@ -56,11 +57,11 @@ const DeleteBoardModal = ({
             onClick={deleteBoardHandler}
             className="border py-2 rounded bg-lghtprimary hover:bg-primary-400 text-darktext font-bold shadow-md dark:border-darksecondary"
           >
-            {deleteMode === "board" ? 'Delete Board' : 'Delete Task'}   
+            {type === "board" ? 'Delete Board' : 'Delete Task'}   
           </button>
 
           <button
-            onClick={() => setDeleteBoardModal(false)}
+            onClick={() => dispatch(modalIsClosed({type: ""}))}
             className="py-2 rounded hover:underline dark:text-darktext"
           >
             Cancel

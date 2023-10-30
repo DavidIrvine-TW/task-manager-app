@@ -5,10 +5,9 @@ import AddIcon from "@mui/icons-material/Add";
 import { useDispatch, useSelector } from "react-redux";
 import boardsSlice from "../../redux/boardsSlice";
 import CloseIcon from '@mui/icons-material/Close';
+import { modalIsClosed } from "../../redux/modalSlice";
 
 const AddEditTaskModal = ({
-  setNewTaskMenu,
-  newTaskMenu,
   type,
   taskIndex,
   columnIndex = 0
@@ -36,22 +35,22 @@ const AddEditTaskModal = ({
   const [status, setStatus] = useState(columns[columnIndex]?.name);
   const [statusIndex, setStatusIndex] = useState(columnIndex);
 
-  if (type === "edit" && isFirstLoad) {
-    setSubtasks(
-      task.subtasks.map((subtask) => {
-        return { ...subtask, id: uuidv4()};
-      })
-    );
-    setTaskTitle(task.title);
-    setTaskDescription(task.description);
-    setIsFirstLoad(false);
-  }
+  // if (type === "edit" && isFirstLoad) {
+  //   setSubtasks(
+  //     task.subtasks.map((subtask) => {
+  //       return { ...subtask, id: uuidv4()};
+  //     })
+  //   );
+  //   setTaskTitle(task.title);
+  //   setTaskDescription(task.description);
+  //   setIsFirstLoad(false);
+  // }
   
   const subTaskHandler = (id, newValue) => {
     setSubtasks((prevState) => {
       const newState = prevState.map((subtask) => {
         if (subtask.id === id) {
-          return { ...subtask, title: newValue };
+          return { ...subtask, title: newValue, subtask_id: uuidv4() };
         }
         return subtask;
       });
@@ -135,7 +134,7 @@ const AddEditTaskModal = ({
             columnIndex
           }));
       }
-      setNewTaskMenu(false);
+      dispatch(modalIsClosed({type: ""}));
     }
   };
 
@@ -149,7 +148,7 @@ const AddEditTaskModal = ({
         if (e.target !== e.currentTarget) {
           return;
         }
-        setNewTaskMenu(false);
+        dispatch(modalIsClosed({type: ''}))
       }}
     >
       <form
@@ -165,7 +164,7 @@ const AddEditTaskModal = ({
 
           <button
             className="Modal__form-close-btn"
-            onClick={() => setNewTaskMenu(!newTaskMenu)}
+            onClick={() => dispatch(modalIsClosed({type: ""}))}
           >
             <CloseIcon />
           </button>
@@ -179,14 +178,16 @@ const AddEditTaskModal = ({
             className="Modal__formfield-label">
             Title*
           </label>
-          <input
-            value={taskTitle}
-            onChange={(e) => setTaskTitle(e.target.value)}
-            id="task-title"
-            type="text"
-            className="Modal__form-input Modal__focus"
-            placeholder="the task needs a name"
-          />
+          <div className="border">
+            <input
+              value={taskTitle}
+              onChange={(e) => setTaskTitle(e.target.value)}
+              id="task-title"
+              type="text"
+              className="Modal__form-input Modal__focus"
+              placeholder="the task needs a name"
+            />
+          </div>
           <span 
             className="Modal__form-error">
             {taskTitleError}
@@ -218,7 +219,7 @@ const AddEditTaskModal = ({
           className="flex flex-col mt-[1.5rem]">
           <div>
             <label
-              className={`${subtaskStyle} text-body-l mb-[.5rem] font-bold dark:text-gray-500`}
+              className={`${subtaskStyle} Modal__formfield-label`}
             >
               Subtasks*
             </label>
@@ -249,6 +250,7 @@ const AddEditTaskModal = ({
                 </button>
               </div>
             ))}
+
             <span 
               className="Modal__form-error ">
                 {subtaskError}
@@ -309,8 +311,6 @@ const AddEditTaskModal = ({
         <button
           onClick={() => {
             onSubmit(e);
-            // setNewTaskMenu(false);
-            // type === "edit" && setIsTaskModalOpen(false);
           }}
           className="Modal__btn Modal__btn-primary Modal__focus"
         >

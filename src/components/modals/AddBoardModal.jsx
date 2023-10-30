@@ -5,8 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import AddIcon from "@mui/icons-material/Add";
 import boardsSlice from "../../redux/boardsSlice";
 import CloseIcon from "@mui/icons-material/Close";
+import { modalIsClosed } from "../../redux/modalSlice";
 
-const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
+const AddEditBoardModal = ({ type }) => {
   
   const dispatch = useDispatch();
 
@@ -25,8 +26,6 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
     },
   ]);
 
-
-
   const board = useSelector((state) => state.boards).find(
     (board) => board.isActive
   );
@@ -34,7 +33,7 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
   if (type === "edit" && isFirstLoad) {
     setCreatedColumns(
       board.columns.map((col) => {
-        return { ...col, id: uuidv4() };
+        return { ...col};
       })
     );
     setBoardName(board.name);
@@ -44,7 +43,7 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
   const onChange = (id, newValue) => {
     setCreatedColumns((prevState) => {
       const newState = [...prevState];
-      const column = newState.find((col) => col.id === id);
+      const column = newState.find((col) => col.column_id === id);
       column.name = newValue;
       return newState;
     });
@@ -66,23 +65,18 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
       return false;
     }
 
-    // Asynchronously validate columns
     const columnValidationPromises = createdColumns.map(async (column) => {
       if (!column.name.trim()) {
         setCreatedColumnError("Enter a column name");
         setIsValid(false);
         return false;
       }
-    });
-
-    // Wait for all column validations to complete
+    }); 
+    
     const columnValidationResults = await Promise.all(columnValidationPromises);
-
-    // Check if any validation failed
     if (columnValidationResults.includes(false)) {
       return false;
     }
-
     return true;
   };
 
@@ -95,7 +89,7 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
       } else if (type === "edit") {
         dispatch(boardsSlice.actions.editBoard({ boardName, createdColumns }));
       }
-      setCreateBoardMenu(false);
+        dispatch(modalIsClosed({type: ""}));
     }
   };
 
@@ -110,8 +104,7 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
         if (e.target !== e.currentTarget) {
           return;
         }
-        setCreateBoardMenu(false);
-        setBoardMode("");
+        dispatch(modalIsClosed({type: ''}));
       }}
     >
       <form
@@ -128,7 +121,9 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
 
           <button
             className="Modal__form-close-btn Modal__focus"
-            onClick={() => setCreateBoardMenu(false)}
+            onClick={() =>  
+              dispatch(modalIsClosed({type: ''}))
+            }
           >
             <CloseIcon />
           </button>
@@ -172,7 +167,7 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
                   <input
                     className="Modal__form-input Modal__focus"
                     onChange={(e) => {
-                      onChange(column.id, e.target.value);
+                      onChange(column.column_id, e.target.value);
                     }}
                     type="text"
                     value={column.name}
@@ -189,7 +184,7 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
             })}
 
             <span 
-              className="addEditModal__form-error ">
+              className="Modal__form-error ">
               {createdColumnsError}
             </span>
 
@@ -217,7 +212,7 @@ const AddEditBoardModal = ({ setCreateBoardMenu, type, setBoardMode }) => {
                 }
                 setCreatedColumns((state) => [
                   ...state,
-                  { name: "", tasks: [], id: uuidv4() },
+                  { name: "", tasks: [], column_id: uuidv4() },
                 ]);
                 setIsDisabled(false);
               }}

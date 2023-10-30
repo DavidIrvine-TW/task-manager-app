@@ -22,6 +22,7 @@ const Column = ({
   ];
 
   const [randomColor, setRandomColor] = useState("");
+  
   const getRandomColor = () => {
     const randomIndex = Math.floor(Math.random() * colors.length);
     return colors[randomIndex];
@@ -30,6 +31,7 @@ const Column = ({
     const color = getRandomColor();
     setRandomColor(color);
   }, []);
+
 
   return (
     <article
@@ -42,7 +44,7 @@ const Column = ({
         </p>
       </div>
 
-      <Droppable droppableId={columnIndex.toString()}>
+      <Droppable droppableId={column.column_id}>
         {(droppableProvided) => (
 
           <div
@@ -59,7 +61,7 @@ const Column = ({
 
               <Draggable
                 key={index}
-                draggableId={task.id.toString()}
+                draggableId={task.task_id}
                 index={index}
               >
 

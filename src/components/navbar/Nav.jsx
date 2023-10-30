@@ -2,7 +2,8 @@ import ViewKanbanSharpIcon from "@mui/icons-material/ViewKanbanSharp";
 import MoreVertTwoToneIcon from "@mui/icons-material/MoreVertTwoTone";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
 import AddIcon from "@mui/icons-material/Add";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { modalIsOpen } from "../../redux/modalSlice";
 
 const Nav = ({
   boardMenu,
@@ -13,6 +14,7 @@ const Nav = ({
   setTaskMode,
 }) => {
   
+  const dispatch = useDispatch()
   const board = useSelector((state) => state.boards).find(
     (board) => board.isActive
   );
@@ -61,7 +63,7 @@ const Nav = ({
 
             <button
               className="tb:hidden flex items-center"
-              onClick={() => setBoardMenu(!boardMenu)}
+              onClick={() => dispatch(modalIsOpen({type: "mobileMenu"}))}
             >
               <h2 
                 className="Nav__theme-txt max-w-[200px] font-bold tb:text-l dk:text-xl fade-in truncate">
@@ -90,8 +92,7 @@ const Nav = ({
             {/* Add a task */}
             <button
               onClick={() => {
-                setNewTaskMenu(true);
-                setTaskMode("add");
+                dispatch(modalIsOpen({type: 'addNew'}))
               }}
               className="Nav__btn-theme p-2 tb:px-4 tb:py-3  rounded-full tb:rounded flex items-center justify-center shadow-md"
             >
@@ -105,9 +106,9 @@ const Nav = ({
               </span>
             </button>
 
-            {/* delete/edit board */}
+            {/* elip menu */}
             <button
-              onClick={() => setElippsesMenu(!ellipsesMenu)}
+              onClick={() => dispatch(modalIsOpen({type: "deleteEditMenu"}))}
               className="p-1"
             >
               <MoreVertTwoToneIcon
@@ -115,6 +116,7 @@ const Nav = ({
                 className="Nav__theme-txt hover:text-darktext hover:scale-105"
               />
             </button>
+            
           </div>
         )}
 
