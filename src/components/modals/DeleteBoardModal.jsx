@@ -8,6 +8,7 @@ const DeleteBoardModal = ({
   boardName,
   type,
   taskIndex,
+  modalDetail,
   columnIndex,
 }) => {
 
@@ -44,13 +45,13 @@ const DeleteBoardModal = ({
         <p className="mb-[1.5rem] text-lghtprimary font-bold text-l ">
           {type === "board"
             ?  `Delete ${board.name}?`
-            : ` ${deleteMode.taskTitle}?`}
+            : `Delete ${modalDetail.title}?`}
         </p>
 
         <p className="mb-[1.5rem] text-body-l dark:text-gray-500">
           {type === "board"
             ? `Are you sure you want to delete the ‘${board.name}’ board? This action will remove all columns and tasks and cannot be reversed.`
-            : `Are you sure you want to delete the ‘${'deleteMode.taskTitle'}’ task and its subtasks? This action cannot be reversed.`}
+            : `Are you sure you want to delete the ‘${modalDetail.title}’ task and its subtasks? This action cannot be reversed.`}
         </p>
 
         <div className="flex flex-col  w-full gap-[1rem]">

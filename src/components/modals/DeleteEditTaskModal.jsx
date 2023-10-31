@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { modalIsClosed, modalIsOpen } from "../../redux/modalSlice";
 
-const DeleteEditMenuModal = ({ setElippsesMenu, setTaskModalOpen, setTaskMode, setNewTaskMenu , setDeleteMode, setDeleteBoardModal, title}) => {
+const DeleteEditMenuModal = ({ setElippsesMenu, setTaskModalOpen, setTaskMode, setNewTaskMenu , setDeleteMode, setDeleteBoardModal, modalDetail, title}) => {
 
     const dispatch = useDispatch()
 
@@ -36,7 +36,7 @@ const DeleteEditMenuModal = ({ setElippsesMenu, setTaskModalOpen, setTaskMode, s
                 // setDeleteMode({type: "task", taskTitle: title})
                 // setTaskModalOpen(false)
                 dispatch(modalIsClosed({type: ""}))
-                dispatch(modalIsOpen({type: "deleteTask"}))
+                dispatch(modalIsOpen({type: "deleteTask", modalDetail: modalDetail}))
               }}
               className="text-lghtprimary font-bold w-[150px] py-1 px-2 text-left hover:underline"
               >

@@ -40,7 +40,8 @@ const boardsSlice = createSlice({
         if(board.isActive){
           const updatedColumns = board.columns.map((col, i) => {
             if(i === statusIndex) {
-              const updatedTasks = [...col.tasks, { task_id: taskId, title: taskTitle, description: taskDescription, subtasks: subtasks, status: status }]
+              const updatedTasks = [...col.tasks, 
+                { task_id: taskId, title: taskTitle, description: taskDescription, subtasks: subtasks, status: status }]
               return {...col, tasks: updatedTasks}
             }
             return col

@@ -85,6 +85,7 @@ const TaskModal = ({
               setNewTaskMenu={setNewTaskMenu}
               setDeleteMode={setDeleteMode}
               setDeleteBoardModal={setDeleteBoardModal}
+              modalDetail={modalDetail}
             />
           ) : (
             ""
