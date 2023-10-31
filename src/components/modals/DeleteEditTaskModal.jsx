@@ -1,7 +1,9 @@
-
+import { useDispatch } from "react-redux";
+import { modalIsClosed, modalIsOpen } from "../../redux/modalSlice";
 
 const DeleteEditMenuModal = ({ setElippsesMenu, setTaskModalOpen, setTaskMode, setNewTaskMenu , setDeleteMode, setDeleteBoardModal, title}) => {
 
+    const dispatch = useDispatch()
 
 
     return (
@@ -15,9 +17,11 @@ const DeleteEditMenuModal = ({ setElippsesMenu, setTaskModalOpen, setTaskMode, s
             <button
               onClick={() => {
                 setElippsesMenu(false)
-                setNewTaskMenu(true)
-                setTaskMode('edit')
-                setTaskModalOpen(false)
+                // setNewTaskMenu(true)
+                // setTaskMode('edit')
+                // setTaskModalOpen(false)
+                dispatch(modalIsClosed({type: ""}))
+                dispatch(modalIsOpen({type: "editTask"}))
                 
               }}
               className=" font-bold w-[150px] py-1 px-2 text-left hover:underline dark:text-darktext"
@@ -28,9 +32,11 @@ const DeleteEditMenuModal = ({ setElippsesMenu, setTaskModalOpen, setTaskMode, s
             <button 
               onClick={() => {
                 setElippsesMenu(false)
-                setDeleteBoardModal(true)
-                setDeleteMode({type: "task", taskTitle: title})
-                setTaskModalOpen(false)
+                // setDeleteBoardModal(true)
+                // setDeleteMode({type: "task", taskTitle: title})
+                // setTaskModalOpen(false)
+                dispatch(modalIsClosed({type: ""}))
+                dispatch(modalIsOpen({type: "deleteTask"}))
               }}
               className="text-lghtprimary font-bold w-[150px] py-1 px-2 text-left hover:underline"
               >

@@ -14,20 +14,22 @@ const TaskModal = ({
   setNewTaskMenu,
   setTaskMode,
   setDeleteMode,
-  setDeleteBoardModal
+  setDeleteBoardModal,
+  modalDetail
 }) => {
+ 
   const dispatch = useDispatch();
   const boards = useSelector((state) => state.boards);
   const board = boards.find((board) => board.isActive === true);
   const columns = board.columns;
   const column = columns.find((column, index) => index === columnIndex);
-  // const task = column.tasks.find((task, index) => index === taskIndex);
-  // const subtasks = task.subtasks;
-  // const completedSubtasks = subtasks.filter((subtask) => subtask.isCompleted);
+  const task = modalDetail;
+  const subtasks = task.subtasks;
+  const completedSubtasks = subtasks.filter((subtask) => subtask.isCompleted);
 
   const [ellipsesMenu, setElippsesMenu] = useState(false);
 
-  // const [status, setStatus] = useState(task.status);
+  const [status, setStatus] = useState(task.status);
   const [newStatusIndex, setNewStatusIndex] = useState(columns.indexOf(column));
 
   const onSubmitHandler = (e) => {
@@ -56,16 +58,14 @@ const TaskModal = ({
         if (e.target !== e.currentTarget) {
           return;
         }
-        // e.stopPropagation();
         dispatch(modalIsClosed({type: ""}));
       }}
     >
       <article className="bg-lghtbackground dark:bg-drkbackground-950 shadow-md p-[2rem] rounded tb:w-[480px]">
         <div className="relative flex justify-between items-center dark:text-drksecondary-700">
-          {/* <h1>{task.title}</h1> */}
+          <h1>{task.title}</h1>
           <button
             onClick={(e) => {
-              // e.stopPropagation();
               setElippsesMenu(!ellipsesMenu);
             }}
           >
@@ -74,10 +74,11 @@ const TaskModal = ({
               className="text-lghttext dark:text-gray-500 hover:dark:text-darktext"
             />
           </button>
+
           {ellipsesMenu ? (
             <DeleteEditTaskModal
               type="edit"
-              // title={task.title}
+              title={task.title}
               setTaskModalOpen={setTaskModalOpen}
               setElippsesMenu={setElippsesMenu}
               setTaskMode={setTaskMode}
@@ -91,24 +92,23 @@ const TaskModal = ({
         </div>
 
         <p className="text-gray-500 font-[600] tracking-wide text-xs pt-6">
-          {/* {task.description ? task.description : "No description"} */}
+          {task.description ? task.description : "No description"}
         </p>
 
         <p className=" pt-6 text-gray-500 tracking-widest text-sm">
-          {/* Subtasks ({completedSubtasks.length} of {subtasks.length}) */}
+          Subtasks ({completedSubtasks.length} of {subtasks.length})
         </p>
 
         <div className=" mt-3 space-y-2">
-          {/* {subtasks.map((subtask, index) => {
+          {subtasks.map((subtask, index) => {
             return (
               <Subtask
                 subtaskIndex={index}
-                taskIndex={taskIndex}
-                columnIndex={columnIndex}
                 key={index}
+                task={task}
               />
             );
-          })} */}
+          })}
         </div>
 
         <div className="flex flex-col mt-[1.5rem]">

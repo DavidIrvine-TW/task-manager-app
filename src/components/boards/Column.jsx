@@ -71,9 +71,10 @@ const Column = ({
                     taskIndex={index}
                     columnIndex={columnIndex}
                     setTaskColumnIndex={setTaskColumnIndex}
-                    setTaskModalOpen={setTaskModalOpen}
+                    // setTaskModalOpen={setTaskModalOpen}
                     setTaskTaskIndex={setTaskTaskIndex}
                     provided={draggableProvided}
+                    taskData={task}
                   />
                 )}
 
