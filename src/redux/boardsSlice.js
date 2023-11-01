@@ -17,12 +17,12 @@ const boardsSlice = createSlice({
   reducers: {
 
     setSubtaskCompleted: (state, action) => {
-      const payload = action.payload;
-      const board = state.find((board) => board.isActive);
-      const col = board.columns.find((col, i) => i === payload.columnIndex);
-      const task = col.tasks.find((task, i) => i === payload.taskIndex);
-      const subtask = task.subtasks.find((subtask, i) => i === payload.subtaskIndex);
-      subtask.isCompleted = !subtask.isCompleted;
+      // const {subtaskId} = action.payload;
+      // const board = state.find((board) => board.isActive);
+      // const col = board.columns.find((col, i) => i === payload.columnIndex);
+      // const task = col.tasks.find((task, i) => i === payload.taskIndex);
+      // const subtask = task.subtasks.find((subtask, i) => i === payload.subtaskIndex);
+      // subtask.isCompleted = !subtask.isCompleted;
     },
 
 
@@ -167,17 +167,21 @@ const boardsSlice = createSlice({
     addBoard: (state, action) => {
       
       const isActive = state.length > 0 ? false : true; // if no boards, initial board is active
+
       const {boardName, createdColumns} = action.payload; 
+
       const board = {
         name: boardName, 
         isActive, 
         columns: createdColumns, 
         board_id: uuidv4()
       };
+
       return [...state, board]; 
-    },
-    
+    },    
   },
+
+  
 });
 
 export default boardsSlice;

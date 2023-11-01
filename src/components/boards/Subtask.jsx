@@ -6,12 +6,13 @@ const Subtask = ({subtaskIndex, task}) => {
 
     const dispatch = useDispatch();
     
-    const subtask = task.subtasks.find((subtask, i) => i === subtaskIndex);
-    const checked = subtask.isCompleted;
+    // const subtask = task.subtasks.find((subtask, i) => i === subtaskIndex);
 
-    const onChange = (e) => {
+    const checked = task.isCompleted;
+
+    const onChange = (id) => {
       dispatch(
-        boardsSlice.actions.setSubtaskCompleted({ subtaskIndex, taskIndex, columnIndex })
+        boardsSlice.actions.setSubtaskCompleted({ subtaskId: id})
       );
     };
 
@@ -22,12 +23,12 @@ const Subtask = ({subtaskIndex, task}) => {
         className=" w-4 h-4 cursor-pointer "
         type="checkbox"
         checked={checked}
-        onChange={onChange}
+        onChange={onChange(task.subtask_id)}
       />
       <p 
       className={checked ? " line-through opacity-30 text-body-md " : "text-body-md"}
       >
-      {subtask.title}
+      {task.title}
       </p>
     </div>
   )

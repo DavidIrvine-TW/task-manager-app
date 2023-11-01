@@ -106,7 +106,8 @@ const TaskModal = ({
               <Subtask
                 subtaskIndex={index}
                 key={index}
-                task={task}
+                task={subtask}
+                id={subtask.subtask_id}
               />
             );
           })}

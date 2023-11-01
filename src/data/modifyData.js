@@ -1,3 +1,4 @@
+
 import { v4 as uuidv4 } from "uuid";
 import initialData from './data.json';
 
@@ -7,7 +8,10 @@ const addUniqueIds = (data) => {
     board.columns.forEach((column) => {
       column.column_id = uuidv4(); 
       column.tasks.forEach((task) => {
-        task.task_id = uuidv4(); 
+        task.task_id = uuidv4();
+        task.subtasks.forEach((subtask) => {
+          subtask.subtask_id = uuidv4();
+        });
       });
     });
   });

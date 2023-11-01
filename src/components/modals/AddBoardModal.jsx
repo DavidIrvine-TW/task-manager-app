@@ -55,6 +55,7 @@ const AddEditBoardModal = ({ type }) => {
   };
 
   const formValidate = async () => {
+
     setCreatedColumnError("");
     setBoardNameError("");
     setIsValid(true);
@@ -78,11 +79,15 @@ const AddEditBoardModal = ({ type }) => {
       return false;
     }
     return true;
+
   };
 
   const onSubmit = async (e) => {
+
     e.preventDefault();
+
     const isFormValid = await formValidate();
+    
     if (isFormValid) {
       if (type === "add") {
         dispatch(boardsSlice.actions.addBoard({ boardName, createdColumns }));
