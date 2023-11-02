@@ -6,54 +6,53 @@ import Subtask from "../boards/Subtask";
 import boardsSlice from "../../redux/boardsSlice";
 import { modalIsClosed } from "../../redux/modalSlice";
 
-const TaskModal = ({
-  setTaskModalOpen,
-  columnIndex,
-  taskIndex,
-  taskModalOpen,
-  setNewTaskMenu,
-  setTaskMode,
-  setDeleteMode,
-  setDeleteBoardModal,
-  modalDetail
-}) => {
+const TaskModal = ({ modalDetail }) => {
  
   const dispatch = useDispatch();
+
   const boards = useSelector((state) => state.boards);
   const board = boards.find((board) => board.isActive === true);
   const columns = board.columns;
-  const column = columns.find((column, index) => index === columnIndex);
-  const task = modalDetail;
+  const column = columns.find((column, index) => index === modalDetail.columnIndex);
+  const task = column.tasks.find((task, index) => index === modalDetail.taskIndex);
+  console.log(task)
   const subtasks = task.subtasks;
   const completedSubtasks = subtasks.filter((subtask) => subtask.isCompleted);
 
   const [ellipsesMenu, setElippsesMenu] = useState(false);
 
-  const [status, setStatus] = useState(task.status);
-  const [newStatusIndex, setNewStatusIndex] = useState(columns.indexOf(column));
+  const [currentStatus, setStatus] = useState(task.status);
+  console.log(task.status)
+  console.log(task.name)
+  const [newIndex, setNewStatusIndex] = useState(columns.indexOf(column));
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
     dispatch(
       boardsSlice.actions.setTaskStatus({
-        taskIndex,
-        columnIndex,
-        newStatusIndex,
-        status,
+        taskIndex: modalDetail.taskIndex,
+        columnIndex: modalDetail.columnIndex,
+        newIndex,
+        currentStatus,
       })
     );
-    setTaskModalOpen(!taskModalOpen);
+    dispatch(modalIsClosed({type: ""}))
   };
 
-  // const statusHandler = (e) => {
-  //   setStatus(e.target.value);
-  //   setNewStatusIndex(e.target.selectedIndex);
-  // };
+  const statusHandler = (e) => {
+    setStatus(e.target.value);
+    setNewStatusIndex(e.target.selectedIndex);
+  };
+
+
+
+  console.log(subtasks)
 
   return (
     <section
       id="task-modal"
-      className="fade-in absolute top-0 right-0 left-0 bottom-0 bg-zinc-500 bg-opacity-50 dark:bg-darkbackground dark:bg-opacity-80 flex items-center justify-center cursor-default z-20 "
+      className="fade-in absolute top-0 right-0 left-0 bottom-0 bg-zinc-500 bg-opacity-50 dark:bg-darkbackground 
+      dark:bg-opacity-80 flex items-center justify-center cursor-default z-20"
       onClick={(e) => {
         if (e.target !== e.currentTarget) {
           return;
@@ -79,12 +78,7 @@ const TaskModal = ({
             <DeleteEditTaskModal
               type="edit"
               title={task.title}
-              setTaskModalOpen={setTaskModalOpen}
               setElippsesMenu={setElippsesMenu}
-              setTaskMode={setTaskMode}
-              setNewTaskMenu={setNewTaskMenu}
-              setDeleteMode={setDeleteMode}
-              setDeleteBoardModal={setDeleteBoardModal}
               modalDetail={modalDetail}
             />
           ) : (
@@ -105,9 +99,9 @@ const TaskModal = ({
             return (
               <Subtask
                 subtaskIndex={index}
-                key={index}
-                task={subtask}
-                id={subtask.subtask_id}
+                taskIndex={modalDetail.taskIndex}
+                columnIndex={modalDetail.columnIndex}
+                key={subtasks.subtask_id}
               />
             );
           })}
@@ -119,8 +113,8 @@ const TaskModal = ({
           </label>
 
           <select
-            // onChange={statusHandler}
-            value={status}
+            onChange={statusHandler}
+            value={currentStatus}
             className="text-body-md border py-2 px-4 rounded dark:bg-drkbackground-100"
           >
             {columns.map((column, index) => (
@@ -128,6 +122,8 @@ const TaskModal = ({
             ))}
           </select>
         </div>
+
+
         <div>
           <button
             className="border py-2 rounded bg-lghtaccent hover:bg-accent-300 dark:bg-drksecondary-800  hover:dark:bg-drksecondary-900 dark:border-darksecondary hover:dark:text-darktext  text-lghttext font-bold shadow-md w-full mt-[2rem]"
@@ -135,7 +131,7 @@ const TaskModal = ({
             type="submit"
           >
             {" "}
-            Update
+            Update Task Status
           </button>
         </div>
       </article>

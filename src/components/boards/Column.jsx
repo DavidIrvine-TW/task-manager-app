@@ -5,9 +5,6 @@ import { Draggable, Droppable } from "@hello-pangea/dnd";
 const Column = ({
   columnIndex,
   column,
-  setTaskModalOpen,
-  setTaskColumnIndex,
-  setTaskTaskIndex,
 }) => {
   const colors = [
     "bg-purple-400",
@@ -70,9 +67,6 @@ const Column = ({
                     key={index}
                     taskIndex={index}
                     columnIndex={columnIndex}
-                    setTaskColumnIndex={setTaskColumnIndex}
-                    // setTaskModalOpen={setTaskModalOpen}
-                    setTaskTaskIndex={setTaskTaskIndex}
                     provided={draggableProvided}
                     taskData={task}
                   />

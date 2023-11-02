@@ -3,25 +3,20 @@ import { useDispatch, useSelector } from "react-redux";
 import boardsSlice from "../../redux/boardsSlice";
 import { modalIsOpen } from "../../redux/modalSlice";
 
-const TaskCard = ({ columnIndex, taskIndex , setTaskModalOpen, setTaskColumnIndex, setTaskTaskIndex, provided, taskData }) => {
+const TaskCard = ({columnIndex, taskIndex, provided, taskData}) => {
   
   const dispatch = useDispatch()
   
   const boards = useSelector((state) => state.boards);
-  const board = boards?.find((board) => board.isActive === true);
-  const columns = board?.columns;
-
-  const column = columns?.find((column, index) => index === columnIndex);
-  const task = column.tasks?.find((task, index) => index === taskIndex);
-  let subtasks = task?.subtasks;
-  const completedSubtasks = subtasks?.filter((subtask) => subtask.isCompleted);
+  const board = boards.find((board) => board.isActive === true);
+  const columns = board.columns;
+  const column = columns.find((column, index) => index === columnIndex);
+  const task = column.tasks.find((task, index) => index === taskIndex);
+  let subtasks = task.subtasks;
+  const completedSubtasks = subtasks.filter((subtask) => subtask.isCompleted);
 
   const handleTaskCardClick = () => {
-    // setTaskModalOpen(true);
-    // setTaskColumnIndex(columnIndex)
-    // setTaskTaskIndex(taskIndex) 
-    dispatch(modalIsOpen({type: "task", modalDetail: taskData}))
-    console.log(taskData) 
+    dispatch(modalIsOpen({type: "task", modalDetail: {taskData: taskData, columnIndex: columnIndex, taskIndex: taskIndex}}))
   };
 
   return (
