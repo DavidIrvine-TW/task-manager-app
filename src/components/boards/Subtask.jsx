@@ -5,6 +5,9 @@ import boardsSlice from '../../redux/boardsSlice';
 const Subtask = ({subtaskIndex, columnIndex, taskIndex}) => {
 
     const dispatch = useDispatch();
+    // console.log(subtaskIndex)
+    // console.log(columnIndex)
+    // console.log(taskIndex)
     
     const boards = useSelector((state) => state.boards);
     const board = boards.find((board) => board.isActive === true);

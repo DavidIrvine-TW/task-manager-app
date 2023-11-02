@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import AddIcon from "@mui/icons-material/Add";
@@ -9,8 +9,7 @@ import { modalIsClosed } from "../../redux/modalSlice";
 
 const AddEditTaskModal = ({
   type,
-  taskIndex,
-  columnIndex = 0
+  modalDetail
 
 }) => {
   const dispatch = useDispatch();
@@ -21,30 +20,31 @@ const AddEditTaskModal = ({
   const [subtaskError, setSubtaskError] = useState("");
   const [descriptionError, setDescriptionError] = useState("");
   const [isDisabled, setIsDisabled] = useState(false)
-  const [isFirstLoad, setIsFirstLoad] = useState(true)
   const [isValid, setIsValid] = useState(true);
+  console.log(type)
 
   const board = useSelector((state) => state.boards).find(
     (board) => board.isActive
   ); 
 
   const columns = board.columns;
-  const column = columns.find((col, index) => index === columnIndex);
-  const task = column ? column.tasks.find((task, index) => index === taskIndex) : []
+  const column = columns.find((col, index) => index === modalDetail.columnIndex);
+  const task = column ? column.tasks.find((task, index) => index === modalDetail.taskIndex) : []
 
-  const [status, setStatus] = useState(columns[columnIndex]?.name);
-  const [statusIndex, setStatusIndex] = useState(columnIndex);
+  const [status, setStatus] = useState(columns[modalDetail.columnIndex]?.name);
+  const [statusIndex, setStatusIndex] = useState(modalDetail.columnIndex);
 
-  // if (type === "edit" && isFirstLoad) {
-  //   setSubtasks(
-  //     task.subtasks.map((subtask) => {
-  //       return { ...subtask, id: uuidv4()};
-  //     })
-  //   );
-  //   setTaskTitle(task.title);
-  //   setTaskDescription(task.description);
-  //   setIsFirstLoad(false);
-  // }
+  useEffect(() => {
+    if (type === "edit") {
+      setSubtasks(
+        task.subtasks.map((subtask) => {
+          return { ...subtask };
+        })
+      );
+      setTaskTitle(task.title);
+      setTaskDescription(task.description);
+    }
+  }, [type])
   
   const subTaskHandler = (id, newValue) => {
     setSubtasks((prevState) => {
@@ -318,7 +318,7 @@ const AddEditTaskModal = ({
           }}
           className="Modal__btn Modal__btn-primary Modal__focus w-full mt-[1rem]"
         >
-          {type === "edit" ? "Update" : "Create Task"}
+          {type === "edit" ? "Update Task" : "Create Task"}
         </button>
       </form>
     </section>

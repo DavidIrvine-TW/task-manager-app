@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,16 +7,14 @@ import boardsSlice from "../../redux/boardsSlice";
 import CloseIcon from "@mui/icons-material/Close";
 import { modalIsClosed } from "../../redux/modalSlice";
 
-const AddEditBoardModal = ({ type }) => {
+const AddEditBoardModal = ({ type, modalDetail }) => {
   
   const dispatch = useDispatch();
 
   const [boardName, setBoardName] = useState("");
   const [boardNameError, setBoardNameError] = useState("");
   const [createdColumnsError, setCreatedColumnError] = useState("");
-  const [isFirstLoad, setIsFirstLoad] = useState(true);
   const [isDisabled, setIsDisabled] = useState(false);
-  const [isValid, setIsValid] = useState(true);
 
   const [createdColumns, setCreatedColumns] = useState([
     {
@@ -30,15 +28,18 @@ const AddEditBoardModal = ({ type }) => {
     (board) => board.isActive
   );
 
-  if (type === "edit" && isFirstLoad) {
-    setCreatedColumns(
-      board.columns.map((col) => {
-        return { ...col};
-      })
-    );
-    setBoardName(board.name);
-    setIsFirstLoad(false);
-  }
+  useEffect(() => {
+    if (type === "edit" || modalDetail.type === "edit") {
+      setCreatedColumns(
+        board.columns.map((col) => {
+          return { ...col};
+        })
+      );
+      setBoardName(board.name);
+    }
+  }, [type])
+
+  
 
   const onChange = (id, newValue) => {
     setCreatedColumns((prevState) => {
@@ -58,18 +59,15 @@ const AddEditBoardModal = ({ type }) => {
 
     setCreatedColumnError("");
     setBoardNameError("");
-    setIsValid(true);
 
     if (!boardName.trim()) {
       setBoardNameError("Required");
-      setIsValid(false);
       return false;
     }
 
     const columnValidationPromises = createdColumns.map(async (column) => {
       if (!column.name.trim()) {
         setCreatedColumnError("Required");
-        setIsValid(false);
         return false;
       }
     }); 

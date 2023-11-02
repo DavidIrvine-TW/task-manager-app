@@ -1,52 +1,65 @@
 import { useDispatch } from "react-redux";
 import { modalIsClosed, modalIsOpen } from "../../redux/modalSlice";
 
-const DeleteEditMenuModal = ({ setElippsesMenu, setTaskModalOpen, setTaskMode, setNewTaskMenu , setDeleteMode, setDeleteBoardModal, modalDetail, title}) => {
+const DeleteEditMenuModal = ({
+  setElippsesMenu,
+  taskData,
+  title,
+  columnIndex,
+  taskIndex,
+}) => {
+  const dispatch = useDispatch();
 
-    const dispatch = useDispatch()
-
-
-    return (
-      <article
-        id="dropdown-delete-edit-task"
-        className="absolute top-[2rem] right-[0rem] p-4 flex flex-col gap-[1rem] items-start border rounded z-50 bg-lghtbackground dark:bg-drkbackground-950 dark:border-darksecondary shadow-md"
+  return (
+    <article
+      id="dropdown-delete-edit-task"
+      className="absolute top-[2rem] right-[0rem] p-4 flex flex-col 
+        gap-[1rem] items-start border rounded z-50 bg-lghtbackground dark:bg-drkbackground-950 
+        dark:border-darksecondary shadow-md"
+    >
+      <div className="flex flex-col gap-[1rem]">
+        <button
+          onClick={() => {
+            setElippsesMenu(false);
+            dispatch(modalIsClosed({ type: "" }));
+            dispatch(
+              modalIsOpen({
+                type: "editTask",
+                modalDetail: {
+                  taskData: taskData,
+                  columnIndex: columnIndex,
+                  taskIndex: taskIndex,
+                },
+              })
+            );
+          }}
+          className="font-bold w-[150px] py-1 px-2 text-left hover:underline dark:text-darktext"
         >
-  
-  
-        <div className="flex flex-col gap-[1rem]">
-            <button
-              onClick={() => {
-                setElippsesMenu(false)
-                // setNewTaskMenu(true)
-                // setTaskMode('edit')
-                // setTaskModalOpen(false)
-                dispatch(modalIsClosed({type: ""}))
-                dispatch(modalIsOpen({type: "editTask"}))
-                
-              }}
-              className=" font-bold w-[150px] py-1 px-2 text-left hover:underline dark:text-darktext"
-              >
-                Edit Task
-            </button>
-  
-            <button 
-              onClick={() => {
-                setElippsesMenu(false)
-                // setDeleteBoardModal(true)
-                // setDeleteMode({type: "task", taskTitle: title})
-                // setTaskModalOpen(false)
-                dispatch(modalIsClosed({type: ""}))
-                dispatch(modalIsOpen({type: "deleteTask", modalDetail: modalDetail}))
-              }}
-              className="text-lghtprimary font-bold w-[150px] py-1 px-2 text-left hover:underline"
-              >
-                Delete Task  
-            </button>
-        </div>
-  
-      </article>
-    );
-  };
-  
-  export default DeleteEditMenuModal;
-  
+          Edit Task
+        </button>
+
+        <button
+          onClick={() => {
+            setElippsesMenu(false);
+            dispatch(modalIsClosed({ type: "" }));
+            dispatch(
+              modalIsOpen({
+                type: "deleteTask",
+                modalDetail: {
+                  taskData: taskData,
+                  columnIndex: columnIndex,
+                  taskIndex: taskIndex,
+                },
+              })
+            );
+          }}
+          className="text-lghtprimary font-bold w-[150px] py-1 px-2 text-left hover:underline"
+        >
+          Delete Task
+        </button>
+      </div>
+    </article>
+  );
+};
+
+export default DeleteEditMenuModal;

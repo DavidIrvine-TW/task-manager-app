@@ -67,7 +67,7 @@ const BoardsMenuModal = ({ setBoardMenu, setCreateBoardMenu, setBoardMode }) => 
           <BoardIcon />
           <button
             onClick={() => {
-              dispatch(modalIsOpen({ type: "createBoard" }));
+              dispatch(modalIsOpen({ type: "createBoard", modalDetail : { type : 'add' }}));
             }}
             className="text-md text-lghtprimary"
           >

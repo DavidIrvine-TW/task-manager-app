@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { DragDropContext } from '@hello-pangea/dnd';
 import { useSelector, useDispatch } from "react-redux";
+import { modalIsOpen } from "./redux/modalSlice";
 import Nav from "./components/navbar/Nav";
 import Sidebar from "./components/navbar/SideNav";
 import ScrollContainer from "react-indiana-drag-scroll";
@@ -84,8 +85,7 @@ function App() {
                   <button
                     className="bg-lghtsecondary px-4 py-2 shadow-md dark:bg-drksecondary-800  hover:dark:bg-drksecondary-900"
                     onClick={() => {
-                      // setCreateBoardMenu(true)
-                      // setBoardMode('edit')
+                      dispatch(modalIsOpen({type: "editBoard", modalDetail: {type: "edit"}}))
                     }}
                   >
                     <AddIcon fontSize="small" /> New Column

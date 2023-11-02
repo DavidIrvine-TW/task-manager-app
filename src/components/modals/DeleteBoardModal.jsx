@@ -4,13 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { modalIsClosed, modalIsOpen } from "../../redux/modalSlice";
 
 const DeleteBoardModal = ({
-  setDeleteBoardModal,
-  boardName,
   type,
-  taskIndex,
   modalDetail,
-  columnIndex,
 }) => {
+  const title = modalDetail.taskData
 
   const dispatch = useDispatch();
   const board = useSelector((state) => state.boards).find(
@@ -22,17 +19,19 @@ const DeleteBoardModal = ({
       dispatch(boardsSlice.actions.deleteBoard());
       dispatch(boardsSlice.actions.setBoardActive({ index: 0 }));
       dispatch(modalIsClosed({type: ""}));
-    } else {
+    } else if (type == "task") {
       dispatch(boardsSlice.actions.deleteTask({ taskIndex, columnIndex }));
-      setDeleteBoardModal(false);
       dispatch(modalIsClosed({type: ""}));
     }
   };
+  console.log('title', title)
 
   return (
     <section
       id="delete-board-modal"
-      className="fade-in absolute top-0 right-0 left-0 bottom-0 bg-zinc-500 bg-opacity-30 dark:bg-darkbackground dark:bg-opacity-80 z-20  flex items-center justify-center shadow-md"
+      className="fade-in absolute top-0 right-0 left-0 bottom-0 bg-zinc-500 
+        bg-opacity-30 dark:bg-darkbackground dark:bg-opacity-80 z-20 flex items-center justify-center shadow-md"
+
       onClick={(e) => {
         if (e.target !== e.currentTarget) {
           return;
@@ -45,7 +44,7 @@ const DeleteBoardModal = ({
         <p className="mb-[1.5rem] text-lghtprimary font-bold text-l ">
           {type === "board"
             ?  `Delete ${board.name}?`
-            : `Delete ${modalDetail.title}?`}
+            : `Delete ${modalDetail.taskData.title}?`}
         </p>
 
         <p className="mb-[1.5rem] text-body-l dark:text-gray-500">
