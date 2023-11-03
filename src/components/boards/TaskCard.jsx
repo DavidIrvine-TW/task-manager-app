@@ -12,8 +12,8 @@ const TaskCard = ({columnIndex, taskIndex, provided, taskData}) => {
   const columns = board.columns;
   const column = columns.find((column, index) => index === columnIndex);
   const task = column.tasks.find((task, index) => index === taskIndex);
-  let subtasks = task.subtasks;
-  const completedSubtasks = subtasks.filter((subtask) => subtask.isCompleted);
+  let subtasks = task?.subtasks;
+  const completedSubtasks = subtasks?.filter((subtask) => subtask.isCompleted);
 
   const handleTaskCardClick = () => {
     dispatch(modalIsOpen({type: "task", modalDetail: {taskData: taskData, columnIndex: columnIndex, taskIndex: taskIndex}}))

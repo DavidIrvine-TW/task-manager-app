@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DragDropContext } from '@hello-pangea/dnd';
 import { useSelector, useDispatch } from "react-redux";
 import { modalIsOpen } from "./redux/modalSlice";
@@ -15,12 +15,53 @@ import EmptyBoard from "./components/emptyBoard/EmptyBoard"
 function App() {
 
   const dispatch = useDispatch();
-  const [sideNavOpen, setSideNavOpen] = useState(true);
   const boards = useSelector((state) => state.boards);
-  const board = boards.find((board) => board.isActive === true); 
+  const board = boards?.find((board) => board.isActive === true); 
   if (!board && boards.length > 0)
     dispatch(boardsSlice.actions.setBoardActive({ index: 0 })); // ensure always an active board
-  const columns = board?.columns; 
+  const columns = board?.columns;
+
+  const [sideNavOpen, setSideNavOpen] = useState(true);
+  const [draggableData, setDraggableData] = useState(board)
+
+  useEffect(() => {
+    setDraggableData(board)
+  }, [board, boards])
+
+  const onDragEnd = (result) => {
+    const { destination, source } = result;
+    // no destination
+    if (!destination) {
+      return;
+    }
+    // same column, same index
+    if (
+      destination.droppableID === source.droppableId &&
+      destination.index === source.index
+    ) {
+      return;
+    }
+
+    const sourceColumn = board.columns.find(
+      (index) => index.column_id === source.droppableId
+    );
+    const destinationColumn = board.columns.find(
+      (index) => index.column_id === destination.droppableId
+    );
+    const draggedTask = sourceColumn.tasks[source.index];
+
+    if (sourceColumn.column_id === destinationColumn.column_id) {
+      const newTasks = Array.from(sourceColumn.tasks);
+      const [draggedTask] = newTasks.splice(source.index, 1);
+      newTasks.splice(destination.index, 0, draggedTask);
+      const newColumn = {
+        ...sourceColumn,
+        tasks: newTasks,
+      };
+      dispatch(boardsSlice.actions.dragTask({newColumn: newColumn, sourceIndex: source.index, destinationIndex: destination.index, id: sourceColumn.column_id}))
+    }
+
+  };
   
 
   return (
@@ -62,9 +103,9 @@ function App() {
 
           ) : (
 
-            <DragDropContext onDragEnd={() => {}}>
+            <DragDropContext onDragEnd={onDragEnd}>
 
-              {columns.map((column, index) => (
+              {columns?.map((column, index) => (
                 <Column
                   key={index}
                   columnIndex={index}

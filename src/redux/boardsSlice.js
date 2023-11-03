@@ -120,14 +120,16 @@ const boardsSlice = createSlice({
     
 
     dragTask: (state, action) => {
-      const { newBoard } = action.payload;
+      const {destinationIndex, sourceIndex, newColumn} = action.payload
+ 
       const activeBoardIndex = state.findIndex((board) => board.isActive);
+      
 
-      if (activeBoardIndex !== -1) {
-        state[activeBoardIndex] = newBoard;
-      } else {
-        throw new Error("Active board not found.");
-      }
+      // if (activeBoardIndex !== -1) {
+      //   state[activeBoardIndex] = newBoard;
+      // } else {
+      //   throw new Error("Active board not found.");
+      // }
     },
 
 
