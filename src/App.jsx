@@ -15,13 +15,11 @@ import EmptyBoard from "./components/emptyBoard/EmptyBoard"
 function App() {
 
   const dispatch = useDispatch();
-
   const [sideNavOpen, setSideNavOpen] = useState(true);
-
   const boards = useSelector((state) => state.boards);
   const board = boards.find((board) => board.isActive === true); 
   if (!board && boards.length > 0)
-    dispatch(boardsSlice.actions.setBoardActive({ index: 0 })); 
+    dispatch(boardsSlice.actions.setBoardActive({ index: 0 })); // ensure always an active board
   const columns = board?.columns; 
   
 

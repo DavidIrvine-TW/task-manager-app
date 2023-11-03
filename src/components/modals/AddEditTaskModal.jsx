@@ -20,8 +20,7 @@ const AddEditTaskModal = ({
   const [subtaskError, setSubtaskError] = useState("");
   const [descriptionError, setDescriptionError] = useState("");
   const [isDisabled, setIsDisabled] = useState(false)
-  const [isValid, setIsValid] = useState(true);
-  console.log(type)
+
 
   const board = useSelector((state) => state.boards).find(
     (board) => board.isActive
@@ -30,9 +29,8 @@ const AddEditTaskModal = ({
   const columns = board.columns;
   const column = columns.find((col, index) => index === modalDetail.columnIndex);
   const task = column ? column.tasks.find((task, index) => index === modalDetail.taskIndex) : []
-
   const [status, setStatus] = useState(columns[modalDetail.columnIndex]?.name);
-  const [statusIndex, setStatusIndex] = useState(modalDetail.columnIndex);
+  const [statusIndex, setStatusIndex] = useState(modalDetail.columnIndex || 0);
 
   useEffect(() => {
     if (type === "edit") {
@@ -73,24 +71,21 @@ const AddEditTaskModal = ({
     setSubtaskError("");
     setTaskTitleError("");
     setDescriptionError("");
-    setIsValid(true);
+
 
     if (!taskTitle.trim()) {
       setTaskTitleError("Enter a task title");
-      setIsValid(false);
       return false;
     }
 
     // if (!taskDescription.trim()) {
     //   setDescriptionError("Enter a short description");
-    //   setIsValid(false);
     //   return false;
     // }
 
     const subTaskValidationPromises = subtasks.map(async (subtask) => {
       if (!subtask.title.trim()) {
         setSubtaskError("Enter a subtask title");
-        setIsValid(false);
         return false;
       }
     });
@@ -130,8 +125,8 @@ const AddEditTaskModal = ({
             taskDescription,
             subtasks,
             statusIndex,
-            taskIndex, 
-            columnIndex
+            taskIndex: modalDetail.taskIndex, 
+            columnIndex: modalDetail.columnIndex
           }));
       }
       dispatch(modalIsClosed({type: ""}));
@@ -139,7 +134,7 @@ const AddEditTaskModal = ({
   };
 
   const subtaskStyle = subtasks.length === 0 ? 'hidden' : '';
-
+  console.log(type)
   return (
     <section
       id="add-edit-task-modal"

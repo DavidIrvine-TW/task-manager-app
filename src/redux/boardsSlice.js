@@ -37,13 +37,23 @@ const boardsSlice = createSlice({
     },
 
     deleteTask: (state, action) => {
-      const payload = action.payload;
-      const board = state.find((board) => board.isActive);
-      const col = board.columns.find((col, i) => i === payload.columnIndex);
-      col.tasks = col.tasks.filter((task, i) => i !== payload.taskIndex);
+      const { columnIndex, taskIndex } = action.payload;
+      return state.map(board => {
+        if (board.isActive) {
+          const updatedColumns = board.columns.map((col, i) => {
+            if (i === columnIndex) {
+              const updatedTasks = col.tasks.filter((task, j) => j !== taskIndex);
+              return { ...col, tasks: updatedTasks };
+            }
+            return col;
+          });
+          return { ...board, columns: updatedColumns };
+        }
+        return board;
+      });
     },
 
-    addTask: (state, action) => {
+    addTask: (state, action) => { 
       const {
         taskTitle,
         status,
@@ -52,6 +62,7 @@ const boardsSlice = createSlice({
         statusIndex,
         taskId,
       } = action.payload;
+      console.log(statusIndex)
       return state.map((board) => {
         if (board.isActive) {
           const updatedColumns = board.columns.map((col, i) => {
@@ -72,37 +83,41 @@ const boardsSlice = createSlice({
           });
           return { ...board, columns: updatedColumns };
         }
-        return board;
+        return board;        
       });
     },
 
+
     editTask: (state, action) => {
-      const {
-        taskTitle,
-        status,
-        taskDescription,
-        subtasks,
-        columnIndex,
-        statusIndex,
-        taskIndex,
-      } = action.payload;
-
-      const board = state.find((board) => board.isActive);
-      const column = board.columns.find((col, index) => index === columnIndex);
-      const task = column.tasks.find((task, index) => index === taskIndex);
-
-      task.title = taskTitle;
-      task.status = status;
-      task.description = taskDescription;
-      task.subtasks = subtasks;
-
-      if (columnIndex === statusIndex) return; // same column
-      column.tasks = column.tasks.filter((task, index) => index !== taskIndex);
-      const newColumn = board.columns.find(
-        (col, index) => index === statusIndex
-      );
-      newColumn.tasks.push(task);
+      const { taskTitle, status, taskDescription, subtasks, columnIndex, statusIndex, taskIndex } = action.payload;
+      return state.map(board => {
+        if (board.isActive) {
+          const updatedColumns = board.columns.map((col, i) => {
+            if (i === columnIndex) {
+              const updatedTasks = col.tasks.map((task, j) => {
+                if (j === taskIndex) {
+                  return { ...task, title: taskTitle, status: status, description: taskDescription, subtasks: subtasks };
+                }
+                return task;
+              });
+              return { ...col, tasks: updatedTasks };
+            }
+            return col;
+          });
+          if (columnIndex === statusIndex) return { ...board, columns: updatedColumns };
+          const newColumns = board.columns.map((col, i) => {
+            if (i === statusIndex) {
+              const updatedTasks = [...col.tasks, updatedColumns[columnIndex].tasks[taskIndex]];
+              return { ...col, tasks: updatedTasks };
+            }
+            return col;
+          });
+          return { ...board, columns: newColumns };
+        }
+        return board;
+      });
     },
+    
 
     dragTask: (state, action) => {
       const { newBoard } = action.payload;
@@ -115,28 +130,6 @@ const boardsSlice = createSlice({
       }
     },
 
-    //     onDragDropTasks = (state, action) => {
-    //   const { currentBoardId, newBoard, newTask, newColId } = action.payload;
-
-    //   const data = current(state.data);
-    //   const exist = data.find((item) => item.id === currentBoardId);
-
-    //   if (exist) {
-    //     const newState = produce(data, (draftState) => {
-    //       const boardCopy = { ...newBoard };
-    //       const boardIndex = data.findIndex((item) => item.id === currentBoardId);
-    //       const colIndex = boardCopy.columns.findIndex((item) => item.id == newColId);
-    //       const taskIndex = boardCopy.columns[colIndex].tasks.findIndex((item) => item.id == newTask.id);
-
-    //       boardCopy.columns[colIndex].tasks[taskIndex] = {
-    //         ...boardCopy.columns[colIndex].tasks[taskIndex],
-    //         status: boardCopy.columns[colIndex].name,
-    //       };
-    //       draftState[boardIndex] = boardCopy;
-    //     });
-    //     return { ...state, data: newState };
-    //   } else throw console.error('on drag drop err');
-    // };
 
     editBoard: (state, action) => {
       const { boardName, createdColumns } = action.payload;

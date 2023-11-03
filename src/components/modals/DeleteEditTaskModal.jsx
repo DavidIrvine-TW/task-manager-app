@@ -4,7 +4,6 @@ import { modalIsClosed, modalIsOpen } from "../../redux/modalSlice";
 const DeleteEditMenuModal = ({
   setElippsesMenu,
   taskData,
-  title,
   columnIndex,
   taskIndex,
 }) => {

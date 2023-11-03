@@ -7,12 +7,14 @@ const DeleteBoardModal = ({
   type,
   modalDetail,
 }) => {
-  const title = modalDetail.taskData
 
   const dispatch = useDispatch();
   const board = useSelector((state) => state.boards).find(
     (board) => board.isActive
   );
+  const columns = board.columns;
+  const column = columns.find((col, index) => index === modalDetail.columnIndex);
+  const task = column ? column.tasks.find((task, index) => index === modalDetail.taskIndex) : []
 
   const deleteBoardHandler = (e) => {
     if (type === "board") {
@@ -20,11 +22,10 @@ const DeleteBoardModal = ({
       dispatch(boardsSlice.actions.setBoardActive({ index: 0 }));
       dispatch(modalIsClosed({type: ""}));
     } else if (type == "task") {
-      dispatch(boardsSlice.actions.deleteTask({ taskIndex, columnIndex }));
+      dispatch(boardsSlice.actions.deleteTask({ taskIndex: modalDetail.taskIndex, columnIndex: modalDetail.columnIndex }));
       dispatch(modalIsClosed({type: ""}));
     }
   };
-  console.log('title', title)
 
   return (
     <section
@@ -44,13 +45,13 @@ const DeleteBoardModal = ({
         <p className="mb-[1.5rem] text-lghtprimary font-bold text-l ">
           {type === "board"
             ?  `Delete ${board.name}?`
-            : `Delete ${modalDetail.taskData.title}?`}
+            : `Delete ${task.title}?`}
         </p>
 
         <p className="mb-[1.5rem] text-body-l dark:text-gray-500">
           {type === "board"
             ? `Are you sure you want to delete the ‘${board.name}’ board? This action will remove all columns and tasks and cannot be reversed.`
-            : `Are you sure you want to delete the ‘${modalDetail.title}’ task and its subtasks? This action cannot be reversed.`}
+            : `Are you sure you want to delete the ‘${task.title}’ task and its subtasks? This action cannot be reversed.`}
         </p>
 
         <div className="flex flex-col  w-full gap-[1rem]">
